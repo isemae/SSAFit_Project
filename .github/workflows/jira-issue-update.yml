@@ -1,0 +1,63 @@
+name: Sync GitHub Issue Edits with Jira
+
+on:
+  issues:
+    types: [edited]
+
+jobs:
+  update_jira:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+
+      # 이슈 파싱 & Jira 문법으로 변환
+      - name: Issue Parser
+        uses: stefanbuck/github-issue-parser@v3
+        id: issue-parser
+        with:
+          template-path: .github/ISSUE_TEMPLATE/issue-form.yml
+
+      - name: Convert markdown to Jira Syntax
+        uses: peter-evans/jira2md@v1
+        id: md2jira
+        with:
+          input-text: |
+            ### Github Issue Link
+            - ${{ github.event.issue.html_url }}
+
+            ${{ github.event.issue.body }}
+          mode: md2jira
+
+      - name: Update Jira Issue
+        env:
+          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+          JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+        run: |
+          # GitHub 이슈 번호와 제목 가져오기
+          ISSUE_TITLE="${{ github.event.issue.title }}"
+          ISSUE_BODY="${{ github.event.issue.body }}"
+          ISSUE_URL="${{ github.event.issue.html_url }}"
+
+          # GitHub 이슈 제목에서 Jira 이슈 키 추출 (예: "PROJ-123")
+          JIRA_KEY=$(echo "$ISSUE_TITLE" | grep -oE '[A-Z]+-[0-9]+')
+
+          # JIRA_KEY가 비어 있는 경우 메시지 출력
+          if [ -z "$JIRA_KEY" ]; then
+            echo "No Jira Issue Key found in GitHub issue title. Skipping update."
+            exit 0
+          fi
+
+          # Jira 이슈 업데이트
+          curl -X PUT -u "$JIRA_USER_EMAIL:$JIRA_API_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "$(jq -n --arg desc "$ISSUE_BODY\n\nGitHub Issue: $ISSUE_URL" \
+                '{fields: {description: $desc}}')" \
+            "$JIRA_BASE_URL/rest/api/2/issue/$JIRA_KEY"

@@ -1,0 +1,34 @@
+on:
+  push:
+    branches:
+      - "*"
+
+jobs:
+  update_jira_in_progress:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up environment
+        env:
+          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+          JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+        run: |
+          # 브랜치 이름에서 Jira 이슈 키 추출
+          BRANCH_NAME="${{ github.ref_name }}"
+          JIRA_KEY=$(echo "$BRANCH_NAME" | grep -oE '[A-Z]+-[0-9]+')
+
+          # Jira 이슈 키가 없는 경우 작업 건너뛰기
+          if [ -z "$JIRA_KEY" ]; then
+            echo "No Jira Issue Key found in branch name. Skipping update."
+            exit 0
+          fi
+
+          # JSON 데이터 생성
+          JSON_PAYLOAD=$(jq -n --arg transition_id "21" '{transition: {id: $transition_id}}')  # "In Progress" 전환 ID 사용
+
+          # Jira 이슈 상태를 "In Progress"로 업데이트
+          curl -X POST -u "$JIRA_USER_EMAIL:$JIRA_API_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "$JSON_PAYLOAD" \
+            "$JIRA_BASE_URL/rest/api/2/issue/$JIRA_KEY/transitions"

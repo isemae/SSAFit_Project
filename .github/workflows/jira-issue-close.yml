@@ -1,0 +1,35 @@
+name: Sync Closed GitHub Issue with Jira
+
+on:
+  issues:
+    types: [closed]
+
+jobs:
+  close_jira_issue:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up environment
+        env:
+          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+          JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+        run: |
+          # GitHub 이슈 제목에서 Jira 이슈 키 추출
+          ISSUE_TITLE="${{ github.event.issue.title }}"
+          JIRA_KEY=$(echo "$ISSUE_TITLE" | grep -oE '[A-Z]+-[0-9]+')
+
+          # JIRA_KEY가 비어 있는 경우 메시지 출력
+          if [ -z "$JIRA_KEY" ]; then
+            echo "No Jira Issue Key found in GitHub issue title. Skipping update."
+            exit 0
+          fi
+
+          # JSON 데이터 생성
+          JSON_PAYLOAD=$(jq -n --arg transition_id "31" '{transition: {id: $transition_id}}')
+
+          # Jira 이슈 상태를 "Done"으로 업데이트
+          curl -X POST -u "$JIRA_USER_EMAIL:$JIRA_API_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "$JSON_PAYLOAD" \
+            "$JIRA_BASE_URL/rest/api/2/issue/$JIRA_KEY/transitions"
