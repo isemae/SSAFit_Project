@@ -1,37 +1,60 @@
-name: Sync Closed GitHub Issue with Jira
+name: Close Jira Issue on PR Merge and Branch Deletion
 
 on:
   pull_request:
     types: [closed]
 
 jobs:
-  close_jira_issue:
+  close_jira_issue_if_branch_deleted:
     runs-on: ubuntu-latest
 
     if: ${{ github.event.pull_request.merged }}
 
     steps:
-      - name: Set up environment
+      - name: Set up environment variables
         env:
           JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
           JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
           JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # GitHub API 인증을 위한 토큰
         run: |
-          # GitHub 이슈 제목에서 Jira 이슈 키 추출
-          ISSUE_TITLE="${{ github.event.issue.title }}"
-          JIRA_KEY=$(echo "$ISSUE_TITLE" | grep -oE '[A-Z]+-[0-9]+')
+          # PR의 브랜치 이름 추출
+          BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
+          echo "Branch name: $BRANCH_NAME"
 
-          # JIRA_KEY가 비어 있는 경우 메시지 출력
+          # 브랜치 이름에서 Jira 이슈 키 추출 
+          JIRA_KEY=$(echo "$BRANCH_NAME" | grep -oE '[A-Z]+-[0-9]+')
+
+          # JIRA_KEY가 추출되지 않으면 작업 종료
           if [ -z "$JIRA_KEY" ]; then
-            echo "No Jira Issue Key found in GitHub issue title. Skipping update."
+            echo "No Jira Issue Key found in branch name. Skipping update."
             exit 0
           fi
 
-          # JSON 데이터 생성
-          JSON_PAYLOAD=$(jq -n --arg transition_id "31" '{transition: {id: $transition_id}}')
+          echo "Extracted Jira Issue Key: $JIRA_KEY"
 
-          # Jira 이슈 상태를 "Done"으로 업데이트
-          curl -X POST -u "$JIRA_USER_EMAIL:$JIRA_API_TOKEN" \
-            -H "Content-Type: application/json" \
-            -d "$JSON_PAYLOAD" \
-            "$JIRA_BASE_URL/rest/api/2/issue/$JIRA_KEY/transitions"
+          # GitHub API를 사용하여 브랜치가 삭제되었는지 확인
+          REPO_OWNER="${{ github.repository.owner.login }}"
+          REPO_NAME="${{ github.repository.name }}"
+          API_URL="https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/branches/$BRANCH_NAME"
+
+          echo "Checking if branch '$BRANCH_NAME' exists..."
+          BRANCH_EXISTS=$(curl -s -o /dev/null -w "%{http_code}" -H "Authorization: token $GITHUB_TOKEN" "$API_URL")
+
+          if [ "$BRANCH_EXISTS" -eq 404 ]; then
+            echo "Branch '$BRANCH_NAME' does not exist. Proceeding with Jira issue transition."
+
+            # Jira 이슈 상태를 "Done"으로 전환하기 위한 JSON 페이로드 생성
+            JSON_PAYLOAD=$(jq -n --arg transition_id "31" '{transition: {id: $transition_id}}')
+
+            # Jira 이슈 상태를 "Done"으로 업데이트
+            curl -X POST -u "$JIRA_USER_EMAIL:$JIRA_API_TOKEN" \
+              -H "Content-Type: application/json" \
+              -d "$JSON_PAYLOAD" \
+              "$JIRA_BASE_URL/rest/api/2/issue/$JIRA_KEY/transitions"
+
+            echo "Jira Issue $JIRA_KEY transitioned to 'Done'."
+          else
+            echo "Branch '$BRANCH_NAME' still exists. Skipping Jira issue transition."
+            exit 0
+          fi

@@ -64,7 +64,7 @@ jobs:
       - name: Create Task in Jira
         if: env.issuetype == 'Task'
         uses: atlassian/gajira-create@v3
-        id: create_task # ID를 설정하여 이후 참조 가능
+        id: create_task
         with:
           project: FPJ
           issuetype: Task
@@ -74,7 +74,7 @@ jobs:
       - name: Create Sub-task in Jira
         if: env.issuetype == 'Sub-task'
         uses: atlassian/gajira-create@v3
-        id: create_subtask # ID를 설정하여 이후 참조 가능
+        id: create_subtask
         with:
           project: FPJ
           issuetype: Sub-task
@@ -98,7 +98,14 @@ jobs:
         run: |
           ISSUE_NUMBER="${{ env.ISSUE_KEY }}"
           ISSUE_TITLE="${{ steps.issue-parser.outputs.issueparser_branch}}"
-          BRANCH_NAME="${ISSUE_NUMBER}-$(echo ${ISSUE_TITLE} | sed 's/ /-/g')"
+          if [ -n "$ISSUE_TITLE" ]; then
+            # 이슈 제목이 있는 경우 하이픈과 함께 브랜치 이름 생성
+            FORMATTED_TITLE=$(echo "$ISSUE_TITLE" | sed 's/ /-/g')
+            BRANCH_NAME="${ISSUE_NUMBER}-${FORMATTED_TITLE}"
+          else
+            # 이슈 제목이 없는 경우 이슈 번호만 사용
+            BRANCH_NAME="${ISSUE_NUMBER}"
+          fi
           git checkout -b "${BRANCH_NAME}"
           git push origin "${BRANCH_NAME}"
 
