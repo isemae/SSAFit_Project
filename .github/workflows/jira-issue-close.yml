@@ -1,12 +1,14 @@
 name: Sync Closed GitHub Issue with Jira
 
 on:
-  issues:
+  pull_request:
     types: [closed]
 
 jobs:
   close_jira_issue:
     runs-on: ubuntu-latest
+
+    if: ${{ github.event.pull_request.merged }}
 
     steps:
       - name: Set up environment
