@@ -14,11 +14,35 @@ public class UserServiceImpl implements UserService {
 	}
 
 	// 1. 특정 유저 정보 전체 조회
+	/* return:
+	{ 
+	 	id,
+	 	loginId,
+		userName,
+		score,
+		totalCardCount,
+		tier
+	}
+	 */
 	@Override
 	public User getUserInfo(int userId) {
 		User userInfo = userDao.getUserInfo(userId);
 		
-		// 조회에 실패하면 null이 반환됨		
+		// loginId, password는 db에서 가져오지 않음
+		// password는 절대 안되고 loginId는 필요시 가져오기 가능
+
+		// 조회에 실패하면 null이 반환됨
+		if(userInfo == null) {
+			System.out.println("Service에서 통신. " + userId + "번 유저정보를 찾을 수 없습니다.");
+			return null;
+		}
+		
+		// 본인이 아닌 다른 사람의 정보를 조회할 경우
+		if(userInfo.getId() != userId) {
+			System.out.println("다른 사람의 정보를 조회하려 합니다.");
+			return null;
+		}		
+
 		return userInfo;
 	}
 
