@@ -83,7 +83,7 @@ public class CardController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("카드 데이터가 존재하지 않습니다.");
 		}
 		
-		// TODO 전체 카드를 조회할 때 user table의 total_card_count와 같은 지 검증,
+		// TODO 전체 카드를 조회할 때 user table의 ttoal_card_count와 같은 지 검증,
 		// 다르면 실제 카드 리스트 size로 수정
 		
 		return new ResponseEntity<List<Card>>(cardList, HttpStatus.OK);
