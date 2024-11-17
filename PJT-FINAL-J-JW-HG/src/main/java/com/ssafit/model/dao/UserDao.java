@@ -15,6 +15,11 @@ public interface UserDao {
 	// 4. 유저의 등급 조회
 	int getUserTier(int userId);
 	
-	// 5. 쥬어가 획득한 총 카드 수 조회
+	// 5. 유저 등급 업데이트
+	int updateUserTier(int userId, int userTier);
+	
+	// 6. 유저가 획득한 총 카드 수 조회
 	int getUserTotalCardCount(int userId);
+	
+	// 7. 유저가 획득한 총 카드 수 업데이트
 }
