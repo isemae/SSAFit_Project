@@ -26,34 +26,51 @@ public class UserServiceImpl implements UserService {
 	 */
 	@Override
 	public User getUserInfo(int userId) {
-		User userInfo = userDao.getUserInfo(userId);
-		
-		// loginId, password는 db에서 가져오지 않음
-		// password는 절대 안되고 loginId는 필요시 가져오기 가능
-
-		// 조회에 실패하면 null이 반환됨
-		if(userInfo == null) {
-			System.out.println("Service에서 통신. " + userId + "번 유저정보를 찾을 수 없습니다.");
+		try {
+			User userInfo = userDao.getUserInfo(userId);
+			
+			// loginId, password는 db에서 가져오지 않음
+			// password는 절대 안되고 loginId는 필요시 가져오기 가능
+	
+			// 조회에 실패하면 null이 반환됨
+			// mapper의 resultType이 Object 이기 때문에 존재하지 않는 유저라도 null 반환할수도 있음.
+			if(userInfo == null) {
+				System.out.println("Service에서 통신. " + userId + "번 유저정보를 찾을 수 없습니다.");
+				return null;
+			}
+			
+			// token에 있는 id로 조회할 경우에는 없어도 갠춘한 로직일지도? token 탈취를 고려한다면 refresh 토큰 검증 필요
+			// 본인이 아닌 다른 사람의 정보를 조회할 경우
+			if(userInfo.getId() != userId) {
+				System.out.println("다른 사람의 정보를 조회하려 합니다.");
+				return null;
+			}		
+			
+			return userInfo;
+		}
+		catch(Exception e) {
+			// 기타 예외에 대해서도 null 반환
+			System.out.println("===userServiceImpl===");
+			e.printStackTrace();
+			System.out.println("===userServiceImpl===");
 			return null;
 		}
-		
-		// token에 있는 id로 조회할 경우에는 없어도 갠춘한 로직일지도? token 탈취를 고려한다면 refresh 토큰 검증 필요
-		// 본인이 아닌 다른 사람의 정보를 조회할 경우
-		if(userInfo.getId() != userId) {
-			System.out.println("다른 사람의 정보를 조회하려 합니다.");
-			return null;
-		}		
-
-		return userInfo;
 	}
 
 	// 2. 유저의 건강력 조회
 	@Override
 	public int getUserScore(int userId) {
-		// 존재하지 않는 유저에 대해서는 어떻게 처리? -> result type을 mapper에 선언해둬서 null 반환되면 exception 처리함
-		// -> 따로 exception을 catch하지 않아도 되는가?
-		int userScore = userDao.getUserScore(userId);		
-		return userScore; //TODO user score return
+		try {
+			int userScore = userDao.getUserScore(userId);			
+			return userScore; 
+		}
+		catch(Exception e) {
+			System.out.println("===userServiceImpl===");
+			e.printStackTrace();
+			System.out.println("===userServiceImpl===");
+			// -1 반환
+			return -1;
+		}
 	}
 
 	
