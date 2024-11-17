@@ -1,6 +1,7 @@
 <template>
 
   <main>
+    <RouterView />
     <CardStack />
   </main>
 </template>
