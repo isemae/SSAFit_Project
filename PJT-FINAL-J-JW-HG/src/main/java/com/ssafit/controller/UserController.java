@@ -24,19 +24,32 @@ public class UserController {
 
 //////////////////////////////////////////////////////////////
 	// 1. 특정 유저 정보 전체 조회
+	// TODO 99. path variable -> localStorage에 저장돼있는 token을 활용해서 userId 보내기
 	@GetMapping("/{userId}")
 	public ResponseEntity<?> getUserInfo(@PathVariable int userId) {
-		User userInfo = userService.getUserInfo(userId);
-		
-		if(userInfo == null) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("유저 정보가 존재하지 않습니다.");
+		try {
+			User userInfo = userService.getUserInfo(userId);
+			return new ResponseEntity<User>(userInfo, HttpStatus.OK);
 		}
-		
-		return new ResponseEntity<User>(userInfo, HttpStatus.OK);
+		//TODO 99. 존재하지 않는 유저에 접근할 시 예외 처리 <- token의 userId로 접근할 경우엔 refresh 토큰과 비교하고 아닐 시로 변경 필요
+		catch(Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("유저 정보가 존재하지 않습니다.");			
+		}
 	}
 	
 	// 2. 유저의 건강력 조회
-	
+	@GetMapping("/{userId}/score")
+	public ResponseEntity<?> getUserScore(@PathVariable int userId) {
+		// try catch로 존재하지 않는 유저 정보에 대해서 접근하려 할 시 예외 처리
+		try {
+			int userScore = userService.getUserScore(userId);
+			return new ResponseEntity<Integer>(userScore, HttpStatus.OK);
+		}
+		catch(Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("유저 정보가 존재하지 않습니다.");
+		}		
+		
+	}
 	
 	// 3. 유저가 건강 관리한 연속 일수
 	

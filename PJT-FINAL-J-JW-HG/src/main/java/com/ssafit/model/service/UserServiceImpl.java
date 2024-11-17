@@ -37,6 +37,7 @@ public class UserServiceImpl implements UserService {
 			return null;
 		}
 		
+		// token에 있는 id로 조회할 경우에는 없어도 갠춘한 로직일지도? token 탈취를 고려한다면 refresh 토큰 검증 필요
 		// 본인이 아닌 다른 사람의 정보를 조회할 경우
 		if(userInfo.getId() != userId) {
 			System.out.println("다른 사람의 정보를 조회하려 합니다.");
@@ -49,15 +50,17 @@ public class UserServiceImpl implements UserService {
 	// 2. 유저의 건강력 조회
 	@Override
 	public int getUserScore(int userId) {
-		// TODO Auto-generated method stub
-		return 0;
+		// 존재하지 않는 유저에 대해서는 어떻게 처리? -> result type을 mapper에 선언해둬서 null 반환되면 exception 처리함
+		// -> 따로 exception을 catch하지 않아도 되는가?
+		int userScore = userDao.getUserScore(userId);		
+		return userScore; //TODO user score return
 	}
 
 	
 	// 3. 유저가 건강 관리한 연속 일수
 	@Override
 	public int getUserStreak(int userId) {
-		// TODO Auto-generated method stub
+		
 		return 0;
 	}
 
@@ -65,7 +68,7 @@ public class UserServiceImpl implements UserService {
 	// 4. 유저의 등급 조회
 	@Override
 	public int getUserTier(int userId) {
-		// TODO Auto-generated method stub
+		
 		return 0;
 	}
 	
@@ -73,7 +76,6 @@ public class UserServiceImpl implements UserService {
 	// 5. 쥬어가 획득한 총 카드 수 조회
 	@Override
 	public int getUserTotalCardCount(int userId) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
