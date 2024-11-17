@@ -27,6 +27,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User getUserInfo(int userId) {
 		try {
+			// 정상 로직
 			User userInfo = userDao.getUserInfo(userId);
 			
 			// loginId, password는 db에서 가져오지 않음
@@ -59,10 +60,15 @@ public class UserServiceImpl implements UserService {
 	}
 
 	// 2. 유저의 건강력 조회
+	/* return:
+	 (int) score
+	 */
 	@Override
 	public int getUserScore(int userId) {
 		try {
-			int userScore = userDao.getUserScore(userId);			
+			// 정상 로직
+			int userScore = userDao.getUserScore(userId);
+			
 			return userScore; 
 		}
 		catch(Exception e) {
@@ -77,6 +83,9 @@ public class UserServiceImpl implements UserService {
 
 	
 	// 3. 유저가 건강 관리한 연속 일수
+	/* return:
+	 (int) streak
+	 */
 	@Override
 	public int getUserStreak(int userId) {
 		try {
@@ -95,10 +104,15 @@ public class UserServiceImpl implements UserService {
 
 	
 	// 4. 유저의 등급 조회
+	/* return:
+	 (int) tier
+	 */
 	@Override
 	public int getUserTier(int userId) {
 		try {
+			// 정상 로직
 			int userTier = userDao.getUserTier(userId);
+			
 			return userTier;
 		}
 		catch(Exception e) {
@@ -118,9 +132,24 @@ public class UserServiceImpl implements UserService {
 	
 	
 	// 6. 유저가 획득한 총 카드 수 조회
+	/* return:
+	 (int) totalCardCount
+	 */
 	@Override
 	public int getUserTotalCardCount(int userId) {
-		return 0;
+		try {
+			// 정상 로직
+			int userTotalCardCount = userDao.getUserTotalCardCount(userId);
+			
+			return userTotalCardCount;					
+		}
+		catch(Exception e) {
+			System.out.println("===userServiceImpl===");
+			e.printStackTrace();
+			System.out.println("===userServiceImpl===");
+			
+			return -1;
+		}		
 	}
 
 
