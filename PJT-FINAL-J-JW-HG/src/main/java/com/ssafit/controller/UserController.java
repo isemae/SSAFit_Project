@@ -1,12 +1,12 @@
 package com.ssafit.controller;
 
-import org.apache.catalina.connector.Response;
-import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -100,7 +100,37 @@ public class UserController {
 	
 	
 	// 4. 유저의 등급 조회
+	@GetMapping("/{userId}/tier")
+	public ResponseEntity<?> getUserTier(@PathVariable int userId) {
+		try {
+			// service 호출
+			int userTier = userService.getUserTier(userId);			
+			
+			// 만약 service -> dao -> db 통신에서 실패한다면
+			if(userTier == -1) {
+				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("유저 정보가 존재하지 않습니다.");
+			}
+			
+			// 정상 로직일 시
+			return new ResponseEntity<Integer>(userTier, HttpStatus.OK);
+		}
+		catch(Exception e) {
+			System.out.println("===userController===");
+			e.printStackTrace();
+			System.out.println("===userController===");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("비정상적인 접근입니다.");
+		}		
+	}
 	
+	// 5. 유저 등급 업데이트
+	@PutMapping("/{userId}/tier")
+	public ResponseEntity<?> updateUserTier(@PathVariable int userId, @RequestBody int userTier) {
+		//TODO int userTier -> JSON Parse Exception 수정
+		System.out.println(userTier);
+		return null;
+	}
 	
-	// 5. 유저가 획득한 총 카드 수 조회
+	// 6. 유저가 획득한 총 카드 수 조회
+	
+	// 7. 유저가 획득한 총 카드 수 업데이트
 }

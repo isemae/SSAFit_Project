@@ -80,7 +80,8 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public int getUserStreak(int userId) {
 		try {
-			int userStreak = userDao.getUserStreak(userId);			
+			int userStreak = userDao.getUserStreak(userId);	
+			
 			return userStreak;
 		}
 		catch(Exception e) {
@@ -96,12 +97,27 @@ public class UserServiceImpl implements UserService {
 	// 4. 유저의 등급 조회
 	@Override
 	public int getUserTier(int userId) {
-		
+		try {
+			int userTier = userDao.getUserTier(userId);
+			return userTier;
+		}
+		catch(Exception e) {
+			System.out.println("===userServiceImpl===");
+			e.printStackTrace();
+			System.out.println("===userServiceImpl===");
+			
+			return -1;
+		}		
+	}
+	
+	// 5. 유저 등급 업데이트
+	@Override
+	public int updateUserTier(int userId, int userTier) {
 		return 0;
 	}
 	
 	
-	// 5. 쥬어가 획득한 총 카드 수 조회
+	// 6. 유저가 획득한 총 카드 수 조회
 	@Override
 	public int getUserTotalCardCount(int userId) {
 		return 0;
