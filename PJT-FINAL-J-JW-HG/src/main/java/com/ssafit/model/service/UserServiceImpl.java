@@ -53,6 +53,7 @@ public class UserServiceImpl implements UserService {
 			System.out.println("===userServiceImpl===");
 			e.printStackTrace();
 			System.out.println("===userServiceImpl===");
+			
 			return null;
 		}
 	}
@@ -68,6 +69,7 @@ public class UserServiceImpl implements UserService {
 			System.out.println("===userServiceImpl===");
 			e.printStackTrace();
 			System.out.println("===userServiceImpl===");
+			
 			// -1 반환
 			return -1;
 		}
@@ -77,8 +79,17 @@ public class UserServiceImpl implements UserService {
 	// 3. 유저가 건강 관리한 연속 일수
 	@Override
 	public int getUserStreak(int userId) {
-		
-		return 0;
+		try {
+			int userStreak = userDao.getUserStreak(userId);			
+			return userStreak;
+		}
+		catch(Exception e) {
+			System.out.println("===userServiceImpl===");
+			e.printStackTrace();
+			System.out.println("===userServiceImpl===");
+			
+			return -1;
+		}				
 	}
 
 	

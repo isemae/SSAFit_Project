@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`user` (
   `score` INT NULL DEFAULT 0 COMMENT '유저 건강력, 수집한 카드의 점수를 기준으로 책정',
   `total_card_count` INT NULL DEFAULT 0 COMMENT '유저가 수집한 총 카드 개수',
   `tier` TINYINT NULL DEFAULT 0 COMMENT '유저 티어, ENUM 쓸지 말지?',
+  `streak` INT NULL DEFAULT 1 COMMENT '유저가 연속적으로 실행한 건강 관리 일수', #11.17에 추가함
   PRIMARY KEY (`id`),
   UNIQUE INDEX `login_id_UNIQUE` (`login_id` ASC) VISIBLE)
 ENGINE = InnoDB;
