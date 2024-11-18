@@ -27,7 +27,6 @@ export const useCardStore = defineStore('card', () => {
     }
   }
 
-  // userStore 구현 필요 --------------------------------------------------------------------------------
   /** 유저별 카드 정보를 가져옵니다.
    * @function getUserCollectedCardData
    * @param {number} userId - 유저 고유 id
