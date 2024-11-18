@@ -13,7 +13,7 @@ export const useAccountStore = defineStore('accounts', () => {
     try {
       const req = { loginId, password }
       const res = await axios({
-        url: `REST_PJT_URL_ACCOUNT/login`,
+        url: `${REST_PJT_URL_ACCOUNT}/login`,
         method: 'POST',
         data: req,
       })
