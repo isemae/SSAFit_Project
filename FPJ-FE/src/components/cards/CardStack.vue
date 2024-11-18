@@ -9,7 +9,7 @@
 import Card from './Card.vue'
 import { useCardStore } from '@/stores/cardStore'
 import { useExerciseStore } from '@/stores/exerciseStore'
-import { onBeforeMount } from 'vue'
+import { ref, watch, onBeforeMount } from 'vue'
 const cardStore = useCardStore()
 const exerciseStore = useExerciseStore()
 
@@ -17,6 +17,12 @@ onBeforeMount(async () => {
   await cardStore.getUserCollectedCardData(1)
   await cardStore.getUserRecentlyCollectedCardData(1)
   await exerciseStore.getRandomlySelectedExerciseData()
+})
+
+watch('exerciseStatus', (status, data) => {
+  if (!status && data) {
+    console.log(data)
+  }
 })
 </script>
 

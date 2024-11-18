@@ -61,7 +61,6 @@ export const useCardStore = defineStore('card', () => {
       })
       const cards = res.data
       userCollectedCardData.value = cards
-
     } catch (err) {
       console.error(`Error fetching (${err})`)
     }
@@ -91,6 +90,7 @@ export const useCardStore = defineStore('card', () => {
     userCollectedCardData,
     userRecentlyCollectedCardData,
     postCard,
+    getCardFromCollectedCardData,
     getUserCollectedCardData,
     getUserRecentlyCollectedCardData,
   }

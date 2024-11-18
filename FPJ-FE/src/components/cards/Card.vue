@@ -7,13 +7,13 @@
       <p>{{ data.info }}</p>
       <p>{{ data.time }} 초</p>
       <button @click="flipCard">cancel</button>
-      <button>confirm</button>
+      <button @click="doExercise(data)">confirm</button>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, defineEmits } from 'vue'
 defineProps({
   data: Object,
 })
@@ -21,6 +21,15 @@ const isFlipped = ref(true)
 
 const flipCard = () => {
   isFlipped.value = !isFlipped.value
+}
+
+const emit = defineEmits(['exerciseStatus', { status: false, data: null }])
+const doExercise = function (data) {
+  emit('exerciseStatus', { status: true, data: null })
+  setTimeout(() => {
+    emit('exerciseStatus', { status: false, data: data })
+    console.log(data)
+  }, data.time * 100)
 }
 </script>
 
@@ -50,9 +59,6 @@ const flipCard = () => {
   --card-color-platinum: #fff7de;
   --card-color-diamond: #94ebff;
   --card-color-ruby: #ff2c80;
-  --card-color-sapphire: rgba(100, 100, 200, 1);
-  --card-color-emerald: rgba(0, 204, 255, 1);
-  --card-color-obsidian: #1e0028;
   --card-color-black: #000;
   --level-color-low: #91ff63;
   --level-color-middle: #fff941;
@@ -74,8 +80,8 @@ const flipCard = () => {
   width: var(--card-width);
   padding: 0.5rem;
   position: absolute;
-  background: linear-gradient(135deg, var(--card-color-emerald), var(--card-color-sapphire));
-  border: 2px solid var(--card-color-emerald);
+  background: linear-gradient(135deg, var(--card-color-platinum), var(--card-color-diamond));
+  border: 2px solid var(--card-color-platinum);
   border-radius: 10px;
   backface-visibility: hidden;
   transition:
@@ -104,7 +110,7 @@ const flipCard = () => {
   transform: none;
   z-index: 10;
   width: 400px;
-  height: 800px;
+  height: 720px;
 }
 
 .card-wrapper.flipped .back {
