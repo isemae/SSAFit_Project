@@ -2,6 +2,20 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
 export const useUserStore = defineStore('user', () => {
+  const REST_PJT_URL_USER = `http://localhost:8080/user`
+
+  const getUserInfoAll = function (userId) {
+    try {
+      const res = axios({
+        url: `${REST_PJT_URL_USER}/${userId}`,
+        method: 'GET',
+      })
+      console.log(res.data)
+    } catch (err) {
+      console.error()
+    }
+  }
+
   // 유저의 전체 정보 조회: GET
   // /user/{user_id}
   // (user_id) => { id, loginId, userName, score, totalCardCount, tier }
@@ -26,5 +40,5 @@ export const useUserStore = defineStore('user', () => {
   // 유저가 획득한 총 카드 수 업데이트: PUT
   // /user/{user_id}/totalCardCount
 
-  return {}
+  return { getUserInfoAll }
 })
