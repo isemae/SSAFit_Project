@@ -123,15 +123,8 @@ public class UserServiceImpl implements UserService {
 			return -1;
 		}		
 	}
-	
-	// 5. 유저 등급 업데이트
-	@Override
-	public int updateUserTier(int userId, int userTier) {
-		return 0;
-	}
-	
-	
-	// 6. 유저가 획득한 총 카드 수 조회
+		
+	// 5. 유저가 획득한 총 카드 수 조회
 	/* return:
 	 (int) totalCardCount
 	 */
@@ -152,5 +145,26 @@ public class UserServiceImpl implements UserService {
 		}		
 	}
 
+	// 6. 유저가 획득한 총 카드 수 업데이트
+	@Override
+	public int updateUserTotalCardCount(int userId, int newTotalCardCount) {
+		try {
+			int userTotalCardCount = userDao.updateUserTotalCardCount(userId, newTotalCardCount);
+			
+			// update가 성공한 column 개수를 반환 -> 정상 로직 동작시 1, 비정상시 0 반환
+			if(userTotalCardCount == 0) {
+				return -1;
+			}
+			
+			return userTotalCardCount;
+		}
+		catch(Exception e) {
+			System.out.println("===userServiceImpl===");
+			e.printStackTrace();
+			System.out.println("===userServiceImpl===");
+			
+			return -1;
+		}		
+	}
 
 }

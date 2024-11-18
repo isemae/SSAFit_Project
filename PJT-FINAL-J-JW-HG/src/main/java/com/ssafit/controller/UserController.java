@@ -1,6 +1,7 @@
 package com.ssafit.controller;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -121,16 +122,8 @@ public class UserController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("비정상적인 접근입니다.");
 		}		
 	}
-	
-	// 5. 유저 등급 업데이트
-	@PutMapping("/{userId}/tier")
-	public ResponseEntity<?> updateUserTier(@PathVariable int userId, @RequestBody int userTier) {
-		//TODO int userTier -> JSON Parse Exception 수정
-		System.out.println(userTier);
-		return null;
-	}
-	
-	// 6. 유저가 획득한 총 카드 수 조회
+		
+	// 5. 유저가 획득한 총 카드 수 조회
 	@GetMapping("/{userId}/totalCardCount")
 	public ResponseEntity<?> getUserTotalCardCount(@PathVariable int userId) {
 		try {
@@ -153,5 +146,26 @@ public class UserController {
 		}				
 	}
 	
-	// 7. 유저가 획득한 총 카드 수 업데이트
+	// 6. 유저가 획득한 총 카드 수 업데이트
+	@PutMapping("/{userId}/totalCardCount")
+	public ResponseEntity<?> updateTotalCardCount(@PathVariable int userId, @RequestBody User user) {		
+		try {
+			// service 호출			
+			int newTotalCardCount = user.getTotalCardCount();			
+			int userTotalCardCount = userService.updateUserTotalCardCount(userId, newTotalCardCount);
+			
+			if(userTotalCardCount == -1) {
+				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("유저 정보가 존재하지 않습니다.");				
+			}
+			
+			// 정상 로직일 시 			
+			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+		}
+		catch(Exception e) {
+			System.out.println("===userController===");
+			e.printStackTrace();
+			System.out.println("===userController===");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("비정상적인 접근입니다.");
+		}
+	}
 }

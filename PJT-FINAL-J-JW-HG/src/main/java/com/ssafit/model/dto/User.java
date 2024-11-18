@@ -17,6 +17,7 @@ public class User implements Serializable {
 	
 	// 생성자
 	public User() {} // 기본 생성자
+
 	// 매개 변수 생성자 
 	public User(int id, String loginId, String password, String userName, int score, int totalCardCount, int tier) {
 		this.id = id;
