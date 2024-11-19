@@ -34,5 +34,4 @@
 		AND id = #{id}
 	</select>
 	
-	<!--  -->
 </mapper>
