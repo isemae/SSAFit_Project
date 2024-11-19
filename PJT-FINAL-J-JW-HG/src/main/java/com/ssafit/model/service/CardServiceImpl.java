@@ -17,9 +17,10 @@ public class CardServiceImpl implements CardService {
 	}
 
 	// 1. 카드 수집 -> DB에 카드 등록
+	// int형 반환: 성공하면 1, 실패하면 0
 	@Override
-	public void postCard(Card card) {
-		cardDao.postCard(card);		
+	public int postCard(Card card) {
+		return cardDao.postCard(card);		
 	}
 
 	// 2. 한 유저가 수집한 전체 카드 조회
@@ -34,8 +35,8 @@ public class CardServiceImpl implements CardService {
 	}] 
 	 */
 	@Override
-	public List<Card> getAllCards() {
-		List<Card> cardList = cardDao.getAllCards();
+	public List<Card> getAllCards(int userId) {
+		List<Card> cardList = cardDao.getAllCards(userId);
 		// 데이터가 없거나 가져오는 데에 실패했다면
 		if(cardList.size() == 0) return null;
 		
@@ -54,8 +55,8 @@ public class CardServiceImpl implements CardService {
 	}]
 	 */	
 	@Override
-	public List<Card> getRecentCards() {
-		List<Card> cardRecentList = cardDao.getRecentCards();
+	public List<Card> getRecentCards(int userId) {
+		List<Card> cardRecentList = cardDao.getRecentCards(userId);
 		
 		// 데이터가 없거나 가져오는 데에 실패했다면
 		if(cardRecentList.size() == 0) return null;
@@ -74,8 +75,8 @@ public class CardServiceImpl implements CardService {
 	}
 	 */
 	@Override
-	public Card getCardInfo(int id) {
-		Card cardInfo = cardDao.getCardInfo(id);
+	public Card getCardInfo(int userId, int id) {
+		Card cardInfo = cardDao.getCardInfo(userId, id);
 		
 		// 데이터가 없거나 가져오는 데에 실패했다면
 		if(cardInfo == null) {

@@ -6,7 +6,8 @@ import com.ssafit.model.dto.Card;
 
 public interface CardDao {
 	// 1. 카드 수집 -> DB에 카드 등록
-	void postCard(Card card);
+	// int형 반환: 성공하면 1, 실패하면 0
+	int postCard(Card card);
 	
 	// 2. 한 유저가 수집한 전체 카드 조회
 	/* return:
@@ -19,7 +20,7 @@ public interface CardDao {
 		collected_date 
 	}] 
 	 */
-	List<Card> getAllCards();
+	List<Card> getAllCards(int userId);
 	
 	// 3. 한 유저가 수집한 최근 카드 n개 조회
 	/* return:
@@ -32,7 +33,7 @@ public interface CardDao {
 		collected_date 
 	}]
 	 */
-	List<Card> getRecentCards();
+	List<Card> getRecentCards(int userId);
 	
 	// 4. 특정 카드 정보 조회
 	/* return:
@@ -45,5 +46,5 @@ public interface CardDao {
 		collected_date 
 	}
 	 */
-	Card getCardInfo(int id);
+	Card getCardInfo(int userId, int id);
 }
