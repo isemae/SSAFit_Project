@@ -4,11 +4,27 @@ import axios from 'axios'
 
 export const useCardStore = defineStore('card', () => {
   const REST_PJT_URL_CARDS = `http://localhost:8080/cards`
-  const REST_PJT_URL_EXERCISE = `http://localhost:8080/exercise`
 
-  const userCollectedCardData = ref([{}, {}, {}])
+  const userCollectedCardData = ref([])
   const userRecentlyCollectedCardData = ref([])
-  const generatedCardStackData = ref([])
+
+  const postCard = async function (userId) {
+    const card = {
+      exerciseId: 1,
+      score: 100,
+      tier: 1,
+    }
+    try {
+      axios({
+        url: `${REST_PJT_URL_CARDS}/${userId}`,
+        method: 'POST',
+        data: card,
+      })
+      console.log('card posted')
+    } catch (err) {
+      console.error(err)
+    }
+  }
 
   /** 유저별 카드 정보 중 개별 카드 정보를 가져옵니다.
    * @function getCardFromCollectedCardData
@@ -29,7 +45,6 @@ export const useCardStore = defineStore('card', () => {
     }
   }
 
-  // userStore 구현 필요 --------------------------------------------------------------------------------
   /** 유저별 카드 정보를 가져옵니다.
    * @function getUserCollectedCardData
    * @param {number} userId - 유저 고유 id
@@ -70,32 +85,11 @@ export const useCardStore = defineStore('card', () => {
     }
   }
 
-  // // exerciseStore로 분리 ----------------------------------------------------------------------------
-  /** 카드에 등록할 운동 정보를 받아옵니다.
-   * @function getRandomlySelectedExerciseData
-   * @async
-   * @returns {Promise<Exercise[]>}
-   * @throws {Error}
-   */
-  const getRandomlySelectedExerciseData = async () => {
-    try {
-      const res = await axios({
-        url: `${REST_PJT_URL_EXERCISE}/random`,
-        method: 'GET',
-      })
-      const excercises = res.data
-      console.log(excercises)
-      generatedCardStackData.value = excercises
-    } catch (err) {
-      console.error(`Error fetching excercise data. (${err})`)
-    }
-  }
-
   return {
     userCollectedCardData,
     userRecentlyCollectedCardData,
+    postCard,
     getUserCollectedCardData,
     getUserRecentlyCollectedCardData,
-    getRandomlySelectedExerciseData,
   }
 })

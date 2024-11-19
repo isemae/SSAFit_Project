@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafit.model.dao.UserDao">
+	<!-- 1. get user info 특정 유저의 정보 조회 -->
+	<select id="getUserInfo" parameterType="int" resultType="User">
+		SELECT id, login_id, user_name, score, total_card_count, tier
+		FROM user
+		WHERE id = #{userId}
+	</select>
+	
+	<!-- 2. get user score 특정 유저의 건강력 조회 -->
+	<select id="getUserScore" parameterType="int" resultType="int">
+		SELECT score
+		FROM user
+		WHERE id = #{userId}
+	</select>
+	
+	<!-- 3. get user streak 특정 유저의 연속 건강관리 일 수 조회 -->
+	<select id="getUserStreak" parameterType="int" resultType="int">
+		SELECT streak
+		FROM user
+		WHERE id = #{userId}
+	</select>
+	
+	<!-- 4. get user tier 특정 유저의 티어 조회 -->
+	<select id="getUserTier" parameterType="int" resultType="int">
+		SELECT tier
+		FROM user
+		WHERE id = #{userId}
+	</select>
+	
+	<!-- 5. update user tier 특정 유저의 티어 갱신 -->
+	<update id="updateUserTier" parameterType="int">
+		UPDATE user
+		SET tier = #{userTier}
+		WHERE id = #{userId} 
+	</update>
+	
+	<!-- 6. get user total card count 특정 유저가 획득한 총 카드 수 조회 -->
+		<select id="getUserTotalCardCount" parameterType="int" resultType="int">
+		SELECT total_card_count
+		FROM user
+		WHERE id = #{userId}
+	</select>
+</mapper>
