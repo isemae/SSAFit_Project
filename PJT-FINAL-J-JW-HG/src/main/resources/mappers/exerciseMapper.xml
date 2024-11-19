@@ -16,4 +16,10 @@
 		FROM exercise		
 	</select>
 	
+	<!-- 3. get exercise info 특정 운동 정보 조회 -->
+	<select id="getExerciseInfo" parameterType="int" resultType="Exercise">
+		SELECT id, part, name, info, time
+		FROM exercise
+		WHERE id = #{exerciseId}
+	</select>
 </mapper>

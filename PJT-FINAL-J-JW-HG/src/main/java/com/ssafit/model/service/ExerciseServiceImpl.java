@@ -65,6 +65,31 @@ public class ExerciseServiceImpl implements ExerciseService {
 			return null;
 		}
 	}
+
 	
-	// 3. 특정 부위에 대한 운동 조회
+	// 3. 특정 운동 정보 조회
+	@Override
+	public Exercise getExerciseInfo(int exerciseId) {
+		try {
+			Exercise exerciseInfo = exerciseDao.getExerciseInfo(exerciseId);
+			
+			if(exerciseInfo == null) {
+				System.out.println("Service에서의 통신: List를 불러오는 데 실패했습니다.");
+				return null;
+			}
+			
+			return exerciseInfo;
+		}
+		catch(Exception e) {
+			// 기타 예외에 대해서도 null 반환
+			System.out.println("===userServiceImpl===");
+			e.printStackTrace();
+			System.out.println("===userServiceImpl===");
+			
+			return null;
+		}
+	}
+	
+	
+	// 4. 특정 부위에 대한 운동 조회
 }

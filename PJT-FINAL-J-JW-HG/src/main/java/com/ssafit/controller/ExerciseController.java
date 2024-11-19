@@ -91,6 +91,28 @@ public class ExerciseController {
 		}		
 	}
 	
+	// 3. 특정 운동 정보 조회
+	@GetMapping("/{exerciseId}")
+	public ResponseEntity<?> getExerciseInfo(@PathVariable int exerciseId) {
+		try {
+			Exercise exerciseInfo = exerciseService.getExerciseInfo(exerciseId);
+			
+			// 데이터가 없거나 조회에 실패하면 service에서 null 반환
+			if(exerciseInfo == null) {
+				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("운동 데이터가 존재하지 않습니다."); 
+			}
+			
+			return new ResponseEntity<Exercise>(exerciseInfo, HttpStatus.OK);					
+		}
+		catch(Exception e) {
+			System.out.println("===userController===");
+			e.printStackTrace();
+			System.out.println("===userController===");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("비정상적인 접근입니다.");
+		}
+	}
+	
+	
 	///////////////////////////////////
-	// 3. 특정 부위에 대한 운동 조회
+	// 4. 특정 부위에 대한 운동 조회
 }
