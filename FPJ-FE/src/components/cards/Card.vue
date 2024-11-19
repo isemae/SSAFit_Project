@@ -1,13 +1,20 @@
 <template>
-  <div class="card-wrapper" :class="{ flipped: isFlipped }">
-    <div class="card-face back" @click="flipCard"></div>
+  <div class="card-wrapper" :class="[{ flipped: isFlipped }, getCardColor(data.tier)]">
+    <div class="card-face back" v-if="!isCollected" @click="flipCard"></div>
     <div class="card-face front">
-      <img src="@/assets/test-stretch-icon.png" alt="" />
-      <p>{{ data.name }}</p>
-      <p>{{ data.info }}</p>
-      <p>{{ data.time }} 초</p>
-      <button @click="flipCard">cancel</button>
-      <button @click="doExercise(data)">confirm</button>
+      <template v-if="!isCollected">
+        <img src="@/assets/test-stretch-icon.png" alt="" />
+        <p>{{ data.name }}</p>
+        <p>{{ data.info }}</p>
+        <p>{{ data.time }} 초</p>
+        <button @click="flipCard">cancel</button>
+        <button @click="doExercise(data)">confirm</button>
+      </template>
+      <template v-else>
+        <img src="@/assets/test-stretch-icon.png" alt="" />
+        <p>{{ data.collectedDate }}</p>
+        <p>{{ data.exerciseId }}</p>
+      </template>
     </div>
   </div>
 </template>
@@ -16,9 +23,15 @@
 import { ref } from 'vue'
 defineProps({
   data: Object,
+  isCollected: Boolean,
 })
-const isFlipped = ref(false)
 
+const getCardColor = (tier) => {
+  const colors = ['white', 'bronze', 'silver', 'gold', 'platinum', 'diamond', 'ruby', 'black']
+  return colors[tier % colors.length]
+}
+
+const isFlipped = ref(false)
 const flipCard = () => {
   isFlipped.value = !isFlipped.value
 }
@@ -35,8 +48,8 @@ const doExercise = function (data) {
 
 <style scoped>
 .card-wrapper {
-  --card-width: 200px;
-  --card-height: 360px;
+  --card-width: 2rem;
+  --card-height: 3rem;
   --base-rotate-angle: 7deg;
   --flip-angle: 180deg;
   --width-offset: 160px;
@@ -57,9 +70,60 @@ const doExercise = function (data) {
   --card-color-silver: #e6e3e3;
   --card-color-gold: #ffd200;
   --card-color-platinum: #fff7de;
-  --card-color-diamond: #94ebff;
+  --card-color-diamond: linear-gradient(
+    135deg,
+    var(--card-color-platinum),
+    var(--card-color-diamond)
+  );
   --card-color-ruby: #ff2c80;
   --card-color-black: #000;
+}
+
+.white {
+  background-color: var(--card-color-white);
+  border: 2px var(--card-color-white) solid;
+}
+
+.bronze {
+  background-color: var(--card-color-bronze);
+  border: 2px var(--card-color-white) solid;
+  border-radius: 10px;
+}
+
+.silver {
+  background-color: var(--card-color-silver);
+  border: 2px var(--card-color-bronze) solid;
+  border-radius: 10px;
+}
+
+.gold {
+  background-color: var(--card-color-gold);
+  border: 2px var(--card-color-silver) solid;
+  border-radius: 10px;
+}
+
+.platinum {
+  background-color: var(--card-color-platinum);
+  border: 2px var(--card-color-gold) solid;
+  border-radius: 10px;
+}
+
+.diamond {
+  background-color: var(--card-color-diamond);
+  border: 2px var(--card-color-platinum) solid;
+  border-radius: 10px;
+}
+
+.ruby {
+  background-color: var(--card-color-ruby);
+  border: 2px var(--card-color-diamond) solid;
+  border-radius: 10px;
+}
+
+.black {
+  background-color: var(--card-color-black);
+  border: 2px var(--card-color-white) solid;
+  border-radius: 10px;
 }
 
 .card-wrapper {
@@ -79,8 +143,7 @@ const doExercise = function (data) {
   height: var(--card-height);
   width: var(--card-width);
   position: absolute;
-  background: linear-gradient(135deg, var(--card-color-platinum), var(--card-color-diamond));
-  border: 2px solid var(--card-color-platinum);
+  /* background:  */
   border-radius: 10px;
   backface-visibility: hidden;
   transition:
@@ -149,7 +212,8 @@ const doExercise = function (data) {
 /* } */
 
 .card-wrapper img {
-  max-width: 100%;
+  max-width: 256px;
+  width: 128px;
   -webkit-user-drag: none;
   -khtml-user-drag: none;
   -moz-user-drag: none;

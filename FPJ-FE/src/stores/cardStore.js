@@ -74,6 +74,7 @@ export const useCardStore = defineStore('card', () => {
         method: 'GET',
       })
       const cards = res.data
+      console.log(cards)
       userRecentlyCollectedCardData.value = cards
     } catch (err) {
       console.error(`Error fetching recent card data. (${err})`)

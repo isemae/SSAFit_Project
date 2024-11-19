@@ -4,6 +4,7 @@
       v-for="item in exerciseStore.randomlySelectedExerciseData"
       :key="item.id"
       :data="item"
+      :isFlipped="false"
       @exerciseStatus="handleExerciseStatus"
     />
   </div>
