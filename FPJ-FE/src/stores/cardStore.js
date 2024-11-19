@@ -8,12 +8,7 @@ export const useCardStore = defineStore('card', () => {
   const userCollectedCardData = ref([])
   const userRecentlyCollectedCardData = ref([])
 
-  const postCard = async function (userId) {
-    const card = {
-      exerciseId: 1,
-      score: 100,
-      tier: 1,
-    }
+  const postCard = async function (userId, card) {
     try {
       axios({
         url: `${REST_PJT_URL_CARDS}/${userId}`,

@@ -23,13 +23,13 @@ const flipCard = () => {
   isFlipped.value = !isFlipped.value
 }
 
-const emit = defineEmits(['exerciseStatus', { status: false, data: null }])
+const emit = defineEmits(['exerciseStatus', { status: true, data: null }])
+
 const doExercise = function (data) {
-  emit('exerciseStatus', { status: true, data: null })
+  console.log(data)
   setTimeout(() => {
     emit('exerciseStatus', { status: false, data: data })
-    console.log(data)
-  }, data.time * 100)
+  }, data.time * 1)
 }
 </script>
 
