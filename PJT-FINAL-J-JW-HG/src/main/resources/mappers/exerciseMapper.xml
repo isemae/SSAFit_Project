@@ -22,4 +22,11 @@
 		FROM exercise
 		WHERE id = #{exerciseId}
 	</select>
+	
+	<!-- 4. get exercise by part 특정 부위 운동만 조회 -->
+	<select id="getExerciseByPart" parameterType="String" resultType="Exercise">
+		SELECT id, part, name, info, time
+		FROM exercise
+		WHERE part LIKE CONCAT('%', #{partName}, '%')
+	</select>
 </mapper>
