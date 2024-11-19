@@ -8,6 +8,24 @@ export const useCardStore = defineStore('card', () => {
   const userCollectedCardData = ref([])
   const userRecentlyCollectedCardData = ref([])
 
+  const postCard = async function (userId) {
+    const card = {
+      exerciseId: 1,
+      score: 100,
+      tier: 1,
+    }
+    try {
+      axios({
+        url: `${REST_PJT_URL_CARDS}/${userId}`,
+        method: 'POST',
+        data: card,
+      })
+      console.log('card posted')
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
   /** 유저별 카드 정보 중 개별 카드 정보를 가져옵니다.
    * @function getCardFromCollectedCardData
    * @param {number} cardId - 카드 고유 id
@@ -70,6 +88,7 @@ export const useCardStore = defineStore('card', () => {
   return {
     userCollectedCardData,
     userRecentlyCollectedCardData,
+    postCard,
     getUserCollectedCardData,
     getUserRecentlyCollectedCardData,
   }
