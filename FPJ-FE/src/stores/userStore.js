@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-
+import axios from 'axios'
 export const useUserStore = defineStore('user', () => {
   const REST_PJT_URL_USER = `http://localhost:8080/user`
 
@@ -60,18 +60,6 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
-  // 유저의 등급 갱신: PUT
-  const updateUserTier = async function (userId) {
-    try {
-      const res = axios({
-        url: `${REST_PJT_URL_USER}/${userId}/tier`,
-        method: 'PUT',
-      })
-    } catch (err) {
-      console.error(err)
-    }
-  }
-
   // 유저가 획득한 총 카드 수 조회: GET
   // /user/{user_id}/totalCardCount
   const getUserTotalCardCount = async function (userId) {
@@ -80,6 +68,7 @@ export const useUserStore = defineStore('user', () => {
         url: `${REST_PJT_URL_USER}/${userId}/totalCardCount`,
         method: 'GET',
       })
+      return res
     } catch (err) {
       console.error(err)
     }
@@ -87,11 +76,20 @@ export const useUserStore = defineStore('user', () => {
 
   // 유저가 획득한 총 카드 수 업데이트: PUT
   // /user/{user_id}/totalCardCount
-  const updateUserTotalCardCount = async function () {
+  const updateUserTotalCardCount = async function (userId, count) {
+    // path  variable,
+    // body:
+    // {
+    //  "totalCardCount”: (number)
+    // }
+    const user = {
+      totalCardCount: count + 1,
+    }
     try {
-      const res = axios({
+      axios({
         url: `${REST_PJT_URL_USER}/${userId}/totalCardCount`,
         method: 'PUT',
+        data: user,
       })
     } catch (err) {
       console.error(err)
@@ -103,7 +101,6 @@ export const useUserStore = defineStore('user', () => {
     getUserScore,
     getUserStreak,
     getUserTier,
-    updateUserTier,
     getUserTotalCardCount,
     updateUserTotalCardCount,
   }
