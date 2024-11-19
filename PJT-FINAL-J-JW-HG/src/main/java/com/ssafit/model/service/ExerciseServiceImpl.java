@@ -92,9 +92,9 @@ public class ExerciseServiceImpl implements ExerciseService {
 
 	// 4. 특정 부위에 대한 운동 조회
 	@Override
-	public List<Exercise> getExerciseByPart() {
+	public List<Exercise> getExerciseByPart(String partName) {
 		try {
-			List<Exercise> partExerciseList = exerciseDao.getExerciseByPart();
+			List<Exercise> partExerciseList = exerciseDao.getExerciseByPart(partName);
 			
 			// 데이터가 없거나 가져오는 데에 실패했다면
 			if(partExerciseList == null || partExerciseList.size() == 0) {
