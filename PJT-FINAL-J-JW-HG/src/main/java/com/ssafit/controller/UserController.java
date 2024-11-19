@@ -46,7 +46,7 @@ public class UserController {
 			// 만약 service -> dao -> db 통신에서 실패한다면
 			if(userInfo == null) {
 				//TODO 99. 존재하지 않는 유저에 접근할 시 예외 처리 <- token의 userId로 접근할 경우엔 refresh 토큰과 비교하고 아닐 시로 변경 필요
-				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("유저 정보가 존재하지 않습니다.");			
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("유저 정보가 존재하지 않습니다.");			
 			}		
 				
 			// 정상 로직일 시
@@ -73,7 +73,7 @@ public class UserController {
 			
 			// 만약 service -> dao -> db 통신에서 실패한다면
 			if(userScore == -1) {
-				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("유저 정보가 존재하지 않습니다.");
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("유저 정보가 존재하지 않습니다.");
 			}
 			
 			// 정상 로직일 시
@@ -101,7 +101,7 @@ public class UserController {
 			
 			// 만약 service -> dao -> db 통신에서 실패한다면
 			if(userStreak == -1) {
-				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("유저 정보가 존재하지 않습니다.");
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("유저 정보가 존재하지 않습니다.");
 			}
 			
 			// 정상 로직일 시
@@ -128,7 +128,7 @@ public class UserController {
 			
 			// 만약 service -> dao -> db 통신에서 실패한다면
 			if(userTier == -1) {
-				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("유저 정보가 존재하지 않습니다.");
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("유저 정보가 존재하지 않습니다.");
 			}
 			
 			// 정상 로직일 시
@@ -154,7 +154,7 @@ public class UserController {
 			
 			// 만약 service -> dao -> db 통신에서 실패한다면
 			if(userTotalCardCount == -1) {
-				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("유저 정보가 존재하지 않습니다.");
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("유저 정보가 존재하지 않습니다.");
 			}
 			
 			// 정상 로직일 시
@@ -180,7 +180,7 @@ public class UserController {
 			int userTotalCardCount = userService.updateUserTotalCardCount(userId, newTotalCardCount);
 			
 			if(userTotalCardCount == -1) {
-				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("유저 정보가 존재하지 않습니다.");				
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("유저 정보가 존재하지 않습니다.");				
 			}
 			
 			// 정상 로직일 시 			
@@ -206,7 +206,7 @@ public class UserController {
 			int isScoreUpdated = userService.updateUserScore(userId, newUserScore);
 			
 			if(isScoreUpdated == -1) {
-				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("유저 정보가 존재하지 않습니다.");				
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("유저 정보가 존재하지 않습니다.");				
 			}
 			
 			// 정상 로직일 시 			

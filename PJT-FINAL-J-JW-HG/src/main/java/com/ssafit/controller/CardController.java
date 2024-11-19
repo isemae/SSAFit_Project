@@ -96,9 +96,9 @@ public class CardController {
 		collected_date 
 	}]
 	 */
-	@GetMapping("/{userId}/recent")
-	public ResponseEntity<?> getRecentCards(@PathVariable int userId) {
-		List<Card> cardList = cardService.getRecentCards(userId);
+	@GetMapping("/{userId}/recent/{cardNumber}")
+	public ResponseEntity<?> getRecentCards(@PathVariable int userId, @PathVariable int cardNumber) {
+		List<Card> cardList = cardService.getRecentCards(userId, cardNumber);
 		
 		// 조회에 실패했을 경우
 		if(cardList == null) {
@@ -106,6 +106,7 @@ public class CardController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("카드 데이터가 존재하지 않습니다.");
 		}
 		
+		// userId에 해당하는 유저가 가지고 있는 card의 개수보다 많은 숫자를 요청해도 최대 개수만 반환되고 예외가 발생하지 않음
 		return new ResponseEntity<List<Card>>(cardList, HttpStatus.OK);		
 	}
 	

@@ -50,4 +50,13 @@
 		SET score = #{newUserScore}
 		WHERE id = #{userId}
 	</update>
+	
+	<!-- ============================================= -->
+	
+	<!-- 8. try login 로그인 시도를 위한 특정 유저의 비밀번호 조회 -->
+	<select id="getInfoForLoginTry" parameterType="String" resultType="String">
+		SELECT password
+		FROM user
+		WHERE login_id = #{loginId}
+	</select>
 </mapper>

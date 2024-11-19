@@ -46,7 +46,7 @@ public class ExerciseController {
 			
 			// 조회에 실패했을 경우
 			if(randomExerciseList == null) {
-				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("운동 데이터가 존재하지 않습니다.");
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("운동 데이터가 존재하지 않습니다.");
 			}
 					
 			return new ResponseEntity<List<Exercise>>(randomExerciseList, HttpStatus.OK);			
@@ -79,7 +79,7 @@ public class ExerciseController {
 			
 			// 데이터가 없거나 조회에 실패하면 service에서 null 반환
 			if(allExerciseList == null) {
-				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("운동 데이터가 존재하지 않습니다.");
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("운동 데이터가 존재하지 않습니다.");
 			}
 			
 			return new ResponseEntity<List<Exercise>>(allExerciseList, HttpStatus.OK);
@@ -100,7 +100,7 @@ public class ExerciseController {
 			
 			// 데이터가 없거나 조회에 실패하면 service에서 null 반환
 			if(exerciseInfo == null) {
-				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("운동 데이터가 존재하지 않습니다."); 
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("운동 데이터가 존재하지 않습니다."); 
 			}
 			
 			return new ResponseEntity<Exercise>(exerciseInfo, HttpStatus.OK);					
@@ -123,7 +123,7 @@ public class ExerciseController {
 			
 			// 데이터가 없거나 조회에 실패하면 service에서 null 반환
 			if(partExerciseList == null) {
-				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("운동 데이터가 존재하지 않습니다.");
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("운동 데이터가 존재하지 않습니다.");
 			}
 			
 			return new ResponseEntity<List<Exercise>>(partExerciseList, HttpStatus.OK);

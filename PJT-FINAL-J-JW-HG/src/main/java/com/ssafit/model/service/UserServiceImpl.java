@@ -153,6 +153,7 @@ public class UserServiceImpl implements UserService {
 			
 			// update가 성공한 column 개수를 반환 -> 정상 로직 동작시 1, 비정상시 0 반환
 			if(isTotalCardCountUpdated == 0) {
+				System.out.println("Service에서의 통신: 해당 유저를 찾을 수 없습니다.");
 				return -1;
 			}
 			
@@ -175,6 +176,7 @@ public class UserServiceImpl implements UserService {
 			
 			// update가 성공한 column 개수를 반환 -> 정상 로직 동작시 1, 비정상시 0 반환
 			if(isScoreUpdated == 0) {
+				System.out.println("Service에서의 통신: 해당 유저를 찾을 수 없습니다.");
 				return -1;
 			}
 			
@@ -188,5 +190,30 @@ public class UserServiceImpl implements UserService {
 			return -1;			
 		}		
 	}
+	
+	// ========================= Account ================================= //
+	// 8. 로그인 시도에 따른 특정 유저의 비밀번호 조회
+	@Override
+	public String getInfoForLoginTry(String loginId) {
+		try {
+			// a. user id를 토대로 db에서 그 id에 해당하는 유저의 비밀번호를 조회하는 dao 호출
+			String userPassword = userDao.getInfoForLoginTry(loginId);
+			
+			if(userPassword == null) {
+				System.out.println("Service에서의 통신: 해당 유저를 찾을 수 없습니다.");
+				return null;
+			}
+						
+			return userPassword;
+		}
+		catch(Exception e) {
+			System.out.println("===userServiceImpl===");
+			e.printStackTrace();
+			System.out.println("===userServiceImpl===");
+			
+			return null;	
+		}
+	}
 
 }
+ 
