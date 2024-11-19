@@ -10,7 +10,9 @@ public interface ExerciseService {
 	
 	/////////////////////////////////////
 	// 2. 운동 정보 전체 조회
+	List<Exercise> getAllExercise();
 	
 	
+	/////////////////////////////////////	
 	// 3. 특정 부위에 대한 운동 조회
 }

@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
 			// 조회에 실패하면 null이 반환됨
 			// mapper의 resultType이 Object 이기 때문에 존재하지 않는 유저라도 null 반환할수도 있음.
 			if(userInfo == null) {
-				System.out.println("Service에서 통신. " + userId + "번 유저정보를 찾을 수 없습니다.");
+				System.out.println("Service에서 통신: " + userId + "번 유저정보를 찾을 수 없습니다.");
 				return null;
 			}
 			
