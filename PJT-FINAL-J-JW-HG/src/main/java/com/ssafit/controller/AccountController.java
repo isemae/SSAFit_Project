@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,10 +29,31 @@ public class AccountController {
 	/* return: 
 	 true/false
 	 */
-	@GetMapping("/login")
+	@PostMapping("/login")
 	public ResponseEntity<?> tryLogin(@RequestBody User user) {
 		try {
-			return null;
+			// input value
+			String newUserId = user.getLoginId();
+			String newUserPassword = user.getPassword();
+			
+			// db value
+			String userPassword = userService.getInfoForLoginTry(newUserId);
+			
+			// 비밀번호 조회가 되지 않으면 -> 아이디 이상함
+			if(userPassword == null) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("아이디가 일치하지 않습니다.");
+			}
+			
+			System.out.println(newUserPassword);
+			System.out.println(userPassword);
+			
+			// 원래는 여기서 bcrypt의 compare를 활용해서 일치 여부 검증함
+			// 일단은 단순 plain text 비교
+			if(!newUserPassword.equals(userPassword)) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("비밀번호가 일치하지 않습니다.");
+			}
+			
+			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
 		}
 		catch(Exception e) {
 			System.out.println("===userController===");
