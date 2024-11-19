@@ -65,7 +65,7 @@ public class Card implements Serializable{
 	}
 	// getters and setters //
 	
-	
+	// method
 	@Override
 	public String toString() {
 		return "Card [id=" + id + ", userId=" + userId + ", exerciseId=" + exerciseId + ", score=" + score + ", tier="

@@ -28,22 +28,69 @@ public class ExerciseController {
 	// methods //
 	
 	// 1. 임의의 랜덤 운동 조회
+	/* return:
+ 	[{
+		id,
+		part,
+		name,
+		info,
+		time
+	}]
+	 */
 	@GetMapping("/random")
 	public ResponseEntity<?> getRandomExercise() {
-		List<Exercise> randomExerciseList = exerciseService.getRandomExercise();
-		
-		// 조회에 실패했을 경우
-		if(randomExerciseList == null) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("운동 데이터가 존재하지 않습니다.");
+		// 정상 로직
+		try {
+			List<Exercise> randomExerciseList = exerciseService.getRandomExercise();
+			
+			// 조회에 실패했을 경우
+			if(randomExerciseList == null) {
+				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("운동 데이터가 존재하지 않습니다.");
+			}
+					
+			return new ResponseEntity<List<Exercise>>(randomExerciseList, HttpStatus.OK);			
 		}
-				
-		return new ResponseEntity<List<Exercise>>(randomExerciseList, HttpStatus.OK);
+		catch(Exception e) {
+			// 예외 처리
+			System.out.println("===userController===");
+			e.printStackTrace();
+			System.out.println("===userController===");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("비정상적인 접근입니다.");
+		}
 	}
 	
 	
 	/////////////////////////////////////
 	// 2. 운동 정보 전체 조회
+	/* return:
+	 [{
+		id,
+		part,
+		name,
+		info,
+		time
+	}]
+	 */
+	@GetMapping("")
+	public ResponseEntity<?> getAllExercise() {
+		try {
+			List<Exercise> allExerciseList = exerciseService.getAllExercise();
+			
+			// 데이터가 없거나 조회에 실패하면 service에서 null 반환
+			if(allExerciseList == null) {
+				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("운동 데이터가 존재하지 않습니다.");
+			}
+			
+			return new ResponseEntity<List<Exercise>>(allExerciseList, HttpStatus.OK);
+		}
+		catch(Exception e) {
+			System.out.println("===userController===");
+			e.printStackTrace();
+			System.out.println("===userController===");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("비정상적인 접근입니다.");
+		}		
+	}
 	
-	
+	///////////////////////////////////
 	// 3. 특정 부위에 대한 운동 조회
 }
