@@ -17,4 +17,5 @@ public interface ExerciseService {
 	
 	/////////////////////////////////////	
 	// 4. 특정 부위에 대한 운동 조회
+	List<Exercise> getExerciseByPart();
 }
