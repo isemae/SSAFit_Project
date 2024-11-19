@@ -20,4 +20,7 @@ public interface UserDao {
 	
 	// 6. 유저가 획득한 총 카드 수 업데이트
 	int updateUserTotalCardCount(int userId, int newTotalCardCount);
+	
+	// 7. 건강 점수 업데이트
+	int updateUserScore(int userId, int newUserScore);
 }
