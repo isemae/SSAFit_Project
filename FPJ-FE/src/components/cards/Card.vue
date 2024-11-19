@@ -1,5 +1,5 @@
 <template>
-  <div class="card-wrapper" :class="{ flipped: !isFlipped }">
+  <div class="card-wrapper" :class="{ flipped: isFlipped }">
     <div class="card-face back" @click="flipCard"></div>
     <div class="card-face front">
       <img src="@/assets/test-stretch-icon.png" alt="" />
@@ -7,7 +7,7 @@
       <p>{{ data.info }}</p>
       <p>{{ data.time }} 초</p>
       <button @click="flipCard">cancel</button>
-      <button>confirm</button>
+      <button @click="doExercise(data)">confirm</button>
     </div>
   </div>
 </template>
@@ -17,10 +17,19 @@ import { ref } from 'vue'
 defineProps({
   data: Object,
 })
-const isFlipped = ref(true)
+const isFlipped = ref(false)
 
 const flipCard = () => {
   isFlipped.value = !isFlipped.value
+}
+
+const emit = defineEmits(['exerciseStatus', { status: true, data: null }])
+
+const doExercise = function (data) {
+  console.log(data)
+  setTimeout(() => {
+    emit('exerciseStatus', { status: false, data: data })
+  }, data.time * 1)
 }
 </script>
 
@@ -50,13 +59,7 @@ const flipCard = () => {
   --card-color-platinum: #fff7de;
   --card-color-diamond: #94ebff;
   --card-color-ruby: #ff2c80;
-  --card-color-sapphire: rgba(100, 100, 200, 1);
-  --card-color-emerald: rgba(0, 204, 255, 1);
-  --card-color-obsidian: #1e0028;
   --card-color-black: #000;
-  --level-color-low: #91ff63;
-  --level-color-middle: #fff941;
-  --level-color-high: #ff5652;
 }
 
 .card-wrapper {
@@ -65,22 +68,25 @@ const flipCard = () => {
   min-height: var(--card-height);
   box-sizing: border-box;
   transform-origin: center;
-  transition: transform 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    z-index 0.2s ease;
   cursor: pointer;
+  filter: drop-shadow(1px 1px 10px black);
 }
 
 .card-face {
   height: var(--card-height);
   width: var(--card-width);
-  padding: 0.5rem;
   position: absolute;
-  background: linear-gradient(135deg, var(--card-color-emerald), var(--card-color-sapphire));
-  border: 2px solid var(--card-color-emerald);
+  background: linear-gradient(135deg, var(--card-color-platinum), var(--card-color-diamond));
+  border: 2px solid var(--card-color-platinum);
   border-radius: 10px;
   backface-visibility: hidden;
   transition:
     transform 0.4s ease,
-    opacity 0.4s ease;
+    opacity 0.4s ease,
+    z-index 0.4s ease;
 }
 
 .card-face.front {
@@ -91,21 +97,25 @@ const flipCard = () => {
   transform: rotateY(0deg);
 }
 
-.card-wrapper.flipped {
-  /* transform: rotateY(0deg) rotate(0deg) scale(var(--scale-factor)); */
-  position: fixed;
-  top: 0;
-  left: 0;
-  transform: translate(-50%, -50%) scale(var(--scale-factor));
+.flipped {
   z-index: 10;
 }
 
-.card-wrapper.flipped .front {
-  transform: none;
-  z-index: 10;
-  width: 400px;
-  height: 800px;
+.flipped .front {
+  position: absolute;
+  transform: scale(var(--scale-factor, 1.2)) translateX(0) translateY(0);
+  width: 300px;
+  height: 540px;
 }
+
+/* .card-wrapper:nth-child(1).flipped .front { */
+/*   left: 100%; */
+/* } */
+/* .card-wrapper:nth-child(2).flipped .front { */
+/* } */
+/* .card-wrapper:nth-child(3).flipped .front { */
+/*   left: -100%; */
+/* } */
 
 .card-wrapper.flipped .back {
   transform: rotateY(var(--flip-angle));
@@ -126,20 +136,17 @@ const flipCard = () => {
   z-index: 1;
 }
 
-.card-wrapper:not(.flipped):hover {
-  transform: scale(1.01);
-}
-
-.card-wrapper:nth-child(1):not(.flipped):hover {
-  transform: translateX(var(--hover-translate)) rotate(calc(-1 * var(--hover-rotate)));
-}
-
-.card-wrapper:nth-child(2):not(.flipped):hover {
-}
-
-.card-wrapper:nth-child(3):not(.flipped):hover {
-  transform: translateX(calc(-1 * var(--hover-translate))) rotate(var(--hover-rotate));
-}
+/* .card-wrapper:nth-child(1):not(.flipped):hover { */
+/*   transform: translateX(var(--hover-translate)) rotate(calc(-1 * var(--hover-rotate))) scale(1.01); */
+/* } */
+/**/
+/* .card-wrapper:nth-child(2):not(.flipped):hover { */
+/*   transform: scale(1.01); */
+/* } */
+/**/
+/* .card-wrapper:nth-child(3):not(.flipped):hover { */
+/*   transform: translateX(calc(-1 * var(--hover-translate))) rotate(var(--hover-rotate)) scale(1.01); */
+/* } */
 
 .card-wrapper img {
   max-width: 100%;

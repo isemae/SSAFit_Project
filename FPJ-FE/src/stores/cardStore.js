@@ -8,12 +8,7 @@ export const useCardStore = defineStore('card', () => {
   const userCollectedCardData = ref([])
   const userRecentlyCollectedCardData = ref([])
 
-  const postCard = async function (userId) {
-    const card = {
-      exerciseId: 1,
-      score: 100,
-      tier: 1,
-    }
+  const postCard = async function (userId, card) {
     try {
       axios({
         url: `${REST_PJT_URL_CARDS}/${userId}`,
@@ -32,6 +27,7 @@ export const useCardStore = defineStore('card', () => {
    * @returns {Promise<Card[]>}
    * @throws {Error}
    */
+
   const getCardFromCollectedCardData = async (cardId) => {
     try {
       const res = await axios({
@@ -59,7 +55,6 @@ export const useCardStore = defineStore('card', () => {
       })
       const cards = res.data
       userCollectedCardData.value = cards
-
     } catch (err) {
       console.error(`Error fetching (${err})`)
     }
@@ -89,6 +84,7 @@ export const useCardStore = defineStore('card', () => {
     userCollectedCardData,
     userRecentlyCollectedCardData,
     postCard,
+    getCardFromCollectedCardData,
     getUserCollectedCardData,
     getUserRecentlyCollectedCardData,
   }
