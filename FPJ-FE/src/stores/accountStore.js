@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import axios from 'axios'
 
 export const useAccountStore = defineStore('accounts', () => {
   const REST_PJT_URL_ACCOUNT = `http://localhost:8080/accounts`

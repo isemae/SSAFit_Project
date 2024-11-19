@@ -1,5 +1,4 @@
 <template>
-  <RouterLink :to="{ name: 'profile' }">toProfile</RouterLink>
   <div class="card-container">
     <Card v-for="item in exerciseStore.randomlySelectedExerciseData" :key="item.id" :data="item" />
   </div>
@@ -28,12 +27,12 @@ watch('exerciseStatus', (status, data) => {
 
 <style scoped>
 .card-container {
+  /* background-color: rebeccapurple; */
   position: relative;
   display: flex;
   box-sizing: border-box;
   justify-content: center;
   align-items: center;
   gap: 10px;
-  filter: drop-shadow(1px 1px 10px black);
 }
 </style>

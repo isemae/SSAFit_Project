@@ -4,7 +4,6 @@ import axios from 'axios'
 
 export const useCardStore = defineStore('card', () => {
   const REST_PJT_URL_CARDS = `http://localhost:8080/cards`
-  const REST_PJT_URL_EXERCISE = `http://localhost:8080/exercise`
 
   const userCollectedCardData = ref([])
   const userRecentlyCollectedCardData = ref([])
