@@ -43,4 +43,11 @@
 		SET total_card_count = #{newTotalCardCount}
 		WHERE id = #{userId} 
 	</update>
+	
+	<!-- 7. update user score 특정 유저의 건강력 갱신 -->
+	<update id="updateUserScore" parameterType="int">
+		UPDATE user
+		SET score = #{newUserScore}
+		WHERE id = #{userId}
+	</update>
 </mapper>

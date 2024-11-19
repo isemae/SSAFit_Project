@@ -19,20 +19,99 @@ public class ExerciseServiceImpl implements ExerciseService {
 	// 1. 임의의 랜덤 운동 조회
 	@Override
 	public List<Exercise> getRandomExercise() {
-		List<Exercise> randomExerciseList = exerciseDao.getRandomExercise();
-		
-		// 데이터가 없거나 가져오는 데에 실패했다면
-		if(randomExerciseList == null | randomExerciseList.size() == 0) {
-			System.out.println("Service에서의 통신. List를 불러오는 데 실패했습니다.");
+		try {
+			List<Exercise> randomExerciseList = exerciseDao.getRandomExercise();
+			
+			// 데이터가 없거나 가져오는 데에 실패했다면
+			if(randomExerciseList == null | randomExerciseList.size() == 0) {
+				System.out.println("Service에서의 통신: List를 불러오는 데 실패했습니다.");
+				return null;
+			}
+			
+			return randomExerciseList;			
+		}
+		catch(Exception e) {
+			// 기타 예외에 대해서도 null 반환
+			System.out.println("===userServiceImpl===");
+			e.printStackTrace();
+			System.out.println("===userServiceImpl===");
+			
 			return null;
 		}
-		
-		return randomExerciseList;
+
 	}
 	
 	/////////////////////////////////////
 	// 2. 운동 정보 전체 조회
+	@Override
+	public List<Exercise> getAllExercise() {
+		try {
+			List<Exercise> allExerciseList = exerciseDao.getAllExercise();
+			
+			// 데이터가 없거나 가져오는 데에 실패했다면
+			if(allExerciseList == null | allExerciseList.size() == 0) {
+				System.out.println("Service에서의 통신: List를 불러오는 데 실패했습니다.");
+				return null;
+			}
+			
+			return allExerciseList;
+		}
+		catch(Exception e) {
+			// 기타 예외에 대해서도 null 반환
+			System.out.println("===userServiceImpl===");
+			e.printStackTrace();
+			System.out.println("===userServiceImpl===");
+			
+			return null;
+		}
+	}
+
 	
+	// 3. 특정 운동 정보 조회
+	@Override
+	public Exercise getExerciseInfo(int exerciseId) {
+		try {
+			Exercise exerciseInfo = exerciseDao.getExerciseInfo(exerciseId);
+			
+			if(exerciseInfo == null) {
+				System.out.println("Service에서의 통신: List를 불러오는 데 실패했습니다.");
+				return null;
+			}
+			
+			return exerciseInfo;
+		}
+		catch(Exception e) {
+			// 기타 예외에 대해서도 null 반환
+			System.out.println("===userServiceImpl===");
+			e.printStackTrace();
+			System.out.println("===userServiceImpl===");
+			
+			return null;
+		}
+	}
+
+	// 4. 특정 부위에 대한 운동 조회
+	@Override
+	public List<Exercise> getExerciseByPart(String partName) {
+		try {
+			List<Exercise> partExerciseList = exerciseDao.getExerciseByPart(partName);
+			
+			// 데이터가 없거나 가져오는 데에 실패했다면
+			if(partExerciseList == null || partExerciseList.size() == 0) {
+				System.out.println("Service에서의 통신: List를 불러오는 데 실패했습니다.");
+				return null;
+			}
+			
+			return partExerciseList;
+		}
+		catch(Exception e) {
+			// 기타 예외에 대해서도 null 반환
+			System.out.println("===userServiceImpl===");
+			e.printStackTrace();
+			System.out.println("===userServiceImpl===");
+			
+			return null;
+		}
+	}
 	
-	// 3. 특정 부위에 대한 운동 조회
 }

@@ -47,4 +47,5 @@ public interface CardDao {
 	}
 	 */
 	Card getCardInfo(int userId, int id);
+
 }

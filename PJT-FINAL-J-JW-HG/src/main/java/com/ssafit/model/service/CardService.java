@@ -47,4 +47,5 @@ public interface CardService {
 	}
 	 */
 	Card getCardInfo(int userId, int id);
+	
 }

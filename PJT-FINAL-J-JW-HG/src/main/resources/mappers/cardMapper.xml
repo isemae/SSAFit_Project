@@ -33,4 +33,5 @@
 		WHERE user_id = #{userId} 
 		AND id = #{id}
 	</select>
+	
 </mapper>

@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
 			// 조회에 실패하면 null이 반환됨
 			// mapper의 resultType이 Object 이기 때문에 존재하지 않는 유저라도 null 반환할수도 있음.
 			if(userInfo == null) {
-				System.out.println("Service에서 통신. " + userId + "번 유저정보를 찾을 수 없습니다.");
+				System.out.println("Service에서 통신: " + userId + "번 유저정보를 찾을 수 없습니다.");
 				return null;
 			}
 			
@@ -149,14 +149,14 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public int updateUserTotalCardCount(int userId, int newTotalCardCount) {
 		try {
-			int userTotalCardCount = userDao.updateUserTotalCardCount(userId, newTotalCardCount);
+			int isTotalCardCountUpdated = userDao.updateUserTotalCardCount(userId, newTotalCardCount);
 			
 			// update가 성공한 column 개수를 반환 -> 정상 로직 동작시 1, 비정상시 0 반환
-			if(userTotalCardCount == 0) {
+			if(isTotalCardCountUpdated == 0) {
 				return -1;
 			}
 			
-			return userTotalCardCount;
+			return isTotalCardCountUpdated;
 		}
 		catch(Exception e) {
 			System.out.println("===userServiceImpl===");
@@ -164,6 +164,28 @@ public class UserServiceImpl implements UserService {
 			System.out.println("===userServiceImpl===");
 			
 			return -1;
+		}		
+	}
+
+	// 7. 건강 점수 업데이트
+	@Override
+	public int updateUserScore(int userId, int newUserScore) {
+		try {
+			int isScoreUpdated = userDao.updateUserScore(userId, newUserScore);
+			
+			// update가 성공한 column 개수를 반환 -> 정상 로직 동작시 1, 비정상시 0 반환
+			if(isScoreUpdated == 0) {
+				return -1;
+			}
+			
+			return isScoreUpdated;
+		}
+		catch(Exception e) {
+			System.out.println("===userServiceImpl===");
+			e.printStackTrace();
+			System.out.println("===userServiceImpl===");
+			
+			return -1;			
 		}		
 	}
 
