@@ -16,7 +16,7 @@ import com.ssafit.model.service.UserService;
 
 @RestController
 @RequestMapping("/accounts")
-@CrossOrigin(origins = {"http://localhost:5173/*", "http://localhost:5174/*"}) // TODO origin 허용할 uri 작성
+@CrossOrigin(origins = {"http://localhost:5173", "http://localhost:5174"}) 
 public class AccountController {
 	private final UserService userService;
 	// 생성자로 의존성 주입
@@ -49,9 +49,6 @@ public class AccountController {
 			if(userPassword == null) {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("아이디가 일치하지 않습니다.");
 			}
-			
-			System.out.println(newUserPassword);
-			System.out.println(userPassword);
 			
 			// 원래는 여기서 bcrypt의 compare를 활용해서 일치 여부 검증함
 			// 일단은 단순 plain text 비교

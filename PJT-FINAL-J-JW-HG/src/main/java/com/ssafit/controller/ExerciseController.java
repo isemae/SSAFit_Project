@@ -17,7 +17,7 @@ import com.ssafit.model.service.ExerciseService;
 
 @RestController
 @RequestMapping("/exercise")
-@CrossOrigin(origins = {"http://localhost:5173/*", "http://localhost:5174/*"}) // TODO origin 허용할 uri 작성
+@CrossOrigin(origins = {"http://localhost:5173", "http://localhost:5174"}) 
 public class ExerciseController {
 	private final ExerciseService exerciseService;
 	// 생성자로 의존성 주입
@@ -37,7 +37,7 @@ public class ExerciseController {
 	 * 	(String) name,
 	 * 	(String) info,
 	 * 	(String) time
-	 * }]
+	 * }] 
 	 */
 	@GetMapping("/random")
 	public ResponseEntity<?> getRandomExercise() {

@@ -19,7 +19,7 @@ import com.ssafit.model.service.CardService;
 
 @RestController
 @RequestMapping("/cards")
-@CrossOrigin(origins = {"http://localhost:5173/*", "http://localhost:5174/*"}) // TODO origin 허용할 uri 작성
+@CrossOrigin(origins = {"http://localhost:5173", "http://localhost:5174"}) 
 public class CardController {
 	private final CardService cardService;
 

@@ -1,5 +1,6 @@
 package com.ssafit.model.service;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ssafit.model.dao.UserDao;
@@ -8,9 +9,13 @@ import com.ssafit.model.dto.User;
 @Service
 public class UserServiceImpl implements UserService {
 	private final UserDao userDao;
+	private final BCryptPasswordEncoder bCryptPasswordEncoder;
+	
 	// 생성자로 의존성 주입
-	public UserServiceImpl(UserDao userDao) {
+	public UserServiceImpl(UserDao userDao, BCryptPasswordEncoder bCryptPasswordEncoder) {
+		super();
 		this.userDao = userDao;
+		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 	}
 
 	// 1. 특정 유저 정보 전체 조회
@@ -220,6 +225,14 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public int tryRegist(User user) {
 		try {
+			// service에서 비즈니스 로직 처리
+			// - 비밀번호 암호화
+			String newUserPassword = user.getPassword();
+			String bCryptedPassword = bCryptPasswordEncoder.encode(newUserPassword);
+			
+			user.setPassword(bCryptedPassword);
+			
+			// dao 호출 및 db 통신 시도
 			int isUserRegisted = userDao.tryRegist(user);
 			
 			// 등록 실패 시
