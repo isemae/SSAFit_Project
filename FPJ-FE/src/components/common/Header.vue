@@ -1,16 +1,16 @@
 <template>
   <div id="webview-header">
     <h1>{{ currentPage }}</h1>
-    <nav id="links-container">
-      <div>
+    <nav id="navigations-container">
+      <div class="navigation">
         <img src="@/assets/collection_icon.svg" alt="" />
         <RouterLink :to="{ name: 'cardCollection' }">컬렉션</RouterLink>
       </div>
-      <div>
+      <div class="navigation">
         <img src="@/assets/user_icon.svg" alt="" />
         <RouterLink :to="{ name: 'profile' }">프로필</RouterLink>
       </div>
-      <div>
+      <div class="navigation">
         <img src="@/assets/preference_icon.svg" alt="" />
         <RouterLink :to="{ name: 'preference' }">설정</RouterLink>
       </div>
@@ -31,6 +31,12 @@ const currentPage = computed(() => route.meta.title)
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 0 1rem;
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: 600;
 }
 
 a {
@@ -38,8 +44,21 @@ a {
   color: black;
 }
 
-#links-container {
+#navigations-container,
+#navigations-container .navigation {
   display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
   gap: 10px;
+}
+
+.navigation {
+  justify-content: space-around;
+}
+
+.navigation img {
+  width: 24px;
+  height: 24px;
 }
 </style>
