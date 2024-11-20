@@ -20,11 +20,11 @@
 	<!-- 3. get recent cards 한 유저가 수집한 최근 카드 n개 조회 -->
 	<!-- desc가 최신순 정렬 맞겠지..? -->
 	<!-- sql에서 0부터 시작인가..? -->
-	<select id="getRecentCards" resultType="Card">
+	<select id="getRecentCards" parameterType="int" resultType="Card">
 		SELECT * FROM card
 		WHERE user_id = #{userId}
 		ORDER BY collected_date DESC
-		LIMIT 3 		
+		LIMIT #{cardNumber}	
 	</select>
 	
 	<!-- 4. get card info 특정 카드 정보 조회 -->
