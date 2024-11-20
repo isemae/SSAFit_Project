@@ -51,7 +51,7 @@ public class SecurityConfig {
             // /api/auth/** 경로는 모든 사용자 접근 가능(회원가입, 로그인 등)
             // 그 외 요청은 인증된 사용자만 접근 가능
             .authorizeHttpRequests(authorize -> authorize // http 요청에 대한 인가규칙 설정 시작
-                .requestMatchers("/accounts/**").permitAll() // URL패턴 지정, permitAll()로 인증 없이 모든 사용자 접근 가능 허용
+                .requestMatchers("**").permitAll() // URL패턴 지정, permitAll()로 인증 없이 모든 사용자 접근 가능 허용
                 .anyRequest().authenticated() // 위에서 설정하지 않은 나머지 모든 요청에 대한 설정(항상 마지막에 설정), authenticated()로 인증된, 로그인한 사용자만 접근 가능
             );
             
