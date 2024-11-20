@@ -55,7 +55,7 @@ export const useUserInfoService = () => {
   const getUserRecentlyCollectedCardData = async (userId) => {
     try {
       const res = await axios({
-        url: `${API_ENDPOINTS.CARDS.BASE}/${userId}/recent`,
+        url: `${API_ENDPOINTS.CARDS.BASE}/${userId}/recent/${3}`,
         method: 'GET',
       })
       cardStore.userRecentlyCollectedCardData.value = res.data
