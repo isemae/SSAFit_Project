@@ -26,8 +26,9 @@ public class AccountController {
 
 	//////////////////////////////////////////////////////////////
 	// 1. 로그인
-	/* return: 
-	 true/false
+	/** 
+	 @return 
+	 true/false	 
 	 */
 	@PostMapping("/login")
 	public ResponseEntity<?> tryLogin(@RequestBody User user) {
