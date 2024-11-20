@@ -199,24 +199,34 @@ public class UserServiceImpl implements UserService {
 	// ========================= Account ================================= //
 	// 8. 로그인 시도에 따른 특정 유저의 비밀번호 조회
 	@Override
-	public String getInfoForLoginTry(String loginId) {
+	public int getInfoForLoginTry(String loginId, String password) {
 		try {
-			// a. user id를 토대로 db에서 그 id에 해당하는 유저의 비밀번호를 조회하는 dao 호출
-			String userPassword = userDao.getInfoForLoginTry(loginId);
+			// service에서 비즈니스 로직 처리
+			// user id를 토대로 db에서 그 id에 해당하는 유저의 비밀번호를 조회하는 dao 호출
+			String dbPassword = userDao.getInfoForLoginTry(loginId);
 			
-			if(userPassword == null) {
+			if(dbPassword == null) {
 				System.out.println("Service에서의 통신: 해당 유저를 찾을 수 없습니다.");
-				return null;
+				return 0;
 			}
-						
-			return userPassword;
+				
+			// 비밀번호가 일치하지 않는다면
+			if(!bCryptPasswordEncoder.matches(password, dbPassword)) {
+				System.out.println("Service에서의 통신: 비밀번호가 일치하지 않습니다.");
+				return 0;
+			}
+			
+			// TODO 1 login 성공시 토큰 발급
+			
+			
+			return 1;
 		}
 		catch(Exception e) {
 			System.out.println("===userServiceImpl===");
 			e.printStackTrace();
 			System.out.println("===userServiceImpl===");
 			
-			return null;	
+			return -1;	
 		}
 	}
 

@@ -43,17 +43,15 @@ public class AccountController {
 			String newUserPassword = user.getPassword();
 			
 			// db value
-			String userPassword = userService.getInfoForLoginTry(newUserId);
+			int isLoggedIn = userService.getInfoForLoginTry(newUserId, newUserPassword);
 			
-			// 비밀번호 조회가 되지 않으면 -> 아이디 이상함
-			if(userPassword == null) {
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("아이디가 일치하지 않습니다.");
-			}
-			
-			// 원래는 여기서 bcrypt의 compare를 활용해서 일치 여부 검증함
-			// 일단은 단순 plain text 비교
-			if(!newUserPassword.equals(userPassword)) {
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("비밀번호가 일치하지 않습니다.");
+			// 아이디 or 비번 이상함
+			if(isLoggedIn == 0) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("아이디 혹은 비밀번호가 일치하지 않습니다.");
+			} 
+			// -1로 반환되었을 시 => 기타 예외
+			else if(isLoggedIn == -1) {
+				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("비정상적인 접근입니다."); 
 			}
 			
 			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
