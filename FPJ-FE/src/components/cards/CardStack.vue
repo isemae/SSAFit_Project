@@ -13,30 +13,16 @@
 
 <script setup>
 import Card from './Card.vue'
-import { useCardStore } from '@/stores/cardStore'
+import { onBeforeMount } from 'vue'
+import { useCardService } from '@/composables/data/useCardService'
 import { useExerciseStore } from '@/stores/exerciseStore'
-import { useUserStore } from '@/stores/userStore'
-import { ref, watch, onBeforeMount } from 'vue'
-const cardStore = useCardStore()
+
+const { initExerciseData, handleExerciseStatus } = useCardService()
 const exerciseStore = useExerciseStore()
-const userStore = useUserStore()
 
-onBeforeMount(async () => {
-  // await cardStore.getUserCollectedCardData(1)
-  // await cardStore.getUserRecentlyCollectedCardData(1)
-  await exerciseStore.getRandomlySelectedExerciseData()
+onBeforeMount(() => {
+  initExerciseData()
 })
-
-const handleExerciseStatus = function ({ status, data }) {
-  if (!status && data) {
-    let card = {
-      exerciseId: data.id,
-      score: 100,
-      tier: 1,
-    }
-    cardStore.postCard(1, card)
-  }
-}
 </script>
 
 <style scoped>

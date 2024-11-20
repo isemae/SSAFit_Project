@@ -3,7 +3,7 @@
     <p>최근 카드...</p>
     <div class="card-list">
       <Card
-        v-for="data in cardStore.userRecentlyCollectedCardData"
+        v-for="data in cardStore.userRecentlyCollectedCardData.value"
         :key="data.id"
         :data="data"
         :isCollected="true"
@@ -18,8 +18,10 @@ import Card from '../cards/Card.vue'
 
 import { useCardStore } from '@/stores/cardStore'
 import { onBeforeMount, ref } from 'vue'
+import { useUserInfoService } from '@/composables/data/useUserInfoService'
+
 const cardStore = useCardStore()
-const recentCards = ref([{}, {}, {}])
+const userService = useUserInfoService()
 // {
 // collectedDate: '2024-11-19 17:10:47'
 // exerciseId: 11
@@ -28,8 +30,9 @@ const recentCards = ref([{}, {}, {}])
 // tier: 1
 // userId: 1
 // }
+//
 onBeforeMount(async () => {
-  recentCards.value = await cardStore.getUserRecentlyCollectedCardData(1)
+  await userService.getUserRecentlyCollectedCardData(1)
 })
 </script>
 
