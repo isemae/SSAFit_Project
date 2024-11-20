@@ -226,6 +226,20 @@ public class UserServiceImpl implements UserService {
 	public int tryRegist(User user) {
 		try {
 			// service에서 비즈니스 로직 처리
+			// front에서도 공백 체크 해주겠지만... back에서도 한 번 더 체크
+			if(user.getLoginId() == "") {
+				System.out.println("user의 loginId가 존재하지 않습니다.");
+				return -1;
+			}
+			else if(user.getPassword() == "") {
+				System.out.println("user의 password가 존재하지 않습니다.");
+				return -1;
+			}
+			else if(user.getUserName() == "") {
+				System.out.println("user의 userName이 존재하지 않습니다.");
+				return -1;
+			}
+			
 			// - 비밀번호 암호화
 			String newUserPassword = user.getPassword();
 			String bCryptedPassword = bCryptPasswordEncoder.encode(newUserPassword);
@@ -246,6 +260,15 @@ public class UserServiceImpl implements UserService {
 		catch(Exception e) {
 			System.out.println("===userServiceImpl===");
 			e.printStackTrace();
+			// TODO 4 사용자 Exception 설정으로 예외 다각화 처리
+			// 1. 아이디 중복 예외
+			if(e.getMessage().contains("Duplicate")) {
+				// 아이디만 unique임
+				System.out.println("이미 사용중인 아이디입니다.");
+			}
+			
+			// 2. 정보 없음 예외(cannot be null)
+			
 			System.out.println("===userServiceImpl===");
 			
 			return -1;				
