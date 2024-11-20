@@ -26,15 +26,16 @@ public class UserController {
 
 //////////////////////////////////////////////////////////////
 	// 1. 특정 유저 정보 전체 조회
-	/* return:
-	 { 
-		id,
-		loginId,
-		userName,
-		score,
-		totalCardCount,
-		tier
-	  }
+	/**
+	 * @return
+	 * {
+	 * (int) id,
+	 * (String) loginId,
+	 * (String) userName,
+	 * (int) score,
+	 * (int) totalCardCount,
+	 * (int) tier
+	 * }
 	 */
 	// TODO 99. path variable -> localStorage에 저장돼있는 token을 활용해서 userId 보내기
 	@GetMapping("/{userId}")
@@ -61,8 +62,9 @@ public class UserController {
 	}
 	
 	// 2. 유저의 건강력 조회
-	/* return:
-	 (number)
+	/**
+	 * @param (int) userId
+	 * @return (int) userScore
 	 */
 	@GetMapping("/{userId}/score")
 	public ResponseEntity<?> getUserScore(@PathVariable int userId) {
@@ -89,8 +91,9 @@ public class UserController {
 	}
 	
 	// 3. 유저가 건강 관리한 연속 일수
-	/* return:
-	 (number)
+	/**
+	 * @param (int) userId
+	 * @return (int) userStreak
 	 */
 	@GetMapping("/{userId}/streak")
 	// TODO TypeMismatchException 처리 
@@ -117,8 +120,9 @@ public class UserController {
 	
 	
 	// 4. 유저의 등급 조회
-	/* return:
-	 (number)
+	/**
+	 * @param (int) userId
+	 * @return (int) userTier
 	 */
 	@GetMapping("/{userId}/tier")
 	public ResponseEntity<?> getUserTier(@PathVariable int userId) {
@@ -143,8 +147,9 @@ public class UserController {
 	}
 		
 	// 5. 유저가 획득한 총 카드 수 조회
-	/* return:
-	 (number)
+	/**
+	 * @param (int) userId
+	 * @return (int) userTotalCardCount
 	 */
 	@GetMapping("/{userId}/totalCardCount")
 	public ResponseEntity<?> getUserTotalCardCount(@PathVariable int userId) {
@@ -169,8 +174,12 @@ public class UserController {
 	}
 	
 	// 6. 유저가 획득한 총 카드 수 업데이트
-	/* return:
-	 true/false
+	/**
+	 * @param (int) userId
+	 * @param User
+	 * { (int) totalCardCount }
+	 * @return Boolean
+	 * true/false
 	 */
 	@PutMapping("/{userId}/totalCardCount")
 	public ResponseEntity<?> updateTotalCardCount(@PathVariable int userId, @RequestBody User user) {		
@@ -196,8 +205,12 @@ public class UserController {
 	
 	
 	// 7. 건강 점수 업데이트
-	/* return:
-	 true/false
+	/**
+	 * @param (int) userId
+	 * @param User
+	 * { (int) score }
+	 * @return Boolean
+	 * true/false
 	 */
 	@PutMapping("/{userId}/score")
 	public ResponseEntity<?> updateUserScore(@PathVariable int userId, @RequestBody User user) {

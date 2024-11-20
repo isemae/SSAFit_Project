@@ -32,11 +32,16 @@ public class CardController {
 	
 	// 1. 카드 수집 -> DB에 카드 등록
 	/**
-	 * @param card
-	 * @param userId
-	 * @return
+	 * @param Card
 	 * {
-	 * 	id: (int) number
+	 * 	exerciseId,
+	 * 	score,
+	 * 	tier
+	 * }
+	 * @param (int) userId
+	 * @return Map
+	 * {
+	 * 	(int) id
 	 * } 
 	 */
 	@PostMapping("/{userId}")
@@ -73,16 +78,18 @@ public class CardController {
 	
 	
 	// 2. 한 유저가 수집한 전체 카드 조회
-	/** @return
-	 * @param userId
-	[{ 
-		id,
-		user_id,
-		exercise_id,
-		score,
-		tier,
-		collected_date 
-	}] 
+	
+	/** 
+	 * @param (int) userId 
+	 * @return List<Card>	 
+	 * [{
+	 * (int) id,
+	 * (String) userId,
+	 * (String) exerciseId,
+	 * (int) score,
+	 * (int) tier,
+	 * (String) collected_date 
+	 * }]
 	 */
 	@GetMapping("/{userId}")
 	public ResponseEntity<?> getAllCards(@PathVariable int userId) {
@@ -91,7 +98,7 @@ public class CardController {
 			
 			// 조회에 실패했을 경우
 			if(cardList == null) {
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("카드 데이터가 존재하지 않습니다.");
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(userId + "유저의 카드 데이터가 존재하지 않습니다.");
 			}
 			
 			// 전체 카드를 조회할 때 user table의 ttoal_card_count와 같은 지 검증, 다르면 실제 카드 리스트 size로 수정
@@ -108,17 +115,18 @@ public class CardController {
 	}
 	
 	// 3. 한 유저가 수집한 최근 카드 n개 조회
-	/** @return
-	 * @param userId
-	 * @param cardNumber
-	[{ 
-		id,
-		user_id,
-		exercise_id,
-		score,
-		tier,
-		collected_date 
-	}]
+	/** 
+	 * @param (int) userId
+	 * @param (int) cardNumber: 조회할 카드 개수
+	 * @return List<Card>
+	 * [{
+	 * (int) id,
+	 * (String) userId,
+	 * (String) exerciseId,
+	 * (int) score,
+	 * (int) tier,
+	 * (String) collected_date 
+	 * }]
 	 */
 	@GetMapping("/{userId}/recent/{cardNumber}")
 	public ResponseEntity<?> getRecentCards(@PathVariable int userId, @PathVariable int cardNumber) {
@@ -128,7 +136,7 @@ public class CardController {
 			// 조회에 실패했을 경우
 			if(cardList == null) {
 				System.out.println("카드 데이터가 존재하지 않습니다.");
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("카드 데이터가 존재하지 않습니다.");
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(userId + "유저의 카드 데이터가 존재하지 않습니다.");
 			}
 			
 			// userId에 해당하는 유저가 가지고 있는 card의 개수보다 많은 숫자를 요청해도 최대 개수만 반환되고 예외가 발생하지 않음
@@ -143,17 +151,18 @@ public class CardController {
 	}
 	
 	// 4. 특정 카드 정보 조회
-	/** @return
-	 * @param userId
-	 * @param cardId
- 	{ 
-		id,
-		user_id,
-		exercise_id,
-		score,
-		tier,
-		collected_date 
-	}
+	/** 
+	 * @param (int) userId
+	 * @param (int) cardId
+	 * @return Card
+	 * {
+	 * (int) id,
+	 * (String) userId,
+	 * (String) exerciseId,
+	 * (int) score,
+	 * (int) tier,
+	 * (String) collectedDate 
+	 * }
 	 */
 	@GetMapping("/{userId}/{cardId}")
 	public ResponseEntity<?> getCardInfo(@PathVariable int userId, @PathVariable int cardId) {
@@ -162,7 +171,7 @@ public class CardController {
 			
 			// 카드 조회에 실패했을 경우
 			if(cardInfo == null) {
-				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(cardId + "번 카드의 정보 조회에 실패했습니다.");
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(userId + "유저의 " + cardId + "번 카드가 존재하지 않습니다.");
 			}
 			
 			return new ResponseEntity<Card>(cardInfo, HttpStatus.OK);			

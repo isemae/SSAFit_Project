@@ -27,8 +27,13 @@ public class AccountController {
 	//////////////////////////////////////////////////////////////
 	// 1. 로그인
 	/** 
-	 @return 
-	 true/false	 
+	 * @param User 
+	 * {
+	 * 	loginId,
+	 * 	password
+	 * }
+	 * @return Boolean
+	 * true/false	 
 	 */
 	@PostMapping("/login")
 	public ResponseEntity<?> tryLogin(@RequestBody User user) {
@@ -66,14 +71,19 @@ public class AccountController {
 	
 	
 	// 2. 회원가입
+	/** 
+	 * @param User
+	 * {
+	 * 	loginId,
+	 * 	password,
+	 * 	userName
+	 * }
+	 * @return Boolean
+	 * true/false
+	 */
 	@PostMapping("/regist")
 	public ResponseEntity<?> tryRegist(@RequestBody User user) {
-		try {
-			// input value
-			String newUserId = user.getLoginId();
-			String newUserPassword = user.getPassword();
-			String newUserName = user.getUserName();
-			
+		try {			
 			// 서비스 호출
 			int isUserRegisted = userService.tryRegist(user);
 			
