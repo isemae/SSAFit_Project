@@ -63,4 +63,31 @@ public class AccountController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("비정상적인 접근입니다.");
 		}
 	}
+	
+	
+	// 2. 회원가입
+	@PostMapping("/regist")
+	public ResponseEntity<?> tryRegist(@RequestBody User user) {
+		try {
+			// input value
+			String newUserId = user.getLoginId();
+			String newUserPassword = user.getPassword();
+			String newUserName = user.getUserName();
+			
+			// 서비스 호출
+			int isUserRegisted = userService.tryRegist(user);
+			
+			if(isUserRegisted == -1) {
+				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("등록에 실패했습니다.");				
+			}
+						
+			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+		}
+		catch(Exception e) {
+			System.out.println("===userController===");
+			e.printStackTrace();
+			System.out.println("===userController===");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("비정상적인 접근입니다.");
+		}
+	}
 }

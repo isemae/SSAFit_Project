@@ -215,5 +215,28 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
+	
+	// 9. 회원가입 시도
+	@Override
+	public int tryRegist(User user) {
+		try {
+			int isUserRegisted = userDao.tryRegist(user);
+			
+			// 등록 실패 시
+			if(isUserRegisted == 0) {
+				System.out.println("Service에서의 통신: 유저 등록에 실패했습니다.");
+				return -1;
+			}
+			
+			return isUserRegisted;
+		}
+		catch(Exception e) {
+			System.out.println("===userServiceImpl===");
+			e.printStackTrace();
+			System.out.println("===userServiceImpl===");
+			
+			return -1;				
+		}
+	}
 }
  
