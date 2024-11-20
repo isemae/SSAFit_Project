@@ -33,7 +33,7 @@ public interface CardDao {
 		collected_date 
 	}]
 	 */
-	List<Card> getRecentCards(int userId);
+	List<Card> getRecentCards(int userId, int cardNumber);
 	
 	// 4. 특정 카드 정보 조회
 	/* return:
