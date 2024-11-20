@@ -17,7 +17,7 @@ import com.ssafit.model.service.ExerciseService;
 
 @RestController
 @RequestMapping("/exercise")
-@CrossOrigin(origins = {"http://localhost:5173/*", "http://localhost:5174/*"}) // TODO origin 허용할 uri 작성
+@CrossOrigin(origins = {"http://localhost:5173", "http://localhost:5174"}) 
 public class ExerciseController {
 	private final ExerciseService exerciseService;
 	// 생성자로 의존성 주입
@@ -29,14 +29,15 @@ public class ExerciseController {
 	// methods //
 	
 	// 1. 임의의 랜덤 운동 조회
-	/* return:
- 	[{
-		id,
-		part,
-		name,
-		info,
-		time
-	}]
+	/** 
+	 * @return List<Exercise>
+	 * [{
+	 * 	(int) id,
+	 * 	(String) part,
+	 * 	(String) name,
+	 * 	(String) info,
+	 * 	(String) time
+	 * }] 
 	 */
 	@GetMapping("/random")
 	public ResponseEntity<?> getRandomExercise() {
@@ -63,14 +64,15 @@ public class ExerciseController {
 	
 	/////////////////////////////////////
 	// 2. 운동 정보 전체 조회
-	/* return:
-	 [{
-		id,
-		part,
-		name,
-		info,
-		time
-	}]
+	/**
+	 * @return List<Exercise>
+	 * [{
+	 * 	(int) id,
+	 * 	(String) part,
+	 * 	(String) name,
+	 * 	(String) info,
+	 * 	(String) time
+	 * }]
 	 */
 	@GetMapping("")
 	public ResponseEntity<?> getAllExercise() {
@@ -93,6 +95,17 @@ public class ExerciseController {
 	}
 	
 	// 3. 특정 운동 정보 조회
+	/**
+	 * @param (int) exerciseId
+	 * @return Exercise
+	 * {
+	 * 	(int) id,
+	 * 	(String) part,
+	 * 	(String) name,
+	 * 	(String) info,
+	 * 	(String) time
+	 * }
+	 */
 	@GetMapping("/{exerciseId}")
 	public ResponseEntity<?> getExerciseInfo(@PathVariable int exerciseId) {
 		try {
@@ -116,6 +129,17 @@ public class ExerciseController {
 	
 	///////////////////////////////////
 	// 4. 특정 부위에 대한 운동 조회
+	/**
+	 * @param (String) partName: LIKE 참조라 "손" 만 검색해도 "손목", "손바닥" 등이 결과로 출력됨.
+	 * @return List<Exercise>
+	 * [{
+	 * 	(int) id,
+	 * 	(String) part,
+	 * 	(String) name,
+	 * 	(String) info,
+	 * 	(String) time
+	 * }]
+	 */
 	@GetMapping("/part/{partName}")
 	public ResponseEntity<?> getExerciseByPart(@PathVariable String partName) {
 		try { 

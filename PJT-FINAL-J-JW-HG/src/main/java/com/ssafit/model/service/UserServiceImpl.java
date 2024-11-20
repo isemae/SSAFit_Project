@@ -1,5 +1,6 @@
 package com.ssafit.model.service;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ssafit.model.dao.UserDao;
@@ -8,9 +9,13 @@ import com.ssafit.model.dto.User;
 @Service
 public class UserServiceImpl implements UserService {
 	private final UserDao userDao;
+	private final BCryptPasswordEncoder bCryptPasswordEncoder;
+	
 	// 생성자로 의존성 주입
-	public UserServiceImpl(UserDao userDao) {
+	public UserServiceImpl(UserDao userDao, BCryptPasswordEncoder bCryptPasswordEncoder) {
+		super();
 		this.userDao = userDao;
+		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 	}
 
 	// 1. 특정 유저 정보 전체 조회
@@ -194,26 +199,90 @@ public class UserServiceImpl implements UserService {
 	// ========================= Account ================================= //
 	// 8. 로그인 시도에 따른 특정 유저의 비밀번호 조회
 	@Override
-	public String getInfoForLoginTry(String loginId) {
+	public int getInfoForLoginTry(String loginId, String password) {
 		try {
-			// a. user id를 토대로 db에서 그 id에 해당하는 유저의 비밀번호를 조회하는 dao 호출
-			String userPassword = userDao.getInfoForLoginTry(loginId);
+			// service에서 비즈니스 로직 처리
+			// user id를 토대로 db에서 그 id에 해당하는 유저의 비밀번호를 조회하는 dao 호출
+			String dbPassword = userDao.getInfoForLoginTry(loginId);
 			
-			if(userPassword == null) {
+			if(dbPassword == null) {
 				System.out.println("Service에서의 통신: 해당 유저를 찾을 수 없습니다.");
-				return null;
+				return 0;
 			}
-						
-			return userPassword;
+				
+			// 비밀번호가 일치하지 않는다면
+			if(!bCryptPasswordEncoder.matches(password, dbPassword)) {
+				System.out.println("Service에서의 통신: 비밀번호가 일치하지 않습니다.");
+				return 0;
+			}
+			
+			// TODO 1 login 성공시 토큰 발급
+			
+			
+			return 1;
 		}
 		catch(Exception e) {
 			System.out.println("===userServiceImpl===");
 			e.printStackTrace();
 			System.out.println("===userServiceImpl===");
 			
-			return null;	
+			return -1;	
 		}
 	}
 
+	
+	// 9. 회원가입 시도
+	@Override
+	public int tryRegist(User user) {
+		try {
+			// service에서 비즈니스 로직 처리
+			// front에서도 공백 체크 해주겠지만... back에서도 한 번 더 체크
+			if(user.getLoginId() == "") {
+				System.out.println("user의 loginId가 존재하지 않습니다.");
+				return -1;
+			}
+			else if(user.getPassword() == "") {
+				System.out.println("user의 password가 존재하지 않습니다.");
+				return -1;
+			}
+			else if(user.getUserName() == "") {
+				System.out.println("user의 userName이 존재하지 않습니다.");
+				return -1;
+			}
+			
+			// - 비밀번호 암호화
+			String newUserPassword = user.getPassword();
+			String bCryptedPassword = bCryptPasswordEncoder.encode(newUserPassword);
+			
+			user.setPassword(bCryptedPassword);
+			
+			// dao 호출 및 db 통신 시도
+			int isUserRegisted = userDao.tryRegist(user);
+			
+			// 등록 실패 시
+			if(isUserRegisted == 0) {
+				System.out.println("Service에서의 통신: 유저 등록에 실패했습니다.");
+				return -1;
+			}
+			
+			return isUserRegisted;
+		}
+		catch(Exception e) {
+			System.out.println("===userServiceImpl===");
+			e.printStackTrace();
+			// TODO 4 사용자 Exception 설정으로 예외 다각화 처리
+			// 1. 아이디 중복 예외
+			if(e.getMessage().contains("Duplicate")) {
+				// 아이디만 unique임
+				System.out.println("이미 사용중인 아이디입니다.");
+			}
+			
+			// 2. 정보 없음 예외(cannot be null)
+			
+			System.out.println("===userServiceImpl===");
+			
+			return -1;				
+		}
+	}
 }
  

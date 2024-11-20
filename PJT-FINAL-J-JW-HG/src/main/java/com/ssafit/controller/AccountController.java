@@ -16,7 +16,7 @@ import com.ssafit.model.service.UserService;
 
 @RestController
 @RequestMapping("/accounts")
-@CrossOrigin(origins = {"http://localhost:5173/*", "http://localhost:5174/*"}) // TODO origin 허용할 uri 작성
+@CrossOrigin(origins = {"http://localhost:5173", "http://localhost:5174"}) 
 public class AccountController {
 	private final UserService userService;
 	// 생성자로 의존성 주입
@@ -27,8 +27,13 @@ public class AccountController {
 	//////////////////////////////////////////////////////////////
 	// 1. 로그인
 	/** 
-	 @return 
-	 true/false	 
+	 * @param User 
+	 * {
+	 * 	loginId,
+	 * 	password
+	 * }
+	 * @return Boolean
+	 * true/false	 
 	 */
 	@PostMapping("/login")
 	public ResponseEntity<?> tryLogin(@RequestBody User user) {
@@ -38,22 +43,49 @@ public class AccountController {
 			String newUserPassword = user.getPassword();
 			
 			// db value
-			String userPassword = userService.getInfoForLoginTry(newUserId);
+			int isLoggedIn = userService.getInfoForLoginTry(newUserId, newUserPassword);
 			
-			// 비밀번호 조회가 되지 않으면 -> 아이디 이상함
-			if(userPassword == null) {
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("아이디가 일치하지 않습니다.");
+			// 아이디 or 비번 이상함
+			if(isLoggedIn == 0) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("아이디 혹은 비밀번호가 일치하지 않습니다.");
+			} 
+			// -1로 반환되었을 시 => 기타 예외
+			else if(isLoggedIn == -1) {
+				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("비정상적인 접근입니다."); 
 			}
 			
-			System.out.println(newUserPassword);
-			System.out.println(userPassword);
+			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+		}
+		catch(Exception e) {
+			System.out.println("===userController===");
+			e.printStackTrace();
+			System.out.println("===userController===");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("비정상적인 접근입니다.");
+		}
+	}
+	
+	
+	// 2. 회원가입
+	/** 
+	 * @param User
+	 * {
+	 * 	loginId,
+	 * 	password,
+	 * 	userName
+	 * }
+	 * @return Boolean
+	 * true/false
+	 */
+	@PostMapping("/regist")
+	public ResponseEntity<?> tryRegist(@RequestBody User user) {
+		try {			
+			// 서비스 호출
+			int isUserRegisted = userService.tryRegist(user);
 			
-			// 원래는 여기서 bcrypt의 compare를 활용해서 일치 여부 검증함
-			// 일단은 단순 plain text 비교
-			if(!newUserPassword.equals(userPassword)) {
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("비밀번호가 일치하지 않습니다.");
+			if(isUserRegisted == -1) {
+				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("등록에 실패했습니다.");				
 			}
-			
+						
 			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
 		}
 		catch(Exception e) {

@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`user` (
         WHEN `score` >= 500 THEN 3
         WHEN `score` >= 300 THEN 2
         WHEN `score` >= 100 THEN 1
-        ELSE 'BRONZE'
+        ELSE 0
 	END
   ) STORED NULL COMMENT '유저 티어, 스코어에 따라서 자동으로 결정됨',
   `streak` INT NULL DEFAULT 1 COMMENT '유저가 연속적으로 실행한 건강 관리 일수', #11.17에 추가함
@@ -97,22 +97,22 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 -- 더미 데이터 생성
 -- User 테이블 더미 데이터
 
-INSERT INTO `mydb`.`user` (`login_id`, `password`, `user_name`, `score`, `total_card_count`, `tier`) VALUES
-('user001', '$2a$10$abcdefghijklmnopqrstuvwxyz123456', '김건강', 1200, 15, 3),
-('user002', '$2a$10$abcdefghijklmnopqrstuvwxyz123457', 'John Kim', 800, 10, 2),
-('user003', '$2a$10$abcdefghijklmnopqrstuvwxyz123458', '박스트레칭', 2000, 25, 4),
-('user004', '$2a$10$abcdefghijklmnopqrstuvwxyz123459', 'Sarah Lee', 300, 5, 1),
-('user005', '$2a$10$abcdefghijklmnopqrstuvwxyz123460', '이운동', 1500, 20, 3),
-('user006', '$2a$10$abcdefghijklmnopqrstuvwxyz123461', 'Mike Park', 100, 2, 0),
-('user007', '$2a$10$abcdefghijklmnopqrstuvwxyz123462', '정피트니스', 3000, 35, 5),
-('user008', '$2a$10$abcdefghijklmnopqrstuvwxyz123463', 'Emma Choi', 600, 8, 2),
-('user009', '$2a$10$abcdefghijklmnopqrstuvwxyz123464', '최헬스', 900, 12, 2),
-('user010', '$2a$10$abcdefghijklmnopqrstuvwxyz123465', 'David Jung', 400, 6, 1),
-('user011', '$2a$10$abcdefghijklmnopqrstuvwxyz123466', '송워크아웃', 1800, 22, 4),
-('user012', '$2a$10$abcdefghijklmnopqrstuvwxyz123467', 'Amy Song', 700, 9, 2),
-('user013', '$2a$10$abcdefghijklmnopqrstuvwxyz123468', '강근력', 2500, 30, 5),
-('user014', '$2a$10$abcdefghijklmnopqrstuvwxyz123469', 'Tom Kang', 200, 3, 0),
-('user015', '$2a$10$abcdefghijklmnopqrstuvwxyz123470', '윤스트레치', 1000, 13, 3);
+INSERT INTO `mydb`.`user` (`login_id`, `password`, `user_name`, `score`, `total_card_count`) VALUES
+('user001', '$2a$10$abcdefghijklmnopqrstuvwxyz123456', '김건강', 1200, 15),
+('user002', '$2a$10$abcdefghijklmnopqrstuvwxyz123457', 'John Kim', 800, 10),
+('user003', '$2a$10$abcdefghijklmnopqrstuvwxyz123458', '박스트레칭', 2000, 25),
+('user004', '$2a$10$abcdefghijklmnopqrstuvwxyz123459', 'Sarah Lee', 300, 5),
+('user005', '$2a$10$abcdefghijklmnopqrstuvwxyz123460', '이운동', 1500, 20),
+('user006', '$2a$10$abcdefghijklmnopqrstuvwxyz123461', 'Mike Park', 100, 2),
+('user007', '$2a$10$abcdefghijklmnopqrstuvwxyz123462', '정피트니스', 3000, 35),
+('user008', '$2a$10$abcdefghijklmnopqrstuvwxyz123463', 'Emma Choi', 600, 8),
+('user009', '$2a$10$abcdefghijklmnopqrstuvwxyz123464', '최헬스', 900, 12),
+('user010', '$2a$10$abcdefghijklmnopqrstuvwxyz123465', 'David Jung', 400, 6),
+('user011', '$2a$10$abcdefghijklmnopqrstuvwxyz123466', '송워크아웃', 1800, 22),
+('user012', '$2a$10$abcdefghijklmnopqrstuvwxyz123467', 'Amy Song', 700, 9),
+('user013', '$2a$10$abcdefghijklmnopqrstuvwxyz123468', '강근력', 2500, 30),
+('user014', '$2a$10$abcdefghijklmnopqrstuvwxyz123469', 'Tom Kang', 200, 3),
+('user015', '$2a$10$abcdefghijklmnopqrstuvwxyz123470', '윤스트레치', 1000, 13);
 
 -- Exercise 테이블 더미 데이터
 INSERT INTO `mydb`.`exercise` (`part`, `name`, `info`, `time`) VALUES
