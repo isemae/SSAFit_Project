@@ -5,6 +5,7 @@
       :key="item.id"
       :data="item"
       :isFlipped="false"
+      :class="[{ flipped: false }, 'white']"
       @exerciseStatus="handleExerciseStatus"
     />
   </div>
@@ -40,7 +41,7 @@ const handleExerciseStatus = function ({ status, data }) {
 
 <style scoped>
 .card-container {
-  /* background-color: rebeccapurple; */
+  background-color: rebeccapurple;
   position: relative;
   display: flex;
   box-sizing: border-box;

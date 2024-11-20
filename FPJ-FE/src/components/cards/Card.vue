@@ -48,12 +48,14 @@ const doExercise = function (data) {
 
 <style scoped>
 .card-wrapper {
-  --card-width: 2rem;
-  --card-height: 3rem;
+  --card-width: 12rem;
+  --card-height: 20rem;
+  --card-min-width: 6rem;
+  --card-min-height: 10rem;
   --base-rotate-angle: 7deg;
   --flip-angle: 180deg;
-  --width-offset: 160px;
-  --hover-translate: 150px;
+  --width-offset: 70%;
+  --hover-translate: 65%;
   --hover-rotate: 8deg;
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */
@@ -79,73 +81,81 @@ const doExercise = function (data) {
   --card-color-black: #000;
 }
 
-.white {
+.white > * {
   background-color: var(--card-color-white);
-  border: 2px var(--card-color-white) solid;
+  border: 2px var(--card-color-black) solid;
+  border-radius: 10px;
+  filter: drop-shadow(1px 1px 10px black);
 }
 
-.bronze {
+.bronze > * {
   background-color: var(--card-color-bronze);
   border: 2px var(--card-color-white) solid;
   border-radius: 10px;
+  filter: drop-shadow(1px 1px 10px black);
 }
 
-.silver {
+.silver > * {
   background-color: var(--card-color-silver);
   border: 2px var(--card-color-bronze) solid;
   border-radius: 10px;
+  filter: drop-shadow(1px 1px 10px black);
 }
 
-.gold {
+.gold > * {
   background-color: var(--card-color-gold);
   border: 2px var(--card-color-silver) solid;
   border-radius: 10px;
+  filter: drop-shadow(1px 1px 10px black);
 }
 
-.platinum {
+.platinum > * {
   background-color: var(--card-color-platinum);
   border: 2px var(--card-color-gold) solid;
   border-radius: 10px;
+  filter: drop-shadow(1px 1px 10px black);
 }
 
-.diamond {
+.diamond > * {
   background-color: var(--card-color-diamond);
   border: 2px var(--card-color-platinum) solid;
   border-radius: 10px;
+  filter: drop-shadow(1px 1px 10px black);
 }
 
-.ruby {
+.ruby > * {
   background-color: var(--card-color-ruby);
   border: 2px var(--card-color-diamond) solid;
   border-radius: 10px;
+  filter: drop-shadow(1px 1px 10px black);
 }
 
-.black {
+.black > * {
   background-color: var(--card-color-black);
   border: 2px var(--card-color-white) solid;
   border-radius: 10px;
+  filter: drop-shadow(1px 1px 10px black);
 }
 
 .card-wrapper {
+  width: var(--card-width);
+  height: var(--card-height);
+  min-width: var(--card-min-width);
+  min-height: var(--card-min-height);
   position: relative;
-  min-width: var(--card-width);
-  min-height: var(--card-height);
   box-sizing: border-box;
   transform-origin: center;
   transition:
     transform 0.2s ease,
     z-index 0.2s ease;
   cursor: pointer;
-  filter: drop-shadow(1px 1px 10px black);
 }
 
 .card-face {
-  height: var(--card-height);
-  width: var(--card-width);
   position: absolute;
-  /* background:  */
   border-radius: 10px;
   backface-visibility: hidden;
+  transform-origin: center;
   transition:
     transform 0.4s ease,
     opacity 0.4s ease,
@@ -154,6 +164,7 @@ const doExercise = function (data) {
 
 .card-face.front {
   transform: rotateY(var(--flip-angle));
+  transform-origin: center;
 }
 
 .card-face.back {
@@ -166,9 +177,9 @@ const doExercise = function (data) {
 
 .flipped .front {
   position: absolute;
-  transform: scale(var(--scale-factor, 1.2)) translateX(0) translateY(0);
-  width: 300px;
-  height: 540px;
+  transform: scale(var(--scale-factor, 1.2));
+  width: calc(1.5 * var(--card-min-width));
+  height: calc(1.5 * var(--card-min-height));
 }
 
 /* .card-wrapper:nth-child(1).flipped .front { */
@@ -190,7 +201,6 @@ const doExercise = function (data) {
 }
 
 .card-wrapper:nth-child(2):not(.flipped) {
-  transform: translateX(0);
   z-index: 2;
 }
 
@@ -199,17 +209,17 @@ const doExercise = function (data) {
   z-index: 1;
 }
 
-/* .card-wrapper:nth-child(1):not(.flipped):hover { */
-/*   transform: translateX(var(--hover-translate)) rotate(calc(-1 * var(--hover-rotate))) scale(1.01); */
-/* } */
-/**/
-/* .card-wrapper:nth-child(2):not(.flipped):hover { */
-/*   transform: scale(1.01); */
-/* } */
-/**/
-/* .card-wrapper:nth-child(3):not(.flipped):hover { */
-/*   transform: translateX(calc(-1 * var(--hover-translate))) rotate(var(--hover-rotate)) scale(1.01); */
-/* } */
+.card-wrapper:nth-child(1):not(.flipped):hover {
+  transform: translateX(var(--hover-translate)) rotate(calc(-1 * var(--hover-rotate))) scale(1.01);
+}
+
+.card-wrapper:nth-child(2):not(.flipped):hover {
+  transform: scale(1.01);
+}
+
+.card-wrapper:nth-child(3):not(.flipped):hover {
+  transform: translateX(calc(-1 * var(--hover-translate))) rotate(var(--hover-rotate)) scale(1.01);
+}
 
 .card-wrapper img {
   max-width: 256px;

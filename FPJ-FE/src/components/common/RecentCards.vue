@@ -32,7 +32,7 @@ onBeforeMount(async () => {
 
 <style scoped>
 .card-list {
-  width: 20rem;
+  height: 20rem;
   display: flex;
   flex-wrap: wrap;
 }
