@@ -10,6 +10,7 @@ import Header from './components/common/Header.vue'
 </script>
 
 <style>
+@import 'assets/normalize.css';
 * {
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */
@@ -21,5 +22,9 @@ import Header from './components/common/Header.vue'
   -khtml-user-drag: none;
   -moz-user-drag: none;
   -o-user-drag: none;
+}
+
+body {
+  overflow: hidden;
 }
 </style>

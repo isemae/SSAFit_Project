@@ -50,8 +50,8 @@ const doExercise = function (data) {
 .card-wrapper {
   --card-width: 12rem;
   --card-height: 20rem;
-  --card-min-width: 6rem;
-  --card-min-height: 10rem;
+  --card-min-width: 2rem;
+  --card-min-height: 3.6rem;
   --base-rotate-angle: 7deg;
   --flip-angle: 180deg;
   --width-offset: 70%;
@@ -138,8 +138,8 @@ const doExercise = function (data) {
 }
 
 .card-wrapper {
-  width: var(--card-width);
-  height: var(--card-height);
+  width: 33%;
+  height: 100%;
   min-width: var(--card-min-width);
   min-height: var(--card-min-height);
   position: relative;
@@ -224,6 +224,7 @@ const doExercise = function (data) {
 .card-wrapper img {
   max-width: 256px;
   width: 128px;
+  min-width: 24px;
   -webkit-user-drag: none;
   -khtml-user-drag: none;
   -moz-user-drag: none;

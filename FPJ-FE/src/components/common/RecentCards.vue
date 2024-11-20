@@ -1,13 +1,16 @@
 <template>
-  <div class="card-list">
-    <Card
-      v-for="data in cardStore.userRecentlyCollectedCardData"
-      :key="data.id"
-      :data="data"
-      :isCollected="true"
-      :class="[{ flipped: true }, data.tier]"
-    />
-  </div>
+  <section id="recent-cards">
+    <p>최근 카드...</p>
+    <div class="card-list">
+      <Card
+        v-for="data in cardStore.userRecentlyCollectedCardData"
+        :key="data.id"
+        :data="data"
+        :isCollected="true"
+        :class="[{ flipped: true }, data.tier]"
+      />
+    </div>
+  </section>
 </template>
 
 <script setup>
@@ -31,9 +34,24 @@ onBeforeMount(async () => {
 </script>
 
 <style scoped>
+p {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+#recent-cards {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+}
+
 .card-list {
-  height: 20rem;
+  width: 100%;
+  height: 10rem;
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
 }
 </style>

@@ -1,30 +1,34 @@
 <template>
-  <div id="collection-view">
+  <section id="collection-view">
     <InfoPanel class="info-panel" />
     <section class="view-content">
-      <RecentCards class="recent-cards" />
+      <Collections />
     </section>
-  </div>
+  </section>
 </template>
 
 <script setup>
 import InfoPanel from '@/components/common/InfoPanel.vue'
 import RecentCards from '@/components/common/RecentCards.vue'
+import Collections from '@/components/content/Collections.vue'
 </script>
 
-<style scoped>
+<style>
 #collection-view {
   display: flex;
   flex-grow: 1;
 }
 
 .info-panel {
-  background-color: rebeccapurple;
-  flex: 1;
+  flex: 0.8;
 }
 
 .view-content {
-  background-color: blue;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 1rem;
   flex: 2;
+  height: 100vh;
 }
 </style>
