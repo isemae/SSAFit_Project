@@ -23,4 +23,11 @@ public interface UserService {
 	
 	// 7. 건강 점수 업데이트
 	int updateUserScore(int userId, int newUserScore);
+	
+	// =================================================================== //
+	// 8. 로그인 시도에 따른 특정 유저의 비밀번호 조회
+	String getInfoForLoginTry(String loginId);
+	
+	// 9. 회원가입 시도
+	int tryRegist(User user);
 }
