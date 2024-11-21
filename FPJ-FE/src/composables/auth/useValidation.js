@@ -1,10 +1,6 @@
 import { watch, reactive, ref } from 'vue'
 
 export const useValidation = () => {
-  const decodeJWT = (token) => {
-    const payload = token.split('.')[1]
-    return JSON.parse(atob(payload))
-  }
   const errors = reactive({
     loginId: '',
     password: '',
@@ -93,5 +89,5 @@ export const useValidation = () => {
   // }
 
   // watch 와 debounce로 실시간 확인
-  return { decodeJWT, errors, validateField, validateFormData }
+  return { errors, validateField, validateFormData }
 }
