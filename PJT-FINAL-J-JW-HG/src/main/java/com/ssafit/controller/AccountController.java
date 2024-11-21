@@ -43,20 +43,14 @@ public class AccountController {
 			String newUserPassword = user.getPassword();
 			
 			// db value
-			String userPassword = userService.getInfoForLoginTry(newUserId);
+			String accessToken = userService.getInfoForLoginTry(newUserId, newUserPassword);
 			
-			// 비밀번호 조회가 되지 않으면 -> 아이디 이상함
-			if(userPassword == null) {
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("아이디가 일치하지 않습니다.");
-			}
-			
-			// 원래는 여기서 bcrypt의 compare를 활용해서 일치 여부 검증함
-			// 일단은 단순 plain text 비교
-			if(!newUserPassword.equals(userPassword)) {
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("비밀번호가 일치하지 않습니다.");
-			}
-			
-			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+			// 아이디 or 비번 이상함
+			if(accessToken == null) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("아이디 혹은 비밀번호가 일치하지 않습니다.");
+			} 
+
+			return new ResponseEntity<String>(accessToken, HttpStatus.OK);
 		}
 		catch(Exception e) {
 			System.out.println("===userController===");
@@ -78,13 +72,13 @@ public class AccountController {
 	 * @return Boolean
 	 * true/false
 	 */
-	@PostMapping("/regist")
-	public ResponseEntity<?> tryRegist(@RequestBody User user) {
+	@PostMapping("/register")
+	public ResponseEntity<?> tryRegister(@RequestBody User user) {
 		try {			
 			// 서비스 호출
-			int isUserRegisted = userService.tryRegist(user);
+			int isUserRegistered = userService.tryRegister(user);
 			
-			if(isUserRegisted == -1) {
+			if(isUserRegistered == -1) {
 				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("등록에 실패했습니다.");				
 			}
 						
