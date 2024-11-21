@@ -148,4 +148,8 @@ public class JwtUtil {
     	return parseClaims(token).get("userId", Integer.class);
     }
     
+    public String getUserName(String token) {
+    	return parseClaims(token).get("userName", String.class);
+    }
+    
 }

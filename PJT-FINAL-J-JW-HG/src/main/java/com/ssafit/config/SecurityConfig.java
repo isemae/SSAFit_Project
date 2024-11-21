@@ -10,10 +10,26 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+//import com.ssafit.filter.JwtAuthFilter;
+
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+	/**
+	 * JwtAuth가 이번 프로젝트에는 필요가 없다는 결론을 내렸기 때문에 주석 처리함.
+	 * 대형 프로젝트나 개인정보가 매우 중요해지는 경우에는 프로젝트 첫 시작부터 user -> userDetails -> userDetailsService로 구성되는 
+	 * 보안 로직을 짜는게 좋을듯?
+	 */
+//	private final JwtAuthFilter jwtAuthFilter;
+	
+//	// 생성자로 의존성 주입
+//	public SecurityConfig(JwtAuthFilter jwtAuthFilter) {
+//		super();
+//		this.jwtAuthFilter = jwtAuthFilter;
+//	}
+
+	
 	// bcrypt 암호화를 위한 encoder
 	@Bean
 	public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -65,6 +81,9 @@ public class SecurityConfig {
                 .requestMatchers("**").permitAll() // URL패턴 지정, permitAll()로 인증 없이 모든 사용자 접근 가능 허용
                 .anyRequest().authenticated() // 위에서 설정하지 않은 나머지 모든 요청에 대한 설정(항상 마지막에 설정), authenticated()로 인증된, 로그인한 사용자만 접근 가능
             );
+            
+//            // UsernamePasswordAuthenticationFilter 이전에 먼저 적용될 filter 설정
+//            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
             
         return http.build();
     }

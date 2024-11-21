@@ -1,7 +1,9 @@
 package com.ssafit.model.service;
 
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafit.model.dao.UserDao;
 import com.ssafit.model.dto.User;
@@ -214,8 +216,7 @@ public class UserServiceImpl implements UserService {
 			
 			// 해당하는 유저가 없을 시
 			if(dbUser == null) {
-				System.out.println("Service에서의 통신: 해당 유저를 찾을 수 없습니다.");
-				return null;
+				throw new UsernameNotFoundException("Service에서의 통신: 해당 유저를 찾을 수 없습니다.");				
 			}
 			
 			String dbPassword = dbUser.getPassword();			
@@ -242,6 +243,7 @@ public class UserServiceImpl implements UserService {
 
 	
 	// 9. 회원가입 시도
+	@Transactional
 	@Override
 	public int tryRegist(User user) {
 		try {
