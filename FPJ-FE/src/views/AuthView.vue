@@ -12,13 +12,22 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref } from 'vue'
 import LoginForm from '@/components/user/LoginForm.vue'
 import RegisterForm from '@/components/user/RegisterForm.vue'
 
-const currentView = ref('login')
+import { useAccountService } from '@/composables/auth/useAccountService'
+import { useAccountStore } from '@/stores/accountStore'
+const accountService = useAccountService()
+const accountStore = useAccountStore()
 
-const formData = reactive({})
+const currentView = ref('login')
+// if ((currentView.value = 'login')) {
+//   // 로그인함
+//   accountService.login()
+// } else {
+//   // 회원가입하고 로그인함
+// }
 </script>
 
 <style scoped></style>

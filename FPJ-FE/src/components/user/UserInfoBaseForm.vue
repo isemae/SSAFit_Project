@@ -1,49 +1,32 @@
 <template>
-  <form @submit.prevent="submitForm">
+  <form @submit.prevent="onSubmit(formData)">
     <div>
-      <label for="userId">ID</label>
-      <input
-        id="userId"
-        type="text"
-        v-model="formData.userId"
-        @keyup="validateField(formData, 'userId')"
-      />
-      <span>{{ errors.userId }}</span>
+      <label for="loginId">ID</label>
+      <input id="loginId" type="text" v-model="formData.loginId" />
     </div>
     <div>
       <label for="password">비밀번호</label>
-      <input
-        id="password"
-        type="password"
-        v-model="formData.password"
-        @keyup="validateField(formData, 'password')"
-      />
-      <span>{{ errors.password }}</span>
+      <input id="password" type="password" v-model="formData.password" />
     </div>
-    <slot name="additional-fields" :validate-field="validateField"></slot>
+    <slot name="additional-fields" :validate-field="validateField" :form-data="formData"></slot>
     <!-- <button :disabled="!isFormValid">확인</button> -->
     <button>확인</button>
   </form>
 </template>
 
 <script setup>
-import { useAccountService } from '@/composables/auth/useAccountService'
 import { useValidation } from '@/composables/auth/useValidation'
 import { reactive, computed, watchEffect, ref } from 'vue'
-const { validateFormData, validateField, errors } = useValidation()
+const { validateField, errors } = useValidation()
 
-const accountService = useAccountService()
 const props = defineProps({
   initialFormData: Object,
+  onSubmit: Function,
 })
 
 const formData = reactive({ ...props.initialFormData })
 
 const isFormValid = computed(() => Object.values(errors).every((error) => error === null))
-
-const submitForm = () => {
-  accountService.login(formData.loginId, formData.password)
-}
 </script>
 
 <style scoped></style>
