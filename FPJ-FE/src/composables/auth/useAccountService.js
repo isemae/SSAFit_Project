@@ -30,7 +30,7 @@ export const useAccountService = () => {
    * @param {String} password
    * @param {String} userName
    * @returns {Boolean}
-   * @url /accounts/regist
+   * @url /accounts/register
    * ( id: loginId, password, name: userName ) => boolean
    * 입력한 정보가 유효하다면 form 데이터를 모아 서버에 요청을 보냅니다.
    */
@@ -43,7 +43,7 @@ export const useAccountService = () => {
       const req = { loginId, password, userName }
       console.log('req' + JSON.stringify(req))
       const res = await axios({
-        url: `${API_ENDPOINTS.ACCOUNT.BASE}/regist`,
+        url: `${API_ENDPOINTS.ACCOUNT.BASE}/register`,
         method: 'POST',
         data: req,
       })
