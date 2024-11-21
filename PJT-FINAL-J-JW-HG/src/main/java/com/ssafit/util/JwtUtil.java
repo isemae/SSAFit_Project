@@ -25,7 +25,7 @@ import io.jsonwebtoken.security.Keys;
  */
 public class JwtUtil {
     private final Key secretKey; // signWith에서 사용하기 위한 key 객체
-    private static final Long expiration = 1000L * 60 * 60; // 밀리세컨드 기준
+    private static final Long expiration = 1000L * 60 * 60 * 24; // 밀리세컨드 기준 일단 하루
 
     /**
      * 생성자로 application.properties 설정 값 주입 
