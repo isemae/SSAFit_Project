@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 
 export const useAccountStore = defineStore('accounts', () => {
   const loginUser = ref(null)
-  const isLoggedIn = ref(false)
+  const isLoggedIn = computed(() => Boolean(loginUser.value))
 
   return { loginUser, isLoggedIn }
 })

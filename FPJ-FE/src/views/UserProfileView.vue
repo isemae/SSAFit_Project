@@ -9,9 +9,7 @@ import { onBeforeMount } from 'vue'
 import { useAccountStore } from '@/stores/accountStore'
 
 // const store = useAccountStore()
-onBeforeMount(() => {
-  // store.login()
-})
+onBeforeMount(() => {})
 </script>
 
 <style scoped></style>
