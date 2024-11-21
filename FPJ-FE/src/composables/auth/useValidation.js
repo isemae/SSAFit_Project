@@ -1,29 +1,34 @@
-import { watch } from 'vue'
+import { watch, reactive, ref } from 'vue'
 
 export const useValidation = () => {
   const decodeJWT = (token) => {
     const payload = token.split('.')[1]
     return JSON.parse(atob(payload))
   }
+  const errors = reactive({
+    userId: '',
+    password: '',
+    passwordCheck: '',
+    username: '',
+  })
 
   // 사용자 입력 데이터의 유효성 검증.
   // 특정 입력 형식에 대한 규칙 정의(예: 이메일, 비밀번호, 이름 등).
   // 폼 필드별 에러 메시지 관리.
-
   // ------------------------ 회원가입 시 사용 메서드
   // 공백체크
-  const isInputBlank = () => {
-    return false
+  const isInputBlank = (input) => {
+    return input === ''
   }
 
   // 비밀번호 & 비밀번호 확인 일치여부 검증
-  const isPasswordMatching = (input) => {
-    return false
+  const isPasswordMatching = (password, passwordCheck) => {
+    return password === passwordCheck
   }
 
   // 입력 패스워드가 규칙에 맞는지 검증
   const isPasswordValid = (input) => {
-    return false
+    return input.length >= 8
   }
 
   // 계정 존재 여부를 확인
@@ -38,72 +43,55 @@ export const useValidation = () => {
 
   // 회원가입, 로그인 시 유효성 검증
   // @submit 시 form내 모든 필드 유효성 검증
-  const validateFormData = (formData) => {
-    // form컴포넌트에서 formData를 reactive로 사용
-    ///////////// registration
-    // const formData = reactive({
-    //  userId: "",
-    //  password: "",
-    //  passwordCheck: "",
-    //  username:
-    // })
-    //
-    // //////////// login
-    // const formData = reactive({
-    //   userId: "",
-    //   password: "",
-    // })
-    //
-    let isValid = true
-
-    for (const field in formData) {
-      const isFieldValid = validateField(formData, field)
-      if (!isFieldValid) {
-        isValid = false
-        break
-      }
-    }
-    return isValid
+  // 전체 폼 유효성 검증
+  const validateFormData = async (formData) => {
+    await Promise.all(Object.keys(formData).map((field) => validateField(formData, field)))
+    return Object.values(errors).every((error) => error === null)
   }
 
-  // 회원가입 시 유효성 검증
   const validateField = async (formData, field) => {
-    const value = formData[field]
+    const value = ref(formData[field]).value
     if (value) {
       switch (field) {
-        // id는 6자 이상 & 존재하는지 검증
-        case 'userId': {
-          return value.length >= 6 && !(await isUserIdExisting(value))
-        }
-        // 패스워드는 8자 이상
+        case 'userId':
+          errors.userId = value.length >= 6 ? null : 'ID는 6자 이상이어야 합니다'
+          return !errors.userId
         case 'password':
-          return value.length >= 8 && isPasswordValid(value)
-        // 패스워드가 입력돼 있고 같은지 검증
+          errors.password = value.length >= 8 ? null : '비밀번호는 8자 이상이어야 합니다'
+          return !errors.password
         case 'passwordCheck':
-          return isPasswordMatching(formData.password, value)
-        // 존재하는지 검증
-        case 'userName':
-          return value.length >= 2 && isUserNameAvailable(value)
+          errors.passwordCheck = isPasswordMatching(formData['password'], value)
+            ? null
+            : '비밀번호가 일치하지 않습니다'
+          return !errors.passwordCheck
+        case 'username':
+          errors.username = value.length >= 2 ? null : '닉네임은 2자 이상이어야 합니다'
+          return !errors.username
         default:
+          errors[field] = null
           return true
       }
     }
+    errors[field] = ''
     return false
   }
 
-  // @keyup시 필드 유효성 검증
-  const useFormFieldWatcher = (formData) => {
-    watch(formData, (newData, oldData) => {
-      for (const field in newData) {
-        if (newData[field] !== oldData[field]) {
-          validateField(formData, field)
-        }
-      }
-    })
-  }
+  // // @keyup시 필드 유효성 검증
+  // const validateFormField = (formData) => {
+  //   watch(
+  //     formData,
+  //     (newData, oldData) => {
+  //       for (const field in newData) {
+  //         if (newData[field] !== oldData[field]) {
+  //           validateField(formData, field)
+  //         }
+  //       }
+  //     },
+  //     { deep: true },
+  //     console.log(formData),
+  //   )
+  // }
 
   // watch 와 debounce로 실시간 확인
-  //
-  //
-  return { decodeJWT }
+  return { decodeJWT, errors, validateField, validateFormData }
 }
