@@ -5,19 +5,25 @@ import org.springframework.stereotype.Service;
 
 import com.ssafit.model.dao.UserDao;
 import com.ssafit.model.dto.User;
+import com.ssafit.util.JwtUtil;
 
 @Service
 public class UserServiceImpl implements UserService {
 	private final UserDao userDao;
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
+	private final JwtUtil jwtUtil;
 	
 	// 생성자로 의존성 주입
-	public UserServiceImpl(UserDao userDao, BCryptPasswordEncoder bCryptPasswordEncoder) {
+	public UserServiceImpl(UserDao userDao, BCryptPasswordEncoder bCryptPasswordEncoder, JwtUtil jwtUtil) {
 		super();
 		this.userDao = userDao;
 		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+		this.jwtUtil = jwtUtil;
 	}
 
+///////////////////////////////////////////////////////////////////////////////
+	// Business Logic 
+///////////////////////////////////////////////////////////////////////////////	
 	// 1. 특정 유저 정보 전체 조회
 	/* return:
 	{ 
@@ -63,6 +69,7 @@ public class UserServiceImpl implements UserService {
 			return null;
 		}
 	}
+
 
 	// 2. 유저의 건강력 조회
 	/* return:
@@ -199,34 +206,37 @@ public class UserServiceImpl implements UserService {
 	// ========================= Account ================================= //
 	// 8. 로그인 시도에 따른 특정 유저의 비밀번호 조회
 	@Override
-	public int getInfoForLoginTry(String loginId, String password) {
+	public String getInfoForLoginTry(String loginId, String password) {
 		try {
 			// service에서 비즈니스 로직 처리
-			// user id를 토대로 db에서 그 id에 해당하는 유저의 비밀번호를 조회하는 dao 호출
-			String dbPassword = userDao.getInfoForLoginTry(loginId);
+			// user id를 토대로 db에서 그 id에 해당하는 유저 조회
+			User dbUser = userDao.getInfoForLoginTry(loginId);
 			
-			if(dbPassword == null) {
+			// 해당하는 유저가 없을 시
+			if(dbUser == null) {
 				System.out.println("Service에서의 통신: 해당 유저를 찾을 수 없습니다.");
-				return 0;
+				return null;
 			}
+			
+			String dbPassword = dbUser.getPassword();			
 				
 			// 비밀번호가 일치하지 않는다면
 			if(!bCryptPasswordEncoder.matches(password, dbPassword)) {
 				System.out.println("Service에서의 통신: 비밀번호가 일치하지 않습니다.");
-				return 0;
+				return null;
 			}
 			
-			// TODO 1 login 성공시 토큰 발급
+			// password 뺴고 등록
+			String accessToken = jwtUtil.createAccessToken(dbUser);
 			
-			
-			return 1;
+			return accessToken;
 		}
 		catch(Exception e) {
 			System.out.println("===userServiceImpl===");
 			e.printStackTrace();
 			System.out.println("===userServiceImpl===");
 			
-			return -1;	
+			return null;	
 		}
 	}
 

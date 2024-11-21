@@ -2,6 +2,8 @@ package com.ssafit.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -12,10 +14,18 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+	// bcrypt 암호화를 위한 encoder
 	@Bean
 	public BCryptPasswordEncoder bCryptPasswordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
+	
+	// auth 관련 manager를 통한 로직 설정
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) 
+            throws Exception {
+        return authConfig.getAuthenticationManager();
+    }
 	
 	/**
 	 * @param http
@@ -23,7 +33,8 @@ public class SecurityConfig {
 	 * @throws Exception
 	 * Created by Claude 3.5 Sonnet
 	 */
-	// TODO 2 Security Config method에 대한 진실 검증 및 정보 추가 조사 필요! 
+	// TODO 2 Security Config method에 대한 진실 검증 및 정보 추가 조사 필요!
+	// filter들을 이용한 보안 로직 설정
 	@Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -51,7 +62,7 @@ public class SecurityConfig {
             // /api/auth/** 경로는 모든 사용자 접근 가능(회원가입, 로그인 등)
             // 그 외 요청은 인증된 사용자만 접근 가능
             .authorizeHttpRequests(authorize -> authorize // http 요청에 대한 인가규칙 설정 시작
-                .requestMatchers("/accounts/**").permitAll() // URL패턴 지정, permitAll()로 인증 없이 모든 사용자 접근 가능 허용
+                .requestMatchers("**").permitAll() // URL패턴 지정, permitAll()로 인증 없이 모든 사용자 접근 가능 허용
                 .anyRequest().authenticated() // 위에서 설정하지 않은 나머지 모든 요청에 대한 설정(항상 마지막에 설정), authenticated()로 인증된, 로그인한 사용자만 접근 가능
             );
             
