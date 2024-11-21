@@ -29,25 +29,6 @@ jobs:
           echo "Found Jira Key: $JIRA_KEY"
           echo "JIRA_KEY=$JIRA_KEY" >> $GITHUB_ENV
 
-      - name: Find GitHub Issue by Jira Key in Title
-        if: env.JIRA_KEY != ''
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          # GitHub API로 모든 열려 있는 이슈를 가져와 Jira 키가 포함된 제목 찾기
-          ISSUE_NUMBER=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
-            "${{ github.api_url }}/repos/${GITHUB_REPOSITORY}/issues?state=open" | \
-            jq -r ".[] | select(.title | test(\"\\[$JIRA_KEY\\]\")) | .number")
-
-          # 일치하는 이슈가 없으면 종료
-          if [ -z "$ISSUE_NUMBER" ]; then
-            echo "No matching GitHub Issue found with Jira Key $JIRA_KEY in title. Skipping comment."
-            exit 0
-          fi
-
-          echo "Found matching GitHub Issue: #$ISSUE_NUMBER"
-          echo "ISSUE_NUMBER=$ISSUE_NUMBER" >> $GITHUB_ENV
-
       - name: Check for Existing Comment and Add if Not Exists
         if: env.ISSUE_NUMBER != ''
         env:
