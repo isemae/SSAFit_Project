@@ -6,7 +6,7 @@ export const useValidation = () => {
     return JSON.parse(atob(payload))
   }
   const errors = reactive({
-    userId: '',
+    loginId: '',
     password: '',
     passwordCheck: '',
     username: '',
@@ -54,8 +54,8 @@ export const useValidation = () => {
     if (value) {
       switch (field) {
         case 'userId':
-          errors.userId = value.length >= 6 ? null : 'ID는 6자 이상이어야 합니다'
-          return !errors.userId
+          errors.loginId = value.length >= 6 ? null : 'ID는 6자 이상이어야 합니다'
+          return !errors.loginId
         case 'password':
           errors.password = value.length >= 8 ? null : '비밀번호는 8자 이상이어야 합니다'
           return !errors.password
@@ -64,9 +64,9 @@ export const useValidation = () => {
             ? null
             : '비밀번호가 일치하지 않습니다'
           return !errors.passwordCheck
-        case 'username':
-          errors.username = value.length >= 2 ? null : '닉네임은 2자 이상이어야 합니다'
-          return !errors.username
+        case 'userName':
+          errors.userName = value.length >= 2 ? null : '닉네임은 2자 이상이어야 합니다'
+          return !errors.userName
         default:
           errors[field] = null
           return true
