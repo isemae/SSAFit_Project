@@ -29,5 +29,5 @@ public interface UserService {
 	String getInfoForLoginTry(String loginId, String password);
 	
 	// 9. 회원가입 시도
-	int tryRegist(User user);
+	int tryRegister(User user);
 }

@@ -245,7 +245,7 @@ public class UserServiceImpl implements UserService {
 	// 9. 회원가입 시도
 	@Transactional
 	@Override
-	public int tryRegist(User user) {
+	public int tryRegister(User user) {
 		try {
 			// service에서 비즈니스 로직 처리
 			// front에서도 공백 체크 해주겠지만... back에서도 한 번 더 체크
@@ -269,7 +269,7 @@ public class UserServiceImpl implements UserService {
 			user.setPassword(bCryptedPassword);
 			
 			// dao 호출 및 db 통신 시도
-			int isUserRegisted = userDao.tryRegist(user);
+			int isUserRegisted = userDao.tryRegister(user);
 			
 			// 등록 실패 시
 			if(isUserRegisted == 0) {

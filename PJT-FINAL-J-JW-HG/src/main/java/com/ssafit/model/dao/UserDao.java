@@ -29,5 +29,5 @@ public interface UserDao {
 	User getInfoForLoginTry(String loginId);
 	
 	// 9. 회원가입 시도
-	int tryRegist(User user);
+	int tryRegister(User user);
 }

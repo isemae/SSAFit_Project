@@ -72,13 +72,13 @@ public class AccountController {
 	 * @return Boolean
 	 * true/false
 	 */
-	@PostMapping("/regist")
-	public ResponseEntity<?> tryRegist(@RequestBody User user) {
+	@PostMapping("/register")
+	public ResponseEntity<?> tryRegister(@RequestBody User user) {
 		try {			
 			// 서비스 호출
-			int isUserRegisted = userService.tryRegist(user);
+			int isUserRegistered = userService.tryRegister(user);
 			
-			if(isUserRegisted == -1) {
+			if(isUserRegistered == -1) {
 				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("등록에 실패했습니다.");				
 			}
 						
