@@ -17,7 +17,6 @@ import com.ssafit.model.service.UserService;
 @CrossOrigin(origins = {"http://localhost:5173", "http://localhost:5174"}) 
 public class AuthController {
 	//-----------------------------------------------------------//
-git pull origin FPJ-58-Dev
 	// 멤버 필드
 	//-----------------------------------------------------------//
 	private final UserService userService;

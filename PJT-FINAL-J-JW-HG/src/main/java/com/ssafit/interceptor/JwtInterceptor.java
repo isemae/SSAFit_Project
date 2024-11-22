@@ -25,10 +25,21 @@ public class JwtInterceptor implements HandlerInterceptor{
 		super();
 		this.jwtUtil = jwtUtil;
 	}
+<<<<<<< HEAD
 	//-----------------------------------------------------------//
 	// AOP 로직
 	//-----------------------------------------------------------//
 	/** prehandle: servlet에서 controller로 가기전
+||||||| parent of 694511f ([FPJ-49] Refactor comments/code and trouble shooting #32)
+	
+	/**
+	 * prehandle: servlet에서 controller로 가기전 
+=======
+	//-----------------------------------------------------------//
+	// 로직
+	//-----------------------------------------------------------//
+	/** prehandle: servlet에서 controller로 가기전
+>>>>>>> 694511f ([FPJ-49] Refactor comments/code and trouble shooting #32)
 	 */
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
