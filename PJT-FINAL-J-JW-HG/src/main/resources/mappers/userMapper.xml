@@ -61,7 +61,7 @@
 	</select>
 	
 	<!-- 9. try regist 회원가입 시도 -->
-	<insert id="tryRegist" parameterType="User">
+	<insert id="tryRegister" parameterType="User">
 		INSERT INTO user
 		(login_id, password, user_name)
 		VALUES

@@ -8,6 +8,9 @@ import com.ssafit.interceptor.JwtInterceptor;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
+	//////////////////////////////////////////////////////////////
+	// 멤버 필드
+	//////////////////////////////////////////////////////////////
 	private final JwtInterceptor jwtInterceptor;
 	
 	// 생성자로 의존성 주입
@@ -15,9 +18,11 @@ public class WebConfig implements WebMvcConfigurer {
 		super();
 		this.jwtInterceptor = jwtInterceptor;
 	}
-	/////////////////////////////////////////////////////////
-	
-	// interceptor 등록
+	//////////////////////////////////////////////////////////////
+	// 로직 부분
+	//////////////////////////////////////////////////////////////
+	/** interceptor 등록
+	 */
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(jwtInterceptor)

@@ -12,7 +12,6 @@ import org.springframework.security.web.SecurityFilterChain;
 
 //import com.ssafit.filter.JwtAuthFilter;
 
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -29,28 +28,34 @@ public class SecurityConfig {
 //		this.jwtAuthFilter = jwtAuthFilter;
 //	}
 
-	
-	// bcrypt 암호화를 위한 encoder
+	//////////////////////////////////////////////////////////////
+	// Bean 등록
+	//////////////////////////////////////////////////////////////
+	/** bcrypt 암호화를 위한 encoder
+	 * @return
+	 */
 	@Bean
 	public BCryptPasswordEncoder bCryptPasswordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
 	
-	// auth 관련 manager를 통한 로직 설정
+	/** auth 관련 manager를 통한 로직 설정
+	 * @param authConfig
+	 * @return
+	 * @throws Exception
+	 */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) 
             throws Exception {
         return authConfig.getAuthenticationManager();
     }
 	
-	/**
+	/** filter들을 이용한 보안 로직 설정
 	 * @param http
 	 * @return
 	 * @throws Exception
 	 * Created by Claude 3.5 Sonnet
 	 */
-	// TODO 2 Security Config method에 대한 진실 검증 및 정보 추가 조사 필요!
-	// filter들을 이용한 보안 로직 설정
 	@Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
