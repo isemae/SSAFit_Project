@@ -1,28 +1,44 @@
 import { API_ENDPOINTS } from '@/constants/apiEndpoints'
 import { useAccountStore } from '@/stores/accountStore'
-import axios from 'axios'
-import { useValidation } from './useValidation'
+import { useAxiosService } from '../data/useAxiosService'
+
+/** 사용자 계정 정보 통신을 담당하는 Composable입니다.
+ *
+ *
+ *
+ *
+ */
+
 export const useAccountService = () => {
+  const { createClient } = useAxiosService()
   const accountStore = useAccountStore()
-  // 로그인: POST
-  // /accounts/login
-  // ( loginId, password ) => boolean
-  const login = async function ({ loginId, password }) {
+
+  const accountClient = createClient(API_ENDPOINTS.ACCOUNT.BASE)
+
+  const handleRequest = async (name, req) => {
     try {
-      const req = { loginId, password }
-      const res = await axios({
-        url: `${API_ENDPOINTS.ACCOUNT.BASE}/login`,
-        method: 'POST',
-        data: req,
-      })
-      accountStore.loginUser = req
+      const res = await req()
+      return { success: true, data: res.data }
     } catch (err) {
-      console.error(err)
+      return { success: false, error: err.response?.data }
     }
-    return useAccountStore.isLoggedIn
   }
 
-  const logout = async () => {}
+  const login = async ({ loginId, password }) => {
+    const endpoint = API_ENDPOINTS.ACCOUNT.LOGIN() // 함수 호출 필요
+    const res = await handleRequest('login', () =>
+      accountClient.post(endpoint.url, { loginId, password }),
+    )
+    if (res.success) {
+      accountStore.accessToken = res.data
+      localStorage.setItem('accessToken', res.data)
+    }
+    return res
+  }
+
+  const logout = async () => {
+    localStorage.removeItem('accessToken')
+  }
 
   /** 사용자 등록
    * @function register
@@ -34,22 +50,11 @@ export const useAccountService = () => {
    * ( id: loginId, password, name: userName ) => boolean
    * 입력한 정보가 유효하다면 form 데이터를 모아 서버에 요청을 보냅니다.
    */
-  // const register = async ({ loginId, password, userName }) => {
   const register = async ({ loginId, password, userName }) => {
-    console.log(loginId)
-    console.log(password)
-    console.log(userName)
-    try {
-      const req = { loginId, password, userName }
-      console.log('req' + JSON.stringify(req))
-      const res = await axios({
-        url: `${API_ENDPOINTS.ACCOUNT.BASE}/register`,
-        method: 'POST',
-        data: req,
-      })
-    } catch (err) {
-      console.error(err)
-    }
+    const res = await handleRequest('register', () =>
+      accountClient.post('/register', { loginId, password, userName }),
+    )
+    return res
   }
   return { login, logout, register }
 }
