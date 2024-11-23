@@ -1,15 +1,31 @@
 <template>
-  <InfoPanel />
-  <div></div>
+  <div id="user-profile-view">
+    <InfoPanel />
+    <UserInfo />
+  </div>
 </template>
 
 <script setup>
 import InfoPanel from '@/components/common/InfoPanel.vue'
-import { onBeforeMount } from 'vue'
-import { useAccountStore } from '@/stores/accountStore'
+import UserInfo from '@/components/user/UserInfo.vue'
+import { useAuthStore } from '@/stores/authStore'
+import { provide } from 'vue'
 
-// const store = useAccountStore()
-onBeforeMount(() => {})
+const authStore = useAuthStore()
+
+provide('user', authStore.loginUser)
 </script>
 
-<style scoped></style>
+<style scoped>
+#user-profile-view {
+  display: flex;
+  flex-direction: row;
+}
+div {
+  margin-bottom: 0.5rem;
+}
+strong {
+  color: #333;
+  margin-right: 0.3rem;
+}
+</style>

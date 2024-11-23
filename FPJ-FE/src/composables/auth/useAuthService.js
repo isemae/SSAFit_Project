@@ -1,28 +1,52 @@
-import { useAccountStore } from '@/stores/accountStore'
+import { useAuthStore } from '@/stores/authStore'
+import { useAxiosService } from '../data/useAxiosService'
+import { API_ENDPOINTS } from '@/constants/apiEndpoints'
 
-/** 사용자 인증정보의 유효성을 검증하는 hook입니다.
- * 인증상태에 따라 토큰을 만료시키거나 refresh합니다.
+/**
+ * 사용자 인증 서비스
+ * - 로그인/로그아웃 API 호출
+ * - JWT 검증 및 유효성 검사
  */
-
 export const useAuthService = function () {
-  const accountStore = useAccountStore()
-  const loginUser = accountStore.loginUser
+  const authStore = useAuthStore()
+  const { createClient, handleRequest } = useAxiosService()
+  const authClient = createClient(API_ENDPOINTS.ACCOUNT.BASE)
 
+  // 로그인
+  const login = async ({ loginId, password }) => {
+    const endpoint = API_ENDPOINTS.ACCOUNT.LOGIN()
+    const res = await handleRequest(() => authClient.post(endpoint.url, { loginId, password }))
+
+    if (res.success) {
+      authStore.setAccessToken(res.data) // 상태와 localStorage 동기화
+    }
+    return res
+  }
+
+  // 로그아웃
+  const logout = async () => {
+    authStore.clearAccessToken() // 상태와 localStorage 동기화
+  }
+
+  // JWT 디코딩
   const decodeJWT = (token) => {
-    if (!token) {
-      return
+    if (!token) return null
+    try {
+      const payload = token.split('.')[1]
+      return JSON.parse(atob(payload))
+    } catch (error) {
+      console.error('Invalid token:', error)
+      return null
     }
-    const payload = token?.split('.')[1]
-    return JSON.parse(atob(payload))
   }
 
-  const isTokenValid = () => {
+  // JWT 유효성 검증
+  const isTokenValid = (token) => {
+    const decoded = decodeJWT(token)
     const currentTime = Math.floor(Date.now() / 1000)
-    if (loginUser?.exp && loginUser.exp < currentTime) {
-      return false
-    }
-    return true
+    if (!decoded || !decoded.exp) return false
+    return decoded.exp > currentTime
   }
 
-  return { decodeJWT, isTokenValid }
+  return { login, logout, decodeJWT, isTokenValid }
 }

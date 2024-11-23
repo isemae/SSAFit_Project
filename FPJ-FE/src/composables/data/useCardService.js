@@ -1,29 +1,35 @@
 import { API_ENDPOINTS } from '@/constants/apiEndpoints'
 import axios from 'axios'
-
 import { useCardStore } from '@/stores/cardStore'
 import { useExerciseStore } from '@/stores/exerciseStore'
-import { useAccountStore } from '@/stores/accountStore'
+import { useAuthStore } from '@/stores/authStore'
+import { useAxiosService } from './useAxiosService'
+import { storeToRefs } from 'pinia'
 
 export const useCardService = function () {
+  const { createClient, handleRequest } = useAxiosService()
   const cardStore = useCardStore()
   const exerciseStore = useExerciseStore()
-  const accountStore = useAccountStore()
+  const authStore = useAuthStore()
+  const exerciseClient = createClient(API_ENDPOINTS.EXERCISE.BASE)
+  const userClient = createClient(API_ENDPOINTS.USER.BASE)
+
+  const { loginUser: user } = storeToRefs(authStore)
 
   const initExerciseData = async () => {
     await getRandomlySelectedExerciseData()
     return exerciseStore.randomExercises
   }
 
-  const handleExerciseStatus = (status, data) => {
-    if (!status && data) {
-      let card = {
-        exerciseId: data.id,
-        score: 100,
-        tier: 1,
-      }
-      cardStore.postCard(1, card)
+  const handleExerciseStatus = async (status, data) => {
+    // if (loginUser && !status) {
+    let card = {
+      exerciseId: 1,
+      score: 100,
+      tier: user.tier,
     }
+    const res = await postCard(card, user.userId)
+    // }
   }
 
   /** 카드에 등록할 운동 정보를 받아옵니다.
@@ -33,17 +39,10 @@ export const useCardService = function () {
    * @throws {Error}
    */
   const getRandomlySelectedExerciseData = async () => {
-    try {
-      const res = await axios({
-        url: `${API_ENDPOINTS.EXERCISE.RANDOM}`,
-        method: 'GET',
-      })
-      const excercises = res.data
-      console.log(excercises)
-      exerciseStore.randomlySelectedExerciseData.value = excercises
-    } catch (err) {
-      console.error(`Error fetching excercise data. (${err})`)
-    }
+    const endpoint = API_ENDPOINTS.EXERCISE.RANDOM()
+    const res = await handleRequest(() => exerciseClient.get(endpoint.url))
+    // console.log(res.data)
+    exerciseStore.randomlySelectedExerciseData.value = res.data
   }
 
   /** 운동 완료 후 User DB 테이블에 등록 요청을 보냅니다.
@@ -52,16 +51,17 @@ export const useCardService = function () {
    * @returns {Promise<Card[]>}
    * @throws {Error}
    */
-  const postCard = async function (card) {
-    const userId = accountStore.loginUser.value.id
-    try {
-      axios({
-        url: `${API_ENDPOINTS.EXERCISE.BASE}/${userId}`,
-        method: 'POST',
-        data: card,
-      })
-    } catch (err) {
-      console.error(err)
+  const postCard = async function (card, userId) {
+    const user = accountStore.loginUser
+    const endpoint = API_ENDPOINTS.CARDS.COLLECT({
+      pathParams: { userId: user.userId },
+    })
+
+    const cardClient = createClient(API_ENDPOINTS.CARDS.BASE)
+    const res = await handleRequest(() => {
+      return cardClient.post(endpoint.url, card)
+    })
+    if (res.success) {
     }
   }
 

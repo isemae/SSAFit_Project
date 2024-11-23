@@ -1,18 +1,24 @@
 <template>
   <div id="webview-header">
     <h1>{{ currentPage }}</h1>
-    <nav id="navigations-container">
+    <nav v-if="authStore.loginUser" id="navigations-container">
       <div class="navigation">
-        <img src="@/assets/collection_icon.svg" alt="" />
-        <RouterLink :to="{ name: 'cardCollection' }">컬렉션</RouterLink>
+        <RouterLink :to="{ name: 'cardCollection' }"
+          ><img :src="collectionIcon" alt="컬렉션 아이콘" />컬렉션</RouterLink
+        >
       </div>
       <div class="navigation">
-        <img src="@/assets/user_icon.svg" alt="" />
-        <RouterLink :to="{ name: 'profile' }">프로필</RouterLink>
+        <RouterLink :to="{ name: 'profile' }"
+          ><img :src="userIcon" alt="프로필 아이콘" />프로필</RouterLink
+        >
       </div>
       <div class="navigation">
-        <img src="@/assets/preference_icon.svg" alt="" />
-        <RouterLink :to="{ name: 'preference' }">설정</RouterLink>
+        <RouterLink :to="{ name: 'preference' }"
+          ><img :src="preferenceIcon" alt="설정 아이콘" />설정</RouterLink
+        >
+      </div>
+      <div>
+        <button @click="authService.logout()">로그아웃</button>
       </div>
     </nav>
   </div>
@@ -21,6 +27,14 @@
 <script setup>
 import { useRoute } from 'vue-router'
 import { computed } from 'vue'
+import { useAuthStore } from '@/stores/authStore'
+import collectionIcon from '@/assets/collection_icon.svg'
+import userIcon from '@/assets/user_icon.svg'
+import preferenceIcon from '@/assets/preference_icon.svg'
+import { useAuthService } from '@/composables/auth/useAuthService'
+
+const authService = useAuthService()
+const authStore = useAuthStore()
 
 const route = useRoute()
 const currentPage = computed(() => route.meta.title)
@@ -32,6 +46,7 @@ const currentPage = computed(() => route.meta.title)
   align-items: center;
   justify-content: space-between;
   padding: 0 1rem;
+  border-bottom: 1px solid lightgray;
 }
 
 h1 {
@@ -39,26 +54,30 @@ h1 {
   font-weight: 600;
 }
 
-a {
+a,
+button {
   text-decoration: none;
   color: black;
+  text-align: center;
+  font-size: 1rem;
+  cursor: pointer;
 }
 
-#navigations-container,
-#navigations-container .navigation {
+a:hover,
+button:hover {
+  color: #007bff;
+}
+
+#navigations-container {
   display: flex;
   flex-direction: row;
-  justify-content: center;
   align-items: center;
-  gap: 10px;
-}
-
-.navigation {
-  justify-content: space-around;
+  gap: 20px;
 }
 
 .navigation img {
   width: 24px;
   height: 24px;
+  margin-right: 5px;
 }
 </style>
