@@ -1,14 +1,10 @@
 <template>
   <section id="collection-view">
-    <InfoPanel class="info-panel" />
-    <section class="view-content">
-      <Collections />
-    </section>
+    <Collections />
   </section>
 </template>
 
 <script setup>
-import InfoPanel from '@/components/common/InfoPanel.vue'
 import RecentCards from '@/components/common/RecentCards.vue'
 import Collections from '@/components/content/Collections.vue'
 import { useAuthStore } from '@/stores/authStore'
@@ -18,10 +14,6 @@ import { useAuthStore } from '@/stores/authStore'
 #collection-view {
   display: flex;
   flex-grow: 1;
-}
-
-.info-panel {
-  flex: 0.8;
 }
 
 .view-content {

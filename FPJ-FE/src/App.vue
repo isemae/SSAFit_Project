@@ -1,12 +1,19 @@
 <template>
-  <div>
-    <Header />
+  <component :is="layoutComponent">
     <RouterView />
-  </div>
+  </component>
 </template>
 
 <script setup>
-import Header from './components/common/Header.vue'
+import SidepanelLayout from './layout/SidepanelLayout.vue'
+import WebViewLayout from './layout/WebViewLayout.vue'
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
+const layoutComponent = computed(() => {
+  return route.meta.layout === 'sidepanel' ? SidepanelLayout : WebViewLayout
+})
 </script>
 
 <style>

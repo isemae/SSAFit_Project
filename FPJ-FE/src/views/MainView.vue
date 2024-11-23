@@ -1,15 +1,13 @@
 <template>
-  <main>
-    <div class="test-wrapper">
-      <FlipCard />
-      <FlipCard />
-      <FlipCard />
+  <div class="test-wrapper">
+    <FlipCard />
+    <FlipCard />
+    <FlipCard />
 
-      <FlipCard class="card position-left" />
-      <FlipCard class="card position-center" />
-      <FlipCard class="card position-right" />
-    </div>
-  </main>
+    <FlipCard class="card position-left" />
+    <FlipCard class="card position-center" />
+    <FlipCard class="card position-right" />
+  </div>
 </template>
 
 <script setup>
@@ -18,15 +16,6 @@ import FlipCard from '@/components/common/cards/FlipCard.vue'
 
 <style scoped>
 @import '../components/common/cards/CardFace.module.css';
-main {
-  position: relative;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #631f3a;
-}
 
 .test-wrapper {
   width: 50%;
