@@ -1,6 +1,5 @@
 <template>
   <div id="user-profile-view">
-    <InfoPanel />
     <UserInfo />
   </div>
 </template>

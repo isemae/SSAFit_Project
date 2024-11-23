@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="auth-view">
     <template v-if="currentView === 'login'">
       <LoginForm />
       <button @click="currentView = 'register'">회원가입</button>
@@ -16,15 +16,14 @@ import { ref } from 'vue'
 import LoginForm from '@/components/user/LoginForm.vue'
 import RegisterForm from '@/components/user/RegisterForm.vue'
 
-import { useAccountService } from '@/composables/auth/useAccountService'
-
 const currentView = ref('login')
-// if ((currentView.value = 'login')) {
-//   // 로그인함
-//   accountService.login()
-// } else {
-//   // 회원가입하고 로그인함
-// }
 </script>
 
-<style scoped></style>
+<style scoped>
+.auth-view {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+</style>

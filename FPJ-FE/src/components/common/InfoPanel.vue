@@ -1,12 +1,12 @@
 <template>
-  <section v-if="user" id="info-panel">
+  <aside v-if="user" id="info-panel">
     <span class="user-score">{{ user.score }}</span>
     <span>당신의 건강력</span>
     <p>멋져</p>
     <p>최고야</p>
     <p>눈부셔</p>
     <RecentCards />
-  </section>
+  </aside>
 </template>
 
 <script setup>
@@ -19,6 +19,7 @@ const { loginUser: user } = storeToRefs(store)
 
 <style scoped>
 #info-panel {
+  flex: 0.8;
   width: 100%;
   height: 100vh;
   max-width: 30vh;

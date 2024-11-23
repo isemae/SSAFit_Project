@@ -1,7 +1,7 @@
-<template>
-  <div id="webview-header">
+<template #navigations>
+  <div class="webview-header">
     <h1>{{ currentPage }}</h1>
-    <nav v-if="authStore.loginUser" id="navigations-container">
+    <nav v-if="authStore.loginUser" class="navigations-container">
       <div class="navigation">
         <RouterLink :to="{ name: 'cardCollection' }"
           ><img :src="collectionIcon" alt="컬렉션 아이콘" />컬렉션</RouterLink
@@ -28,10 +28,10 @@
 import { useRoute } from 'vue-router'
 import { computed } from 'vue'
 import { useAuthStore } from '@/stores/authStore'
+import { useAuthService } from '@/composables/auth/useAuthService'
 import collectionIcon from '@/assets/collection_icon.svg'
 import userIcon from '@/assets/user_icon.svg'
 import preferenceIcon from '@/assets/preference_icon.svg'
-import { useAuthService } from '@/composables/auth/useAuthService'
 
 const authService = useAuthService()
 const authStore = useAuthStore()
@@ -41,7 +41,7 @@ const currentPage = computed(() => route.meta.title)
 </script>
 
 <style scoped>
-#webview-header {
+.webview-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -68,7 +68,7 @@ button:hover {
   color: #007bff;
 }
 
-#navigations-container {
+.navigations-container {
   display: flex;
   flex-direction: row;
   align-items: center;
