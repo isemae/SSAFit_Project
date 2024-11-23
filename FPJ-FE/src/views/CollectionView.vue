@@ -11,6 +11,7 @@
 import InfoPanel from '@/components/common/InfoPanel.vue'
 import RecentCards from '@/components/common/RecentCards.vue'
 import Collections from '@/components/content/Collections.vue'
+import { useAuthStore } from '@/stores/authStore'
 </script>
 
 <style>

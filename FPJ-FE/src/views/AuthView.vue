@@ -17,9 +17,6 @@ import LoginForm from '@/components/user/LoginForm.vue'
 import RegisterForm from '@/components/user/RegisterForm.vue'
 
 import { useAccountService } from '@/composables/auth/useAccountService'
-import { useAccountStore } from '@/stores/accountStore'
-const accountService = useAccountService()
-const accountStore = useAccountStore()
 
 const currentView = ref('login')
 // if ((currentView.value = 'login')) {

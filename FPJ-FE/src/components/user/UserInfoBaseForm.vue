@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="onSubmit(formData)">
+  <form @submit.prevent="submitForm">
     <div>
       <label for="loginId">ID</label>
       <input id="loginId" type="text" v-model="formData.loginId" />
@@ -24,7 +24,11 @@ const props = defineProps({
   onSubmit: Function,
 })
 
-const formData = reactive({ ...props.initialFormData })
+const formData = reactive({ ...props.initialFormData } || {})
+
+const submitForm = () => {
+  props.onSubmit(formData)
+}
 
 const isFormValid = computed(() => Object.values(errors).every((error) => error === null))
 </script>

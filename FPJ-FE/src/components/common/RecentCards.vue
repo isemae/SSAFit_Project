@@ -3,7 +3,7 @@
     <p>최근 카드...</p>
     <div class="card-list">
       <Card
-        v-for="data in cardStore.userRecentlyCollectedCardData.value"
+        v-for="data in recentCards"
         :key="data.id"
         :data="data"
         :isCollected="true"
@@ -14,14 +14,20 @@
 </template>
 
 <script setup>
-import Card from '../cards/Card.vue'
+import Card from './cards/CardBase.vue'
 
 import { useCardStore } from '@/stores/cardStore'
 import { onBeforeMount, ref } from 'vue'
 import { useUserInfoService } from '@/composables/data/useUserInfoService'
+import { useAuthStore } from '@/stores/authStore'
+import { storeToRefs } from 'pinia'
 
 const cardStore = useCardStore()
 const userService = useUserInfoService()
+const authStore = useAuthStore()
+const { userRecentlyCollectedCardData: recentCards } = storeToRefs(cardStore)
+const { loginUser: user } = storeToRefs(authStore)
+
 // {
 // collectedDate: '2024-11-19 17:10:47'
 // exerciseId: 11
@@ -32,7 +38,7 @@ const userService = useUserInfoService()
 // }
 //
 onBeforeMount(async () => {
-  await userService.getUserRecentlyCollectedCardData(1)
+  await userService.getUserRecentlyCollectedCardData(user.userId, 3)
 })
 </script>
 
