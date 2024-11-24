@@ -1,4 +1,4 @@
-<template>
+<template #content>
   <div id="user-profile-view">
     <UserInfo />
   </div>

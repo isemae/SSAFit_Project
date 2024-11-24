@@ -1,73 +1,77 @@
-import { API_ENDPOINTS } from '@/constants/apiEndpoints'
-import axios from 'axios'
+import { useAuthStore } from '@/stores/authStore'
 import { useCardStore } from '@/stores/cardStore'
 import { useExerciseStore } from '@/stores/exerciseStore'
-import { useAuthStore } from '@/stores/authStore'
 import { useAxiosService } from './useAxiosService'
+import { API_ENDPOINTS } from '@/constants/apiEndpoints'
 import { storeToRefs } from 'pinia'
 
-export const useCardService = function () {
+export const useCardService = () => {
   const { createClient, handleRequest } = useAxiosService()
   const cardStore = useCardStore()
   const exerciseStore = useExerciseStore()
   const authStore = useAuthStore()
+
+  const cardClient = createClient(API_ENDPOINTS.CARDS.BASE)
   const exerciseClient = createClient(API_ENDPOINTS.EXERCISE.BASE)
-  const userClient = createClient(API_ENDPOINTS.USER.BASE)
 
-  const { loginUser: user } = storeToRefs(authStore)
-
-  const initExerciseData = async () => {
-    await getRandomlySelectedExerciseData()
-    return exerciseStore.randomExercises
-  }
-
-  const handleExerciseStatus = async (status, data) => {
-    // if (loginUser && !status) {
-    let card = {
-      exerciseId: 1,
-      score: 100,
-      tier: user.tier,
+  // 1. 카드 데이터 가져오기
+  const fetchUserCards = async (userId) => {
+    const endpoint = API_ENDPOINTS.CARDS.ALL({ pathParams: { userId } })
+    const res = await handleRequest(() => cardClient.get(endpoint.url))
+    if (res.success) {
+      return res.data
     }
-    const res = await postCard(card, user.userId)
-    // }
   }
 
-  /** 카드에 등록할 운동 정보를 받아옵니다.
-   * @function getRandomlySelectedExerciseData
-   * @async
-   * @returns {Promise<Exercise[]>}
-   * @throws {Error}
-   */
-  const getRandomlySelectedExerciseData = async () => {
+  // 2. 최근 카드 가져오기
+  const fetchRecentCards = async (userId, cardCount) => {
+    const endpoint = API_ENDPOINTS.CARDS.RECENT({ pathParams: { userId, cardCount } })
+    const res = await handleRequest(() => cardClient.get(endpoint.url))
+    if (res.success) {
+      cardStore.userRecentlyCollectedCards.value = res.data
+    }
+  }
+
+  // 3. 운동 데이터 가져오기
+  const fetchRandomExercise = async () => {
     const endpoint = API_ENDPOINTS.EXERCISE.RANDOM()
     const res = await handleRequest(() => exerciseClient.get(endpoint.url))
-    // console.log(res.data)
-    exerciseStore.randomlySelectedExerciseData.value = res.data
-  }
-
-  /** 운동 완료 후 User DB 테이블에 등록 요청을 보냅니다.
-   * @function postCard
-   * @async
-   * @returns {Promise<Card[]>}
-   * @throws {Error}
-   */
-  const postCard = async function (card, userId) {
-    const user = accountStore.loginUser
-    const endpoint = API_ENDPOINTS.CARDS.COLLECT({
-      pathParams: { userId: user.userId },
-    })
-
-    const cardClient = createClient(API_ENDPOINTS.CARDS.BASE)
-    const res = await handleRequest(() => {
-      return cardClient.post(endpoint.url, card)
-    })
     if (res.success) {
+      exerciseStore.randomExerciseData.value = res.data
     }
   }
 
-  // 유저정보(티어, id)
-  // 운동정보(카드 내용)
-  // 최종적으로 반환할 카드
+  // 4. 카드 추가하기
+  const addCard = async (card, userId) => {
+    const endpoint = API_ENDPOINTS.CARDS.COLLECT({ pathParams: { userId } })
+    const res = await handleRequest(() => cardClient.post(endpoint.url, card))
+    return res.success
+  }
 
-  return { initExerciseData, handleExerciseStatus, postCard }
+  // 5. 운동 상태 처리
+  const handleExercise = async (exerciseId, score) => {
+    const { loginUser } = storeToRefs(authStore)
+    const { isExerciseDone: done } = storeToRefs(exerciseStore)
+    if (!loginUser.value) throw new Error('User is not logged in')
+
+    done.value = false
+    const card = {
+      exerciseId,
+      score,
+      tier: loginUser.value.tier,
+    }
+
+    const success = await addCard(card, loginUser.value.userId)
+    done.value = true
+
+    return success
+  }
+
+  return {
+    fetchUserCards,
+    fetchRecentCards,
+    fetchRandomExercise,
+    addCard,
+    handleExercise,
+  }
 }

@@ -19,7 +19,7 @@ import com.ssafit.model.service.CardService;
 
 @RestController
 @RequestMapping("/cards")
-@CrossOrigin(origins = {"http://localhost:5173", "http://localhost:5174"}) 
+@CrossOrigin(origins = {"http://localhost:5173", "http://localhost:4173"}) 
 public class CardController {
 	//////////////////////////////////////////////////////////////
 	// 멤버 필드

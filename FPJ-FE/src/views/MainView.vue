@@ -1,67 +1,88 @@
 <template>
-  <div class="test-wrapper">
-    <FlipCard />
-    <FlipCard />
-    <FlipCard />
-
-    <FlipCard class="card position-left" />
-    <FlipCard class="card position-center" />
-    <FlipCard class="card position-right" />
+  <div class="card-stack-wrapper" @click.self="resetFocus">
+    <FlipCard
+      v-for="data in exerciseStore.randomExerciseData.value"
+      :key="data.id"
+      :data="data"
+      @click="handleClick"
+    />
   </div>
 </template>
 
 <script setup>
-import FlipCard from '@/components/common/cards/FlipCard.vue'
+import CardBase from '@/components/cards/CardBase.vue'
+import FlipCard from '@/components/cards/FlipCard.vue'
+import { useCardService } from '@/composables/data/useCardService'
+import { useExerciseStore } from '@/stores/exerciseStore'
+import { ref, onMounted } from 'vue'
+
+const cardService = useCardService()
+const exerciseStore = useExerciseStore()
+
+onMounted(async () => {
+  await cardService.fetchRandomExercise()
+})
+const focusedCard = ref(null)
+
+const handleClick = (data) => {
+  focusedCard.value = data.id
+}
+
+const resetFocus = () => {
+  focusedCard.value = null
+}
 </script>
 
 <style scoped>
-@import '../components/common/cards/CardFace.module.css';
+@import '../components/cards/CardFace.module.css';
 
-.test-wrapper {
+.card-stack-wrapper {
+  position: relative;
   width: 50%;
   height: 50%;
-  position: relative;
-  perspective: 1000;
+  perspective: 1000px;
 }
 
-.test-wrapper .card {
+.card-stack-wrapper .card-wrapper {
   position: absolute;
-}
-
-.card-wrapper.flipped {
-  z-index: 10;
+  left: 50%;
+  top: 50%;
   transform: translate(-50%, -50%);
-  transform-origin: center;
-  width: calc(1.5 * var(--card-width));
-  height: calc(1.5 * var(--card-height));
 }
 
-.card-wrapper.position-left:not(.flipped) {
+.card-stack-wrapper > .flipped {
+  z-index: 10;
+  width: calc(1.6 * var(--card-width));
+  height: calc(1.6 * var(--card-height));
+  transform: translate(-50%, -50%);
+}
+
+.card-stack-wrapper > :nth-of-type(1):not(.flipped) {
   transform: translate(calc(-50% - var(--width-offset)), -50%)
     rotate(calc(-1 * var(--base-rotate-angle)));
   z-index: 3;
 }
 
-.card-wrapper.position-center:not(.flipped) {
+.card-stack-wrapper > :nth-of-type(2):not(.flipped) {
   transform: translate(-50%, -50%);
   z-index: 2;
 }
 
-.card-wrapper.position-right:not(.flipped) {
+.card-stack-wrapper > :nth-of-type(3):not(.flipped) {
   transform: translate(calc(-50% + var(--width-offset)), -50%) rotate(var(--base-rotate-angle));
   z-index: 1;
 }
 
-.card-wrapper.position-left:not(.flipped):hover {
+.card-stack-wrapper > :nth-of-type(1):not(.flipped):hover {
   transform: translate(calc(-50% - var(--hover-translate)), -50%)
     rotate(calc(-1 * var(--hover-rotate))) scale(1.01);
 }
 
-.card-wrapper.position-center:not(.flipped):hover {
-  transform: translate(-50%, -50%) scale(1.01);
+.card-stack-wrapper > :nth-of-type(2):not(.flipped):hover {
+  transform: translate(-50%, -50%) scale(1.02);
 }
 
-.card-wrapper.position-right:not(.flipped):hover {
+.card-stack-wrapper > :nth-of-type(3):not(.flipped):hover {
   transform: translate(calc(-50% + var(--hover-translate)), -50%) rotate(var(--hover-rotate))
     scale(1.01);
 }

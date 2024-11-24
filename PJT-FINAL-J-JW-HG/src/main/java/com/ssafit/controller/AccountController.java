@@ -14,7 +14,7 @@ import com.ssafit.model.service.UserService;
 
 @RestController
 @RequestMapping("/accounts")
-@CrossOrigin(origins = {"http://localhost:5173", "http://localhost:5174"}) 
+@CrossOrigin(origins = {"http://localhost:5173", "http://localhost:4173"}) 
 public class AccountController {
 	//////////////////////////////////////////////////////////////
 	// 멤버 필드

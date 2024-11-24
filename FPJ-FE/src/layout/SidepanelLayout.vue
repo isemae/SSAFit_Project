@@ -22,7 +22,7 @@ import preferenceIcon from '@/assets/preference_icon.svg'
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #631f3a;
+background-image: linear-gradient(135deg, #d4d4d4 0%, #e2c8c3 100%);
 
   flex-direction: row;
 }
