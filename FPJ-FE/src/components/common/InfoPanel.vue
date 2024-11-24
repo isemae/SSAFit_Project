@@ -2,9 +2,6 @@
   <aside v-if="user" id="info-panel">
     <span class="user-score">{{ user.score }}</span>
     <span>당신의 건강력</span>
-    <p>멋져</p>
-    <p>최고야</p>
-    <p>눈부셔</p>
     <RecentCards />
   </aside>
 </template>
@@ -20,10 +17,8 @@ const { loginUser: user } = storeToRefs(store)
 <style scoped>
 #info-panel {
   flex: 0.8;
-  width: 100%;
-  height: 100vh;
-  max-width: 30vh;
-  min-width: 300px;
+  height: 100%;
+  max-width: 20rem;
   padding: 0.8rem;
 }
 

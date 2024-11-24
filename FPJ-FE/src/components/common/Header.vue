@@ -3,19 +3,17 @@
     <h1>{{ currentPage }}</h1>
     <nav v-if="authStore.loginUser" class="navigations-container">
       <div class="navigation">
-        <RouterLink :to="{ name: 'cardCollection' }"
-          ><img :src="collectionIcon" alt="컬렉션 아이콘" />컬렉션</RouterLink
+        <img :src="collectionIcon" alt="컬렉션 아이콘" />
+        <RouterLink :to="{ name: 'cardCollection' }">컬렉션</RouterLink>
+      </div>
+      <div class="navigation">
+        <img :src="userIcon" alt="프로필 아이콘" /><RouterLink :to="{ name: 'profile' }"
+          >프로필</RouterLink
         >
       </div>
       <div class="navigation">
-        <RouterLink :to="{ name: 'profile' }"
-          ><img :src="userIcon" alt="프로필 아이콘" />프로필</RouterLink
-        >
-      </div>
-      <div class="navigation">
-        <RouterLink :to="{ name: 'preference' }"
-          ><img :src="preferenceIcon" alt="설정 아이콘" />설정</RouterLink
-        >
+        <img :src="preferenceIcon" alt="설정 아이콘" />
+        <RouterLink :to="{ name: 'preference' }">설정</RouterLink>
       </div>
       <div>
         <button @click="authService.logout()">로그아웃</button>
@@ -72,12 +70,13 @@ button:hover {
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 20px;
+  gap: 1rem;
 }
 
-.navigation img {
-  width: 24px;
-  height: 24px;
-  margin-right: 5px;
+.navigation {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 </style>

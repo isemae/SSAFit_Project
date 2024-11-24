@@ -1,44 +1,30 @@
 <template>
-  <section id="recent-cards">
+  <section class="recent-cards">
     <p>최근 카드...</p>
     <div class="card-list">
-      <Card
-        v-for="data in recentCards"
-        :key="data.id"
-        :data="data"
-        :isCollected="true"
-        :class="[{ flipped: true }, data.tier]"
-      />
+      <InfoCard
+        v-for="card in cardStore.userRecentlyCollectedCards.value"
+        :key="card.id"
+        :data="card"
+      ></InfoCard>
     </div>
   </section>
 </template>
 
 <script setup>
-import Card from './cards/CardBase.vue'
-
+import InfoCard from '../cards/InfoCard.vue'
 import { useCardStore } from '@/stores/cardStore'
-import { onBeforeMount, ref } from 'vue'
-import { useUserInfoService } from '@/composables/data/useUserInfoService'
+import { onBeforeMount, onMounted, ref } from 'vue'
 import { useAuthStore } from '@/stores/authStore'
 import { storeToRefs } from 'pinia'
+import { useCardService } from '@/composables/data/useCardService'
 
+const cardService = useCardService()
 const cardStore = useCardStore()
-const userService = useUserInfoService()
 const authStore = useAuthStore()
-const { userRecentlyCollectedCardData: recentCards } = storeToRefs(cardStore)
 const { loginUser: user } = storeToRefs(authStore)
-
-// {
-// collectedDate: '2024-11-19 17:10:47'
-// exerciseId: 11
-// id: 73
-// score: 100
-// tier: 1
-// userId: 1
-// }
-//
 onBeforeMount(async () => {
-  await userService.getUserRecentlyCollectedCardData(user.userId, 3)
+  await cardService.fetchRecentCards(user.value.userId, 3)
 })
 </script>
 
@@ -48,7 +34,7 @@ p {
   font-size: 1.2rem;
 }
 
-#recent-cards {
+.recent-cards {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -57,10 +43,10 @@ p {
 
 .card-list {
   width: 100%;
-  height: 10rem;
+  height: 100%;
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
+  gap: 0.5rem;
 }
 </style>

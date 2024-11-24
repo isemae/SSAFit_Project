@@ -13,11 +13,11 @@ import org.springframework.web.server.ResponseStatusException;
 import com.ssafit.model.dto.User;
 import com.ssafit.model.service.UserService;
 
-@RestController
 @RequestMapping("/auth")
 @CrossOrigin(origins = {"http://localhost:5173", "http://localhost:5174"}) 
 public class AuthController {
 	//-----------------------------------------------------------//
+git pull origin FPJ-58-Dev
 	// 멤버 필드
 	//-----------------------------------------------------------//
 	private final UserService userService;

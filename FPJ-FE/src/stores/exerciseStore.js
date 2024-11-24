@@ -2,7 +2,8 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
 export const useExerciseStore = defineStore('exercise', () => {
-  const randomlySelectedExerciseData = ref([{}, {}, {}])
+  const randomExerciseData = ref([])
+  const isExerciseDone = ref(true)
 
-  return { randomlySelectedExerciseData }
+  return { randomExerciseData, isExerciseDone }
 })

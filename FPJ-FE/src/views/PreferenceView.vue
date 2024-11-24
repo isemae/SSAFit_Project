@@ -1,4 +1,4 @@
-<template>
+<template #content>
   <div></div>
 </template>
 

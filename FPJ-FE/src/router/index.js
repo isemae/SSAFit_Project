@@ -15,7 +15,7 @@ const router = createRouter({
       path: '/',
       name: 'main',
       component: MainView,
-      meta: { layout: 'sidepanel' },
+      meta: { layout: 'sidepanel', requiresAuth: true },
     },
     {
       path: '/auth',
@@ -41,6 +41,7 @@ const router = createRouter({
       component: PreferenceView,
       meta: { title: '설정', layout: 'webView', requiresAuth: true },
     },
+    { path: '/:pathMatch(.*)*', redirect: '/' },
   ],
 })
 
