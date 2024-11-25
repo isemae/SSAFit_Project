@@ -80,6 +80,8 @@ public class ExercisesController {
 				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "운동 정보가 제대로 들어오지 않았습니다. 요청을 확인해주세요.");
 			}
 			
+			//TODO 운동 중복 등록 방지(완전히 같은 거)
+			
 			int isExercisePosted = exerciseService.postExercise(exercise);
 			
 			if(isExercisePosted == 0) {
