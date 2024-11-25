@@ -65,6 +65,9 @@ public class ExerciseServiceImpl implements ExerciseService {
 					3. 운동 시간
 					- 운동 시간은 운동의 난이도에 맞게, 10이상 60이하의 정수를 선택합니다.
 					
+					4. 운동 내용
+					운동 내용 또한 부위에 맞는 운동 중 **최대한 다양한** 운동 내용을 추천합니다. 당신은 전문가이기 때문에 다양한 운동을 추천할 수 있습니다.
+															
 					<제약 사항>
 					각 스트레칭 및 운동에 대한 답변은 다음과 같은 양식에 맞춰 String 형식으로 해야만 합니다.
 					json형식을 절대 금지합니다. 단순 String으로 반드시 답변을 보내야합니다.
@@ -84,36 +87,15 @@ public class ExerciseServiceImpl implements ExerciseService {
 					""";
 			
 			//TODO 1. gen AI api quota 확인
+			
+			// Plan B. Claude Sonnet 3.5 API
 //			String resObj = anthropicChatModel.call(prompt);
 //			System.out.println(resObj);
 			
+			// Plan A. ChatGPT-4o API
 			String response = openAiChatModel.call(prompt);			
 			System.out.println(response);
-			
-//			String test =
-//				"""
-//				[
-//					{
-//					    "part": "손목",
-//					    "name": "손목 스트레칭",
-//					    "info": "손바닥를 위로 향하게 하고 반대손으로 손가락을 아래로 당기기",
-//					    "time": "10"
-//					},
-//					{
-//					    "part": "목",
-//					    "name": "목 스트레칭",
-//					    "info": "머리를 전천하 좌우로 기울여 목의 측면을 늘리기",
-//					    "time": "20"
-//					},
-//					{
-//					    "part": "어깨",
-//					    "name": "어깨 롤링",
-//					    "info": "어깨를 천천히 앞뒤로 5회, 위옆으로 5회 돌리기",
-//					    "time": "20"
-//					}
-//				]
-//				""";
-			
+
 			List<Exercise> responseList = stringParseUtil.parseExerciseCards(response);			
 			
 			return responseList;
@@ -127,7 +109,13 @@ public class ExerciseServiceImpl implements ExerciseService {
 	
 	
 	/** 생성한 운동 중 선택한 운동 등록
-	 *	 
+	 *	@param Exercise
+	 * {
+	 * part,
+	 * name,
+	 * info,
+	 * time(int)
+	 * }
 	 */
 	@Override
 	public int postExercise(Exercise exercise) {
