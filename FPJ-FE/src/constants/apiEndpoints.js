@@ -25,24 +25,32 @@ const createEndpoint = (base, endpoints) => {
 }
 
 export const API_ENDPOINTS = {
-  ACCOUNT: createEndpoint('accounts', {
+  ACCOUNT: createEndpoint('auth', {
     REGISTER: { url: '/register', method: 'POST' },
     LOGIN: { url: '/login', method: 'POST' },
   }),
-  EXERCISE: createEndpoint('exercise', {
+  EXERCISE: createEndpoint('exercises', {
+    POST: { url: '', method: 'POST' },
+    ALL: { url: '', method: 'GET' },
     ONE: { url: '/:exerciseId', method: 'GET' },
-    ALL: { url: '/:exerciseId', method: 'GET' },
-    GETPART: { url: '/:exerciseId/part/:partName', method: 'GET' },
+    GETPART: { url: '?part={:partName}', method: 'GET' },
     RANDOM: { url: '/random', method: 'GET' },
   }),
-  CARDS: createEndpoint('cards', {
-    COLLECT: { url: '/:userId', method: 'POST' },
-    ALL: { url: '/:userId', method: 'GET' },
+  USER: createEndpoint('users', {
+    ONE: { url: '/:userId', method: 'GET' },
+    GETSCORE: { url: '/:userId/score', method: 'GET' },
+    STREAK: { url: '/:userId/streak', method: 'GET' },
+    TIER: { url: '/:userId/tier', method: 'GET' },
+    GETCARDCOUNT: { url: '/:userId/totalCardCount', method: 'GET' },
+    PUTCARDCOUNT: { url: '/:userId/totalCardCount', method: 'PUT' },
+    PUTSCORE: { url: '/:userId/score', method: 'PUT' },
+  }),
+  CARDS: createEndpoint('users', {
+    COLLECT: { url: '/:userId/cards', method: 'POST' },
+    ALL: { url: '/:userId/cards', method: 'GET' },
     ONE: { url: '/:userId/:cardId', method: 'GET' },
     RECENT: { url: '/:userId/recent/:cardCount', method: 'GET' },
-  }),
-  USER: createEndpoint('user', {
-    GETSTREAK: {},
+
     // GETALL: {},
     // GETSCORE: {},
     // GETTIER: {},
