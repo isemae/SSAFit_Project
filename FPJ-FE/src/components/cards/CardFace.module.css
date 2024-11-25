@@ -1,0 +1,131 @@
+* {
+  --card-width: 200px;
+  --card-height: 320px;
+  --card-min-width: 40px;
+  --card-min-height: 64px;
+  --base-rotate-angle: 9deg;
+  --hover-rotate: 10deg;
+  --flip-angle: 180deg;
+  --width-offset: 2rem;
+  --hover-translate: 2.5rem;
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none;
+
+  /* --highlight-color: ; */
+  /* --base-color: ; */
+  /* --shadow-color: ; */
+
+  --card-color-white: #fff;
+  --card-color-bronze: #b2675a;
+  --card-color-silver: #c3c3c3;
+  --card-color-gold: #ffd200;
+  --card-color-platinum: #fffbec;
+  --card-color-diamond: #caedff;
+  --card-color-ruby: #ff2857;
+  --card-color-black: #000;
+}
+
+.color {
+  will-change: transform, box-shadow;
+}
+
+.white {
+  background: var(--card-color-white);
+  background: linear-gradient(
+    233deg,
+    rgb(255, 246, 254) 0%,
+    rgb(246, 245, 255) 25%,
+    rgb(255, 255, 255) 50%,
+    rgb(255, 249, 243) 75%,
+    rgb(255, 249, 249) 100%
+  );
+  border: 2px var(--card-color-platinum) solid;
+  border-radius: 10px;
+  filter: drop-shadow(1px 1px 10px rgba(64, 64, 64, 0.472));
+}
+
+.bronze {
+  color: white;
+  background-color: var(--card-color-bronze);
+  background-image: linear-gradient(42deg, #ffc3a9 0%, #ffe0d1 40%, #ffe9de 50%, #ffa97e 100%);
+  border: 2px var(--card-color-white) solid;
+  border-radius: 10px;
+  filter: drop-shadow(1px 1px 10px rgba(104, 79, 79, 0.732));
+}
+
+.silver {
+  color: black;
+  background-color: var(--card-color-silver);
+  background-image: linear-gradient(to top, #dad4ec 0%, #dad4ec 1%, #f3e7e9 100%);
+  border: 2px var(--card-color-platinum) solid;
+  border-radius: 10px;
+  filter: drop-shadow(1px 1px 10px rgb(107, 107, 107));
+}
+
+.gold {
+  color: black;
+  background-color: var(--card-color-gold);
+  background-image: linear-gradient(135deg, #ffec8c 0%, #fff6dd 50%, #ffe787 100%);
+  border: 2px var(--card-color-platinum) solid;
+  border-radius: 10px;
+  filter: drop-shadow(1px 1px 20px rgb(206, 188, 145));
+}
+
+.platinum {
+  color: black;
+  background-color: var(--card-color-platinum);
+  background-image: linear-gradient(237deg, #ffebd8 0%, #ffffff 35%, #e2d1c3 100%);
+  border: 2px var(--card-color-silver) solid;
+  border-radius: 10px;
+  filter: drop-shadow(1px 1px 10px rgb(186, 180, 166));
+}
+
+.diamond {
+  color: black;
+  background: var(--card-color-diamond);
+  background: linear-gradient(
+    233deg,
+    rgb(255, 255, 255) 0%,
+    rgba(225, 238, 255, 1) 23%,
+    rgb(242, 246, 249) 58%,
+    rgba(238, 244, 255, 0.868) 76%,
+    rgba(228, 240, 255, 0.436) 100%
+  );
+  border: 2px var(--card-color-platinum) solid;
+  border-radius: 10px;
+  filter: drop-shadow(1px 1px 10px rgb(177, 180, 190));
+}
+
+.ruby {
+  color: black;
+  background: linear-gradient(
+    233deg,
+    rgb(255, 180, 187) 0%,
+    rgb(233, 3, 106) 23%,
+    rgb(255, 83, 155) 58%,
+    rgb(250, 28, 120) 76%,
+    rgba(225, 0, 79, 0.421) 100%
+  );
+  border: 2px var(--card-color-diamond) solid;
+  border-radius: 10px;
+  filter: drop-shadow(1px 1px 10px black);
+}
+
+.black {
+  color: white;
+  background: rgb(8, 38, 27);
+  background: linear-gradient(
+    233deg,
+    rgba(8, 38, 27, 1) 0%,
+    rgba(7, 29, 38, 1) 15%,
+    rgba(0, 0, 0, 1) 50%,
+    rgba(36, 11, 17, 1) 85%,
+    rgba(73, 17, 17, 1) 100%
+  );
+  border: 2px var(--card-color-silver) solid;
+  border-radius: 10px;
+  box-shadow: 1px 1px 10px black;
+}

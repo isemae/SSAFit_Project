@@ -10,5 +10,5 @@ const app = createApp(App)
 app.use(createPinia())
 app.use(router)
 
-app.config.globalProperties.API_ENDPOINTS = API_ENDPOINTS
+// app.config.globalProperties.API_ENDPOINTS = API_ENDPOINTS
 app.mount('#app')
