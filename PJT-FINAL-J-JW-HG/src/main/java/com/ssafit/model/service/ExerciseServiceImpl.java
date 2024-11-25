@@ -21,9 +21,8 @@ public class ExerciseServiceImpl implements ExerciseService {
 	private final OpenAiChatModel openAiChatModel;
 	private final AnthropicChatModel anthropicChatModel;
 	
+	
 	private final StringParseUtil stringParseUtil;
-	
-	
 	
 	// 생성자로 의존성 주입
 	public ExerciseServiceImpl(ExerciseDao exerciseDao, OpenAiChatModel openAiChatModel, StringParseUtil stringParseUtil, AnthropicChatModel anthropicChatModel) {
