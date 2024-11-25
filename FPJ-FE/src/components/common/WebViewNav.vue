@@ -15,12 +15,6 @@
         </RouterLink>
       </div>
       <div class="navigation">
-        <RouterLink :to="{ name: 'profile' }" class="nav-item">
-          <img :src="userIcon" alt="프로필 아이콘" />
-          <span>프로필</span>
-        </RouterLink>
-      </div>
-      <div class="navigation">
         <RouterLink :to="{ name: 'preference' }" class="nav-item">
           <img :src="preferenceIcon" alt="설정 아이콘" />
           <span>설정</span>

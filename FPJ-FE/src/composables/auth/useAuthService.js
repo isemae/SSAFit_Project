@@ -20,6 +20,8 @@ export const useAuthService = function () {
     if (res.success) {
       authStore.setAccessToken(res.data) // 상태와 localStorage 동기화
 
+      alert(`${loginId} 님, 반갑습니다.`)
+
       router.push({ name: 'main' })
       return res
     }

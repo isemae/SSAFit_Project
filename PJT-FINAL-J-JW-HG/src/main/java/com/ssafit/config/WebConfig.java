@@ -27,7 +27,7 @@ public class WebConfig implements WebMvcConfigurer {
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(jwtInterceptor)
-				.addPathPatterns("/cards/**", "exercise/**" , "/user/**")
+				.addPathPatterns("/cards/**", "exercises/**" , "/user/**")
 				.excludePathPatterns("/auth/**"); // accounts는 토큰 갖고 있을 필요 없으니 제외
 
 	}
