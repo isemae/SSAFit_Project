@@ -211,7 +211,7 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	@Override
 	public int tryRegister(User user) {
-		try {
+		try {			
 			user.setLoginId(user.getLoginId().trim());
 			user.setUserName(user.getUserName().trim());
 			
