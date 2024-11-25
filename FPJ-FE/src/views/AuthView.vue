@@ -2,11 +2,11 @@
   <div class="auth-view">
     <template v-if="currentView === 'login'">
       <LoginForm />
-      <button @click="currentView = 'register'">회원가입</button>
+      <button @click="currentView = 'register'" class="viewChange">회원가입</button>
     </template>
     <template v-if="currentView === 'register'">
       <RegisterForm />
-      <button @click="currentView = 'login'">로그인</button>
+      <button @click="currentView = 'login'" class="viewChange">로그인</button>
     </template>
   </div>
 </template>
@@ -25,5 +25,19 @@ const currentView = ref('login')
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.viewChange {
+  margin-top: 15px;
+  width: 100%;
+  padding: 14px 0;
+  background-color: aliceblue;
+  color: black;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 </style>

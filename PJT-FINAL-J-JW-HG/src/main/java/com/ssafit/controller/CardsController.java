@@ -123,6 +123,9 @@ public class CardsController {
 			if(e.getMessage().contains("다른 사람")) {
 				return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
 			}
+			else if(e.getMessage().contains("저장된 카드가 없습니다!")) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+			}
 			
 			// 다른 모든 예외에 대해
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("비정상적인 접근입니다.");
@@ -144,8 +147,8 @@ public class CardsController {
 	 * (String) collected_date 
 	 * }]
 	 */
-	@GetMapping("/recent?limit={cardNumber}")
-	public ResponseEntity<?> getRecentCards(@PathVariable int userId, @RequestParam int cardNumber) {
+	@GetMapping("/recent")
+	public ResponseEntity<?> getRecentCards(@PathVariable int userId, @RequestParam(value="limit", defaultValue="3") int cardNumber) {
 		try {
 			List<Card> cardList = cardService.getRecentCards(userId, cardNumber);
 			
@@ -169,7 +172,9 @@ public class CardsController {
 			else if(e.getMessage().contains("1개 이상")) {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 			}
-			
+			else if(e.getMessage().contains("저장된 카드가 없습니다!")) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+			}
 			// 다른 모든 예외에 대해
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("비정상적인 접근입니다.");
 		}
