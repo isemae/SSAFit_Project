@@ -49,7 +49,7 @@ export const API_ENDPOINTS = {
     COLLECT: { url: '/:userId/cards', method: 'POST' },
     ALL: { url: '/:userId/cards', method: 'GET' },
     ONE: { url: '/:userId/:cardId', method: 'GET' },
-    RECENT: { url: '/:userId/recent/:cardCount', method: 'GET' },
+    RECENT: { url: '/:userId/cards/recent', method: 'GET' },
 
     // GETALL: {},
     // GETSCORE: {},

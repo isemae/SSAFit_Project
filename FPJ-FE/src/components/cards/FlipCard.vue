@@ -21,9 +21,7 @@
         </p>
       </div>
       <div class="button-wrapper">
-        <CustomButton @click="cardService.handleExercise(data.id, data.time)"
-          >운동하기</CustomButton
-        >
+        <CustomButton @click="doExercise(data)">운동하기</CustomButton>
         <CustomButton @click="toggleFlip">취소</CustomButton>
       </div>
     </template>
@@ -32,20 +30,31 @@
 
 <script setup>
 import { useCardService } from '@/composables/data/useCardService'
+import { useExerciseStore } from '@/stores/exerciseStore'
 import CardBase from './CardBase.vue'
 import CustomButton from '../common/CustomButton.vue'
 import { ref } from 'vue'
+import { storeToRefs } from 'pinia'
 
 defineProps({
   data: Object,
   // user: Object,
 })
 
+const exerciseStore = useExerciseStore()
+
 const flipped = ref(false)
 const toggleFlip = () => {
   flipped.value = !flipped.value
 }
 const cardService = useCardService()
+
+const { isExerciseDone: done } = storeToRefs(exerciseStore)
+const doExercise = async (data) => {
+  const exercise = await cardService.postExercise(data)
+  // await cardService.handleExercise(data, data.time)
+  await cardService.addCard(exercise.exerciseId, data.time)
+}
 </script>
 
 <style scoped>
