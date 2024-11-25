@@ -12,22 +12,23 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafit.model.dto.Card;
 import com.ssafit.model.service.CardService;
 
 @RestController
-@RequestMapping("/cards")
+@RequestMapping("users/{userId}/cards")
 @CrossOrigin(origins = {"http://localhost:5173", "http://localhost:5174"}) 
-public class CardController {
+public class CardsController {
 	//-----------------------------------------------------------//
 	// 멤버 필드
 	//-----------------------------------------------------------//
 	private final CardService cardService;
 
 	// 생성자로 의존성 주입
-	public CardController(CardService cardService) {		
+	public CardsController(CardService cardService) {		
 		this.cardService = cardService;
 	}
 	//-----------------------------------------------------------//
@@ -47,7 +48,7 @@ public class CardController {
 	 * 	id: (int) id
 	 * } 
 	 */
-	@PostMapping("/{userId}")
+	@PostMapping("")
 	// 와일드 카드 사용으로 String과 Map 둘 다 처리할 수 있게	
 	public ResponseEntity<?> postCard(@RequestBody Card card, @PathVariable int userId) {
 		try {
@@ -74,6 +75,7 @@ public class CardController {
 			if(e.getMessage().contains("fk_exercise_id")) {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("존재하지 않는 운동입니다.");
 			}
+			
 			else if(e.getMessage().contains("fk_user_id")) {
 				return ResponseEntity.status(HttpStatus.FORBIDDEN).body("다른 사람의 정보에 접근할 수 없습니다.");
 			}
@@ -99,15 +101,15 @@ public class CardController {
 	 * (String) collected_date 
 	 * }]
 	 */
-	@GetMapping("/{userId}")
+	@GetMapping("")
 	public ResponseEntity<?> getAllCards(@PathVariable int userId) {
 		try {
 			List<Card> cardList = cardService.getAllCards(userId);
 			
-				// 조회에 실패했을 경우
-				if(cardList == null) {
-					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(userId + "유저의 카드 데이터가 존재하지 않습니다.");
-				}
+			// 조회에 실패했을 경우
+			if(cardList == null) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(userId + "유저의 카드 데이터가 존재하지 않습니다.");
+			}
 			
 			// 전체 카드를 조회할 때 user table의 ttoal_card_count와 같은 지 검증, 다르면 실제 카드 리스트 size로 수정
 			
@@ -142,8 +144,8 @@ public class CardController {
 	 * (String) collected_date 
 	 * }]
 	 */
-	@GetMapping("/{userId}/recent/{cardNumber}")
-	public ResponseEntity<?> getRecentCards(@PathVariable int userId, @PathVariable int cardNumber) {
+	@GetMapping("/recent?limit={cardNumber}")
+	public ResponseEntity<?> getRecentCards(@PathVariable int userId, @RequestParam int cardNumber) {
 		try {
 			List<Card> cardList = cardService.getRecentCards(userId, cardNumber);
 			
@@ -187,7 +189,7 @@ public class CardController {
 	 * (String) collectedDate 
 	 * }
 	 */
-	@GetMapping("/{userId}/{cardId}")
+	@GetMapping("/{cardId}")
 	public ResponseEntity<?> getCardInfo(@PathVariable int userId, @PathVariable int cardId) {
 		try {
 			Card cardInfo = cardService.getCardInfo(userId, cardId);
