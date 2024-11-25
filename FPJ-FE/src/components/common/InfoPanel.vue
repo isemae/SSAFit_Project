@@ -1,28 +1,28 @@
 <template>
-  <section id="info-panel">
-    <!-- <p>{{ userScore.data }}</p> -->
-    <span class="user-score">{{ 1529 }}</span>
+  <aside v-if="user" id="info-panel">
+    <span class="user-score">{{ user.score }}</span>
     <span>당신의 건강력</span>
-    <p>멋져</p>
-    <p>최고야</p>
-    <p>눈부셔</p>
     <RecentCards />
-  </section>
+  </aside>
 </template>
 
 <script setup>
-import { useUserStore } from '@/stores/userStore'
-import { ref, onBeforeMount } from 'vue'
 import RecentCards from './RecentCards.vue'
-const userStore = useUserStore()
-const userScore = ref(null)
-
-// onBeforeMount(() => {
-//   userScore.value = userStore.getUserScore(1)
-//   console.log(userScore.value.data)
-// })
+import { useAuthStore } from '@/stores/authStore'
+import { storeToRefs } from 'pinia'
+const store = useAuthStore()
+const { loginUser: user } = storeToRefs(store)
 </script>
 
 <style scoped>
-@import 'InfoPanel.module.css';
+#info-panel {
+  flex: 0.8;
+  height: 100%;
+  max-width: 20rem;
+  padding: 0.8rem;
+}
+
+.user-score {
+  font-size: 8rem;
+}
 </style>

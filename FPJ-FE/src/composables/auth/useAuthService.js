@@ -1,28 +1,34 @@
-import { useAccountStore } from '@/stores/accountStore'
+import { useAuthStore } from '@/stores/authStore'
+import { useAxiosService } from '../data/useAxiosService'
+import { API_ENDPOINTS } from '@/constants/apiEndpoints'
+import { useRouter } from 'vue-router'
 
-/** 사용자 인증정보의 유효성을 검증하는 hook입니다.
- * 인증상태에 따라 토큰을 만료시키거나 refresh합니다.
+/**
+ * 사용자 인증 서비스
  */
-
 export const useAuthService = function () {
-  const accountStore = useAccountStore()
-  const loginUser = accountStore.loginUser
+  const router = useRouter()
+  const authStore = useAuthStore()
+  const { createClient, handleRequest } = useAxiosService()
+  const authClient = createClient(API_ENDPOINTS.ACCOUNT.BASE)
 
-  const decodeJWT = (token) => {
-    if (!token) {
-      return
+  // 로그인
+  const login = async ({ loginId, password }) => {
+    const endpoint = API_ENDPOINTS.ACCOUNT.LOGIN()
+    const res = await handleRequest(() => authClient.post(endpoint.url, { loginId, password }))
+
+    if (res.success) {
+      authStore.setAccessToken(res.data) // 상태와 localStorage 동기화
+
+      router.push({ name: 'main' })
+      return res
     }
-    const payload = token?.split('.')[1]
-    return JSON.parse(atob(payload))
   }
 
-  const isTokenValid = () => {
-    const currentTime = Math.floor(Date.now() / 1000)
-    if (loginUser?.exp && loginUser.exp < currentTime) {
-      return false
-    }
-    return true
+  // 로그아웃
+  const logout = async () => {
+    authStore.clearAccessToken() // 상태와 localStorage 동기화
   }
 
-  return { decodeJWT, isTokenValid }
+  return { login, logout }
 }

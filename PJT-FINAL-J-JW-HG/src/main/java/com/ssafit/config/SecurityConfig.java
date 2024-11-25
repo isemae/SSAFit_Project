@@ -2,28 +2,60 @@ package com.ssafit.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+//import com.ssafit.filter.JwtAuthFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+	/**
+	 * JwtAuth가 이번 프로젝트에는 필요가 없다는 결론을 내렸기 때문에 주석 처리함.
+	 * 대형 프로젝트나 개인정보가 매우 중요해지는 경우에는 프로젝트 첫 시작부터 user -> userDetails -> userDetailsService로 구성되는 
+	 * 보안 로직을 짜는게 좋을듯?
+	 */
+//	private final JwtAuthFilter jwtAuthFilter;
+	
+//	// 생성자로 의존성 주입
+//	public SecurityConfig(JwtAuthFilter jwtAuthFilter) {
+//		super();
+//		this.jwtAuthFilter = jwtAuthFilter;
+//	}
+
+	//////////////////////////////////////////////////////////////
+	// Bean 등록
+	//////////////////////////////////////////////////////////////
+	/** bcrypt 암호화를 위한 encoder
+	 * @return
+	 */
 	@Bean
 	public BCryptPasswordEncoder bCryptPasswordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
 	
-	/**
+	/** auth 관련 manager를 통한 로직 설정
+	 * @param authConfig
+	 * @return
+	 * @throws Exception
+	 */
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) 
+            throws Exception {
+        return authConfig.getAuthenticationManager();
+    }
+	
+	/** filter들을 이용한 보안 로직 설정
 	 * @param http
 	 * @return
 	 * @throws Exception
 	 * Created by Claude 3.5 Sonnet
 	 */
-	// TODO 2 Security Config method에 대한 진실 검증 및 정보 추가 조사 필요! 
 	@Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -54,6 +86,9 @@ public class SecurityConfig {
                 .requestMatchers("**").permitAll() // URL패턴 지정, permitAll()로 인증 없이 모든 사용자 접근 가능 허용
                 .anyRequest().authenticated() // 위에서 설정하지 않은 나머지 모든 요청에 대한 설정(항상 마지막에 설정), authenticated()로 인증된, 로그인한 사용자만 접근 가능
             );
+            
+//            // UsernamePasswordAuthenticationFilter 이전에 먼저 적용될 filter 설정
+//            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
             
         return http.build();
     }
