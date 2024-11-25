@@ -1,9 +1,23 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { ref, watch, computed } from 'vue'
+import { useAuthService } from '@/composables/auth/useAuthService'
 
 export const useAccountStore = defineStore('accounts', () => {
-  const loginUser = ref(null)
-  const isLoggedIn = ref(false)
+  const authService = useAuthService()
+  const accessToken = ref()
+  const loginUser = computed(() => {
+    if (accessToken) {
+      !!authService.decodeJWT(accessToken.value)
+    }
+  })
 
-  return { loginUser, isLoggedIn }
+  watch(accessToken, (newToken) => {
+    if (newToken) {
+      localStorage.setItem('accessToken', newToken)
+    } else {
+      localStorage.removeItem('accessToken')
+    }
+  })
+
+  return { loginUser, accessToken }
 })
