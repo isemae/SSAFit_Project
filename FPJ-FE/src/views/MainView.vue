@@ -10,28 +10,22 @@
 </template>
 
 <script setup>
-import CardBase from '@/components/cards/CardBase.vue'
 import FlipCard from '@/components/cards/FlipCard.vue'
-import { useCardService } from '@/composables/data/useCardService'
-import SidepanelLayout from '@/layout/SidepanelLayout.vue'
+import { useExerciseService } from '@/composables/data/useExerciseService'
 import { useExerciseStore } from '@/stores/exerciseStore'
 import { ref, onMounted } from 'vue'
 
-const cardService = useCardService()
+const exerciseService = useExerciseService()
 const exerciseStore = useExerciseStore()
 
-onMounted(async () => {
-  await cardService.fetchRandomExercise()
-})
 const focusedCard = ref(null)
 
-const handleClick = (data) => {
-  focusedCard.value = data.id
-}
+onMounted(async () => {
+  await exerciseService.fetchRandomExercise()
+})
 
-const resetFocus = () => {
-  focusedCard.value = null
-}
+const handleClick = (data) => (focusedCard.value = data.id)
+const resetFocus = () => (focusedCard.value = null)
 </script>
 
 <style scoped>

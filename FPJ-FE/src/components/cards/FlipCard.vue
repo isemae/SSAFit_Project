@@ -20,6 +20,11 @@
           {{ data.info }}
         </p>
       </div>
+      <CircularProgress
+        v-if="!exerciseStore.isExerciseDone"
+        :progress="100"
+        :duration="data.time"
+      />
       <div class="button-wrapper">
         <CustomButton @click="doExercise(data)">운동하기</CustomButton>
         <CustomButton @click="toggleFlip">취소</CustomButton>
@@ -31,29 +36,41 @@
 <script setup>
 import { useCardService } from '@/composables/data/useCardService'
 import { useExerciseStore } from '@/stores/exerciseStore'
+import CircularProgress from './CircularProgress.vue'
 import CardBase from './CardBase.vue'
 import CustomButton from '../common/CustomButton.vue'
 import { ref } from 'vue'
-import { storeToRefs } from 'pinia'
+import { useUserInfoService } from '@/composables/data/useUserInfoService'
+import { useExerciseService } from '@/composables/data/useExerciseService'
+import { useUserStore } from '@/stores/userStore'
 
 defineProps({
   data: Object,
-  // user: Object,
 })
 
 const exerciseStore = useExerciseStore()
+const exerciseService = useExerciseService()
+const circularProgress = ref(null)
 
 const flipped = ref(false)
 const toggleFlip = () => {
   flipped.value = !flipped.value
 }
-const cardService = useCardService()
 
-const { isExerciseDone: done } = storeToRefs(exerciseStore)
 const doExercise = async (data) => {
-  const exercise = await cardService.postExercise(data)
-  // await cardService.handleExercise(data, data.time)
-  await cardService.addCard(exercise.exerciseId, data.time)
+  // 운동시작했다
+  exerciseStore.isExerciseDone = false
+  // DB에 운동 정보 등록
+  const exercise = await exerciseService.postExercise(data)
+  //
+  //
+  // 타이머 중간 실행
+  //
+  //
+  // 운동끝났다
+  exerciseService.updateExerciseState(data, exercise.exerciseId)
+  exerciseStore.isExerciseDone = true
+  // toggleFlip()
 }
 </script>
 

@@ -1,6 +1,6 @@
 <template>
   <h2>회원가입</h2>
-  <AuthBaseForm :initial-form-data="registerFormData" :on-submit="accountService.register">
+  <AuthBaseForm :initial-form-data="registerFormData" :on-submit="handleSubmit">
     <template #additional-fields="{ validateField, formData }">
       <div class="form-group">
         <label for="passwordCheck">비밀번호 확인</label>
@@ -17,8 +17,10 @@
 <script setup>
 import AuthBaseForm from './UserInfoBaseForm.vue'
 import { useAccountService } from '@/composables/auth/useAccountService'
+import { useAuthService } from '@/composables/auth/useAuthService'
 import { reactive } from 'vue'
 const accountService = useAccountService()
+const authService = useAuthService()
 
 const registerFormData = reactive({
   loginId: '',
@@ -26,6 +28,15 @@ const registerFormData = reactive({
   passwordCheck: '',
   userName: '',
 })
+const handleSubmit = async (formData) => {
+  try {
+    const res = accountService.register(formData)
+    console.log('회원가입 성공')
+  } catch (error) {
+    console.error('회원가입 또는 로그인 실패:', error)
+    alert('회원가입 또는 로그인에 실패했습니다.')
+  }
+}
 </script>
 
 <style scoped>

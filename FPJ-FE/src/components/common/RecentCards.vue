@@ -49,4 +49,8 @@ p {
   align-items: center;
   gap: 0.5rem;
 }
+
+.card-wrapper {
+  height: 10rem;
+}
 </style>
