@@ -1,12 +1,23 @@
 <template>
-  <div>
-    <Header />
+  <component :is="layoutComponent">
     <RouterView />
-  </div>
+  </component>
 </template>
 
 <script setup>
-import Header from './components/common/Header.vue'
+import { useAuthService } from './composables/auth/useAuthService'
+import SidepanelLayout from './layout/SidepanelLayout.vue'
+import WebViewLayout from './layout/WebViewLayout.vue'
+import { computed, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
+import { useAuthStore } from './stores/authStore'
+
+const authStore = useAuthStore()
+const authService = useAuthService()
+const route = useRoute()
+const layoutComponent = computed(() => {
+  return route.meta.layout === 'sidepanel' ? SidepanelLayout : WebViewLayout
+})
 </script>
 
 <style>
