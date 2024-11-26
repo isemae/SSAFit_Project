@@ -28,9 +28,8 @@ export const useCardService = () => {
       queryParams: { limit: limit },
     })
     const res = await handleRequest(() => cardClient.get(endpoint.url))
-    if (res.success) {
-      cardStore.userRecentlyCollectedCards.value = res.data
-    }
+    cardStore.userRecentlyCollectedCards.value = res.data
+    return res
   }
 
   // 3. 카드 추가하기

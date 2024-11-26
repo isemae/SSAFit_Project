@@ -3,7 +3,7 @@
     <svg viewBox="0 0 36 36" class="circular-chart">
       <path
         class="circle"
-        :stroke-dasharray="`${progressValue}, 100`"
+        :stroke-dasharray="`${progress}, 100`"
         d="M18 2.0845
            a 15.9155 15.9155 0 0 1 0 31.831
            a 15.9155 15.9155 0 0 1 0 -31.831"
@@ -16,40 +16,45 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 
 const props = defineProps({
-  progress: Number, // 목표 진행률 (100)
   duration: Number, // 총 지속 시간 (초 단위)
 })
 
 const emit = defineEmits(['progressDone'])
 
-const progressValue = ref(0) // 현재 진행률
+const progress = ref(0) // 현재 진행률
 let timer = null
 
 const startProgress = () => {
-  if (timer) clearInterval(timer) // 기존 타이머 초기화
+  // 기존 타이머 초기화
+  if (timer) clearInterval(timer)
 
-  const interval = 50 // 진행률 업데이트 주기 (밀리초)
-  const steps = Math.ceil((props.duration * 100) / interval) // 총 업데이트 단계
+  // 진행률 업데이트 주기 (밀리초)
+  const interval = 50
+  const time = props.duration * 100
+  const steps = Math.ceil(time / interval)
   let currentStep = 0
 
   timer = setInterval(() => {
     currentStep++
-    progressValue.value = Math.min(100, (currentStep / steps) * props.progress)
+    progress.value = Math.min(100, (currentStep / steps) * 100)
 
-    if (currentStep >= steps) {
-      clearInterval(timer) // 타이머 종료
-      progressValue.value = props.progress // 최종 진행률 설정
+    // 타이머 종료
+    if (currentStep > steps) {
+      clearInterval(timer)
+      progress.value = 100
       emit('progressDone')
     }
   }, interval)
 }
 
+// 컴포넌트 마운트 시 타이머 시작
 onMounted(() => {
-  startProgress() // 컴포넌트 마운트 시 타이머 시작
+  startProgress()
 })
 
+// 컴포넌트 언마운트 시 타이머 초기화
 onUnmounted(() => {
-  if (timer) clearInterval(timer) // 컴포넌트 언마운트 시 타이머 정리
+  if (timer) clearInterval(timer)
 })
 </script>
 

@@ -20,6 +20,7 @@ export const useExerciseService = () => {
     if (res.success) {
       exerciseStore.randomExerciseData.value = res.data
     }
+    return res
   }
 
   // 2. 특정 운동 정보 가져오기
@@ -38,22 +39,5 @@ export const useExerciseService = () => {
     return res.data
   }
 
-  // 3. 운동 상태 업데이트
-  const updateExerciseState = async (data, exerciseId) => {
-    try {
-      // Store내 사용자 건강력 업데이트
-      userStore.userScore += data.time * 2
-
-      // 운동 완료 시 카드 등록, 유저 건강력 업데이트
-      await cardService.addCard(exerciseId, data.time)
-      await userService.putUserScore(userStore.userScore)
-
-      // 운동 상태 완료
-      exerciseStore.isExerciseDone = true
-    } catch (error) {
-      console.error('Error updating exercise state:', error)
-    }
-  }
-
-  return { fetchExerciseInfo, fetchRandomExercise, postExercise, updateExerciseState }
+  return { fetchExerciseInfo, fetchRandomExercise, postExercise }
 }
