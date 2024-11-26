@@ -30,7 +30,7 @@ const startProgress = () => {
 
   // 진행률 업데이트 주기 (밀리초)
   const interval = 50
-  const time = props.duration * 100
+  const time = props.duration * 1000
   const steps = Math.ceil(time / interval)
   let currentStep = 0
 

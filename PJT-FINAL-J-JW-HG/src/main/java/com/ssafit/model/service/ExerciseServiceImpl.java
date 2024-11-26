@@ -88,8 +88,8 @@ public class ExerciseServiceImpl implements ExerciseService {
 			//TODO 1. gen AI api quota 확인
 			
 			// Plan B. Claude Sonnet 3.5 API
-//			String resObj = anthropicChatModel.call(prompt);
-//			System.out.println(resObj);
+			String resObj = anthropicChatModel.call(prompt);
+			System.out.println(resObj);
 			
 			// Plan A. ChatGPT-4o API
 //			String response = openAiChatModel.call(prompt);			
@@ -121,7 +121,7 @@ public class ExerciseServiceImpl implements ExerciseService {
 					""";
 			
 
-			List<Exercise> responseList = stringParseUtil.parseExerciseCards(test);			
+			List<Exercise> responseList = stringParseUtil.parseExerciseCards(resObj);			
 			
 			return responseList;
 		}
