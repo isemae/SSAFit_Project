@@ -1,6 +1,6 @@
 <template>
   <h2>회원가입</h2>
-  <AuthBaseForm :initial-form-data="registerFormData" :on-submit="accountService.register">
+  <AuthBaseForm :initial-form-data="registerFormData" :on-submit="handleSubmit">
     <template #additional-fields="{ validateField, formData }">
       <div class="form-group">
         <label for="passwordCheck">비밀번호 확인</label>
@@ -17,8 +17,12 @@
 <script setup>
 import AuthBaseForm from './UserInfoBaseForm.vue'
 import { useAccountService } from '@/composables/auth/useAccountService'
+import { useAuthService } from '@/composables/auth/useAuthService'
 import { reactive } from 'vue'
+import { useRouter } from 'vue-router'
 const accountService = useAccountService()
+const authService = useAuthService()
+const router = useRouter()
 
 const registerFormData = reactive({
   loginId: '',
@@ -26,6 +30,18 @@ const registerFormData = reactive({
   passwordCheck: '',
   userName: '',
 })
+const handleSubmit = async (formData) => {
+  const res = await accountService.register(formData)
+  console.log(res)
+
+  if (res.success) {
+    console.log('회원가입 성공')
+  } else {
+    alert(res.error)
+  }
+
+  router.push({ name: 'main' })
+}
 </script>
 
 <style scoped>

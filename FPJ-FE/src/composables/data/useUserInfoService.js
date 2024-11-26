@@ -1,21 +1,18 @@
 import { API_ENDPOINTS } from '@/constants/apiEndpoints'
 import axios from 'axios'
-import { useCardStore } from '@/stores/cardStore'
-import { useUserStore } from '@/stores/userStore'
 import { useAxiosService } from './useAxiosService'
+import { useAuthStore } from '@/stores/authStore'
+import { storeToRefs } from 'pinia'
+import { useUserStore } from '@/stores/userStore'
 
 export const useUserInfoService = () => {
   const { createClient, handleRequest } = useAxiosService()
-  const cardStore = useCardStore()
   const userStore = useUserStore()
+  const authStore = useAuthStore()
   const userClient = createClient(API_ENDPOINTS.USER.BASE)
   const cardClient = createClient(API_ENDPOINTS.CARDS.BASE)
-  /** 유저별 카드 정보 중 개별 카드 정보를 가져옵니다.
-   * @function getCardFromCollectedCardData
-   * @param {number} cardId - 카드 고유 id
-   * @returns {Promise<Card[]>}
-   * @throws {Error}
-   */
+
+  const { loginUser: user } = storeToRefs(authStore)
 
   // // 유저의 전체 정보 조회: GET
   // // /user/{user_id}
@@ -33,19 +30,44 @@ export const useUserInfoService = () => {
   // }
   //
 
-  // // 유저의 건강력 조회: GET
-  // // /user/{user_id}/score
-  // // (user_id) => { score }
-  // const getUserScore = async function (userId) {
-  //   try {
-  //     const res = axios({
-  //       url: `${API_ENDPOINTS.USER.BASE}/${userId}/score`,
-  //       method: 'GET',
-  //     })
-  //   } catch (err) {
-  //     console.error(err)
-  //   }
-  // }
+  // /** 유저별 카드 정보 중 개별 카드 정보를 가져옵니다.
+  //  * @function getCardFromUserCollection
+  //  * @param {number} cardId - 카드 고유 id
+  //  * @returns {Promise<Card[]>}
+  //  * @throws {Error}
+  //  */
+
+  // 유저의 건강력 조회: GET
+  // /users/{user_id}/score
+  // (user_id) => { score }
+  const getUserScore = async () => {
+    const endpoint = API_ENDPOINTS.USER.GETSCORE({
+      pathParams: { userId: user.value.userId },
+    })
+
+    const res = await handleRequest(() => userClient.get(endpoint.url))
+    if (res.success) {
+      userStore.userScore = res.data
+      return res
+    }
+  }
+
+  // 유저의 건강력 업데이트
+  // /users/{user_id}/score
+  // (user_id) => { score }
+  const putUserScore = async () => {
+    const score = userStore.userScore
+    console.log(score)
+    const endpoint = API_ENDPOINTS.USER.GETSCORE({
+      pathParams: { userId: user.value.userId },
+    })
+
+    const res = await handleRequest(() => userClient.put(endpoint.url, { score }))
+
+    if (res.success) {
+      return res
+    }
+  }
 
   // 유저가 건강관리한 연속 일수: GET
   // /user/{user_id}/streak
@@ -110,9 +132,11 @@ export const useUserInfoService = () => {
   return {
     // getUserInfoAll,
     // getUserScore,
-    getUserStreak,
     // getUserTier,
     // getUserTotalCardCount,
+    getUserStreak,
+    getUserScore,
+    putUserScore,
     updateUserTotalCardCount,
   }
 }

@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import MainView from '@/views/MainView.vue'
-import UserProfileView from '@/views/UserProfileView.vue'
 import CollectionView from '@/views/CollectionView.vue'
 import PreferenceView from '@/views/PreferenceView.vue'
 import AuthView from '@/views/AuthView.vue'
@@ -22,12 +21,6 @@ const router = createRouter({
       name: 'auth',
       component: AuthView,
       meta: { title: '', layout: 'sidepanel' },
-    },
-    {
-      path: '/profile',
-      name: 'profile',
-      component: UserProfileView,
-      meta: { title: '프로필', layout: 'webView', requiresAuth: true },
     },
     {
       path: '/collection',

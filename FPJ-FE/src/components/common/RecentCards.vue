@@ -23,6 +23,7 @@ const cardService = useCardService()
 const cardStore = useCardStore()
 const authStore = useAuthStore()
 const { loginUser: user } = storeToRefs(authStore)
+
 onBeforeMount(async () => {
   await cardService.fetchRecentCards(user.value.userId, 3)
 })
@@ -35,18 +36,22 @@ p {
 }
 
 .recent-cards {
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 100%;
 }
 
 .card-list {
-  width: 100%;
   height: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   gap: 0.5rem;
+}
+
+.card-wrapper {
+  width: 6rem;
+  height: 10rem;
 }
 </style>

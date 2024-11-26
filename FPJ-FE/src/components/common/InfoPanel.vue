@@ -1,6 +1,6 @@
 <template>
-  <aside v-if="user" id="info-panel">
-    <span class="user-score">{{ user.score }}</span>
+  <aside v-if="userStore.userScore >= 0" id="info-panel">
+    <span class="user-score">{{ userStore.userScore }}</span>
     <span>당신의 건강력</span>
     <RecentCards />
   </aside>
@@ -8,10 +8,10 @@
 
 <script setup>
 import RecentCards from './RecentCards.vue'
+import { useUserStore } from '@/stores/userStore'
 import { useAuthStore } from '@/stores/authStore'
-import { storeToRefs } from 'pinia'
-const store = useAuthStore()
-const { loginUser: user } = storeToRefs(store)
+const authStore = useAuthStore()
+const userStore = useUserStore()
 </script>
 
 <style scoped>

@@ -1,37 +1,35 @@
 <template #content>
   <div class="card-stack-wrapper" @click.self="resetFocus">
     <FlipCard
-      v-for="data in exerciseStore.randomExerciseData.value"
-      :key="data.id"
+      v-for="(data, index) in exerciseStore.randomExerciseData.value"
+      :key="index"
       :data="data"
-      @click="handleClick"
+      @click="handleClick(index)"
     />
   </div>
 </template>
 
 <script setup>
-import CardBase from '@/components/cards/CardBase.vue'
 import FlipCard from '@/components/cards/FlipCard.vue'
-import { useCardService } from '@/composables/data/useCardService'
-import SidepanelLayout from '@/layout/SidepanelLayout.vue'
+import { useExerciseService } from '@/composables/data/useExerciseService'
 import { useExerciseStore } from '@/stores/exerciseStore'
+import { useUserStore } from '@/stores/userStore'
 import { ref, onMounted } from 'vue'
 
-const cardService = useCardService()
+const exerciseService = useExerciseService()
 const exerciseStore = useExerciseStore()
+const { userTier, userScore } = useUserStore()
 
-onMounted(async () => {
-  await cardService.fetchRandomExercise()
-})
 const focusedCard = ref(null)
 
-const handleClick = (data) => {
-  focusedCard.value = data.id
-}
+onMounted(async () => {
+  await exerciseService.fetchRandomExercise()
+})
 
-const resetFocus = () => {
-  focusedCard.value = null
+const handleClick = (index) => {
+  focusedCard.value = index
 }
+const resetFocus = () => (focusedCard.value = null)
 </script>
 
 <style scoped>

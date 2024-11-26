@@ -8,16 +8,11 @@
         </RouterLink>
       </div>
       <div class="navigation">
-        <RouterLink :to="{ name: 'profile' }">
-          <img :src="userIcon" alt="프로필 아이콘" />
-        </RouterLink>
-      </div>
-      <div class="navigation">
         <RouterLink :to="{ name: 'preference' }">
           <img :src="preferenceIcon" alt="설정 아이콘" />
         </RouterLink>
       </div>
-      <div>
+      <div class="navigation">
         <RouterLink :to="{ name: 'auth' }">
           <img :src="logoutIcon" alt="로그아웃 아이콘" @click="authService.logout()" />
         </RouterLink>
@@ -47,19 +42,31 @@ const currentPage = computed(() => route.meta.title)
 
 <style scoped>
 .sidepanel-nav {
+  display: flex;
   position: fixed;
-  /* display: flex; */
-  right: 0;
-  /* flex-direction: column; */
-  /* width: 100%; */
-  /* height: 100%; */
+  bottom: 0;
+  flex-direction: column;
 }
 
-a,
-button {
-  text-decoration: none;
-  color: black;
-  text-align: center;
+.navigations-container {
+  display: flex;
+  gap: 1rem;
+}
+
+.navigation {
+  display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
+  background-color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 200px;
+}
+
+.navigation * {
+  text-decoration: none;
+  text-align: center;
 }
 </style>

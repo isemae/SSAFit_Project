@@ -1,5 +1,5 @@
 <template>
-  <CardBase :class="[{ flipped: flipped }]" @toggle="toggleFlip" :tier="3">
+  <CardBase :class="[{ flipped: flipped }]" :tier="authStore.loginUser.tier" @toggle="toggleFlip">
     <template #back>
       <div></div>
     </template>
@@ -9,18 +9,25 @@
           <h2 class="title">
             {{ data.name }}
           </h2>
-          <div class="additional-info">
-            <span>
-              {{ data.part }}
-            </span>
-            <span> {{ data.time }}초 </span>
-          </div>
         </div>
+        <div class="additional-info">
+          <span>
+            {{ data.part }}
+          </span>
+          <span> {{ data.time }}초 </span>
+        </div>
+
+        <CircularProgress
+          v-if="!exerciseStore.isExerciseDone"
+          :progress="100"
+          :duration="data.time"
+          :callback="doneExercise"
+        />
         <p>
           {{ data.info }}
         </p>
       </div>
-      <div class="button-wrapper">
+      <div v-if="exerciseStore.isExerciseDone" class="button-wrapper">
         <CustomButton @click="doExercise(data)">운동하기</CustomButton>
         <CustomButton @click="toggleFlip">취소</CustomButton>
       </div>
@@ -29,41 +36,53 @@
 </template>
 
 <script setup>
-import { useCardService } from '@/composables/data/useCardService'
 import { useExerciseStore } from '@/stores/exerciseStore'
+import CircularProgress from './CircularProgress.vue'
 import CardBase from './CardBase.vue'
 import CustomButton from '../common/CustomButton.vue'
 import { ref } from 'vue'
-import { storeToRefs } from 'pinia'
+import { useAuthStore } from '@/stores/authStore'
+import { useUserInfoService } from '@/composables/data/useUserInfoService'
+import { useExerciseService } from '@/composables/data/useExerciseService'
+import { useUserStore } from '@/stores/userStore'
+import { useRouter } from 'vue-router'
 
-defineProps({
+const props = defineProps({
   data: Object,
-  // user: Object,
 })
 
+const authStore = useAuthStore()
 const exerciseStore = useExerciseStore()
+const exerciseService = useExerciseService()
+const circularProgress = ref(null)
 
+const router = useRouter()
+
+const exerciseId = ref(0)
 const flipped = ref(false)
 const toggleFlip = () => {
   flipped.value = !flipped.value
 }
-const cardService = useCardService()
 
-const { isExerciseDone: done } = storeToRefs(exerciseStore)
-const doExercise = async (data) => {
-  const exercise = await cardService.postExercise(data)
-  // await cardService.handleExercise(data, data.time)
-  await cardService.addCard(exercise.exerciseId, data.time)
+const doExercise = async () => {
+  // 운동시작했다
+  exerciseStore.isExerciseDone = false
+  // DB에 운동 정보 등록
+  const exercise = await exerciseService.postExercise(props.data)
+  exerciseId.value = exercise.exerciseId
+}
+
+// 운동끝났다
+const doneExercise = async () => {
+  await exerciseService.updateExerciseState(props.data, exerciseId.value)
+  setTimeout(() => {
+    router.push({ name: 'cardCollection' })
+    exerciseStore.isExerciseDone = true
+  }, 300)
 }
 </script>
 
 <style scoped>
-.card-face {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
 .exercise-info {
   display: flex;
   flex-direction: column;

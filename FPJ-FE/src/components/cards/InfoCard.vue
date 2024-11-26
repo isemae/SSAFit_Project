@@ -4,14 +4,14 @@
     <template #back>
       <div>{{ data.id }}</div>
       <img :src="exerciseIcon" alt="" />
-      <div>{{ data.collectedDate }}</div>
+      <div>{{ data.name }}</div>
       <div>{{ data.score }}</div>
     </template>
   </CardBase>
 </template>
 
 <script setup>
-defineProps({
+const props = defineProps({
   data: Object,
 })
 
