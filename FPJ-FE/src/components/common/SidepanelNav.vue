@@ -3,13 +3,13 @@
     <h1>{{ currentPage }}</h1>
     <nav v-if="authStore.loginUser" class="navigations-container">
       <div class="navigation">
-        <RouterLink :to="{ name: 'cardCollection' }">
-          <img :src="collectionIcon" alt="컬렉션 아이콘" />
+        <RouterLink :to="{ name: 'preference' }">
+          <img :src="preferenceIcon" alt="설정 아이콘" />
         </RouterLink>
       </div>
       <div class="navigation">
-        <RouterLink :to="{ name: 'preference' }">
-          <img :src="preferenceIcon" alt="설정 아이콘" />
+        <RouterLink :to="{ name: 'cardCollection' }">
+          <img :src="collectionIcon" alt="컬렉션 아이콘" />
         </RouterLink>
       </div>
       <div class="navigation">
@@ -22,10 +22,7 @@
 </template>
 
 <script setup>
-import NavBase from './NavBase.vue'
-
 import collectionIcon from '@/assets/collection_icon.png'
-import userIcon from '@/assets/user_icon.png'
 import preferenceIcon from '@/assets/preference_icon.png'
 import logoutIcon from '@/assets/logout_icon.png'
 import { useRoute } from 'vue-router'
@@ -50,6 +47,7 @@ const currentPage = computed(() => route.meta.title)
 
 .navigations-container {
   display: flex;
+  padding: 1rem;
   gap: 1rem;
 }
 
@@ -60,9 +58,14 @@ const currentPage = computed(() => route.meta.title)
   align-items: center;
   cursor: pointer;
   background-color: white;
-  width: 40px;
+  width: 64px;
   height: 40px;
-  border-radius: 200px;
+  filter: drop-shadow(1px 1px 5px rgba(0, 0, 0, 0.5));
+  border-radius: 10rem;
+}
+
+.navigation:hover {
+  background-color: aliceblue;
 }
 
 .navigation * {

@@ -30,17 +30,17 @@ const registerFormData = reactive({
   passwordCheck: '',
   userName: '',
 })
+
+const emit = defineEmits(['registered'])
+
 const handleSubmit = async (formData) => {
   const res = await accountService.register(formData)
-  console.log(res)
-
   if (res.success) {
     console.log('회원가입 성공')
+    emit('registered', registerFormData)
   } else {
     alert(res.error)
   }
-
-  router.push({ name: 'main' })
 }
 </script>
 

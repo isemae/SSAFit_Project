@@ -48,7 +48,7 @@
 }
 
 .bronze {
-  color: white;
+  color: black;
   background-color: var(--card-color-bronze);
   background-image: linear-gradient(42deg, #ffc3a9 0%, #ffe0d1 40%, #ffe9de 50%, #ffa97e 100%);
   border: 2px var(--card-color-white) solid;

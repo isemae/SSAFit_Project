@@ -14,7 +14,7 @@
 <script setup>
 import InfoCard from '../cards/InfoCard.vue'
 import { useCardStore } from '@/stores/cardStore'
-import { onBeforeMount, onMounted, ref } from 'vue'
+import { onBeforeMount } from 'vue'
 import { useAuthStore } from '@/stores/authStore'
 import { storeToRefs } from 'pinia'
 import { useCardService } from '@/composables/data/useCardService'
@@ -25,7 +25,10 @@ const authStore = useAuthStore()
 const { loginUser: user } = storeToRefs(authStore)
 
 onBeforeMount(async () => {
-  await cardService.fetchRecentCards(user.value.userId, 3)
+  const res = await cardService.fetchRecentCards(user.value.userId, 3)
+  if (res.success) {
+    cardStore.userRecentlyCollectedCards.value = res.value
+  }
 })
 </script>
 

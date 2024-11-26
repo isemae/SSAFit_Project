@@ -1,7 +1,7 @@
 <template>
   <form @submit.prevent="submitForm" class="login-form">
     <div class="logo-container">
-      <img src="/src/assets/logo.png" alt="SSAFY Logo" class="logo">
+      <img src="/src/assets/logo.png" alt="SSAFY Logo" class="logo" />
     </div>
     <div class="form-group">
       <label for="loginId">아이디</label>
@@ -16,7 +16,6 @@
   </form>
 </template>
 <script setup>
-
 import { useValidation } from '@/composables/auth/useValidation'
 import { reactive, computed, watchEffect, ref } from 'vue'
 const { validateField, errors } = useValidation()
@@ -40,7 +39,8 @@ const isFormValid = computed(() => Object.values(errors).every((error) => error 
   max-width: 600px;
   margin: 0 auto;
   padding: 5px 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    sans-serif;
 }
 
 .logo-container {
@@ -132,8 +132,6 @@ const isFormValid = computed(() => Object.values(errors).every((error) => error 
 }
 </style>
 
-
-
 <!-- ========================================================================= -->
 <!-- ========================================================================= -->
 <!-- ========================================================================= -->
@@ -148,7 +146,7 @@ const isFormValid = computed(() => Object.values(errors).every((error) => error 
       <input id="password" type="password" v-model="formData.password" />
     </div>
     <slot name="additional-fields" :validate-field="validateField" :form-data="formData"></slot>
-    
+
     <button>확인</button>
   </form>
 </template> -->
@@ -177,8 +175,6 @@ const isFormValid = computed(() => Object.values(errors).every((error) => error 
 <!-- ========================================================================= -->
 <!-- ========================================================================= -->
 <!-- ========================================================================= -->
-
-
 
 <!-- gpt가 짜준거... 이대로 안쓸거임 -->
 <!-- <template> -->

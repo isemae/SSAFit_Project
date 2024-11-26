@@ -16,6 +16,7 @@ import SidepanelNav from '@/components/common/SidepanelNav.vue'
   width: 100vw;
   height: 100vh;
   padding: 1rem;
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;

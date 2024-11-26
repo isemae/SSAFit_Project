@@ -1,5 +1,5 @@
 <template>
-  <div class="auth-view">
+  <div class="auth-view" @loggedIn="handleLogin" @registered="handleLogin">
     <template v-if="currentView === 'login'">
       <LoginForm />
       <button @click="currentView = 'register'" class="viewChange">회원가입</button>
@@ -15,8 +15,16 @@
 import { ref } from 'vue'
 import LoginForm from '@/components/user/LoginForm.vue'
 import RegisterForm from '@/components/user/RegisterForm.vue'
-
+import { useAuthService } from '@/composables/auth/useAuthService'
+import { useRoute, useRouter } from 'vue-router'
+const authService = useAuthService()
 const currentView = ref('login')
+
+const router = useRouter()
+const handleLogin = (formData) => {
+  console.log(formData)
+  authService.login({ loginId: formData.loginId, password: formData.password })
+}
 </script>
 
 <style scoped>

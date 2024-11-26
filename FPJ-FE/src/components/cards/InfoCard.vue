@@ -1,11 +1,11 @@
 <template>
-  <CardBase :tier="data.tier">
+  <CardBase :tier="props.data.tier">
     <template #front> </template>
     <template #back>
-      <div>{{ data.id }}</div>
+      <div>{{ props.data.id }}</div>
       <img :src="exerciseIcon" alt="" />
-      <div>{{ data.name }}</div>
-      <div>{{ data.score }}</div>
+      <div>{{ props.data.name }}</div>
+      <div>{{ props.data.score }}</div>
     </template>
   </CardBase>
 </template>
@@ -15,6 +15,11 @@ const props = defineProps({
   data: Object,
 })
 
+onMounted(() => {
+  console.log(props.data)
+})
+
+import { onMounted } from 'vue'
 import CardBase from './CardBase.vue'
 import exerciseIcon from '@/assets/test-stretch-icon.png'
 </script>
