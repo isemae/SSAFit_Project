@@ -2,7 +2,8 @@
 API 명세서 및 회의록 등
 더 구체적인 내용은 notion을 참조해 주세요.<br>
 [Final PJT 노션](https://www.notion.so/PJT-Template-babd0c39afc448c5b526e6cc2abacc39#128385f6088b812d9cdfec654edce99e)
-
+<br>
+각 팀원의 개인적인 회고는 각자의 이름으로 저장된 README를 참조해주세요.
 
 
 ## 주제 선정 이유
