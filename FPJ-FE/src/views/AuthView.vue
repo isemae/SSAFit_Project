@@ -5,7 +5,7 @@
       <button @click="currentView = 'register'" class="viewChange">회원가입</button>
     </template>
     <template v-if="currentView === 'register'">
-      <RegisterForm />
+      <RegisterForm :view-prop="currentView" @registered="changeComponent"/>
       <button @click="currentView = 'login'" class="viewChange">로그인</button>
     </template>
   </div>
@@ -17,8 +17,14 @@ import LoginForm from '@/components/user/LoginForm.vue'
 import RegisterForm from '@/components/user/RegisterForm.vue'
 import { useAuthService } from '@/composables/auth/useAuthService'
 import { useRoute, useRouter } from 'vue-router'
+
+
 const authService = useAuthService()
 const currentView = ref('login')
+
+const changeComponent = () => {
+  currentView.value = 'login'
+}
 
 const router = useRouter()
 const handleLogin = (formData) => {

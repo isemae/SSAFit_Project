@@ -45,6 +45,7 @@ const startProgress = () => {
 
 onMounted(() => {
   startProgress() // 컴포넌트 마운트 시 타이머 시작
+  console.log("prgs => ", props.duration)
 })
 
 onUnmounted(() => {

@@ -41,6 +41,7 @@ export const useExerciseService = () => {
   // 3. 운동 상태 업데이트
   const updateExerciseState = async (data, exerciseId) => {
     try {
+      console.log(data, exerciseId)
       // Store내 사용자 건강력 업데이트
       userStore.userScore += data.time * 2
 

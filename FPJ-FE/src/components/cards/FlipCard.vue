@@ -40,7 +40,7 @@ import { useExerciseStore } from '@/stores/exerciseStore'
 import CircularProgress from './CircularProgress.vue'
 import CardBase from './CardBase.vue'
 import CustomButton from '../common/CustomButton.vue'
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useAuthStore } from '@/stores/authStore'
 import { useUserInfoService } from '@/composables/data/useUserInfoService'
 import { useExerciseService } from '@/composables/data/useExerciseService'
@@ -49,6 +49,10 @@ import { useRouter } from 'vue-router'
 
 const props = defineProps({
   data: Object,
+})
+
+onMounted(() => {
+  console.log(props.data)
 })
 
 const authStore = useAuthStore()
@@ -68,12 +72,21 @@ const doExercise = async () => {
   // 운동시작했다
   exerciseStore.isExerciseDone = false
   // DB에 운동 정보 등록
+
+  console.log("dofirst=>", props.data)
+
   const exercise = await exerciseService.postExercise(props.data)
   exerciseId.value = exercise.exerciseId
+
+  console.log("dolast=>", props.data)
+  
 }
 
 // 운동끝났다
 const doneExercise = async () => {
+
+  console.log("done=>", props.data)
+
   await exerciseService.updateExerciseState(props.data, exerciseId.value)
   setTimeout(() => {
     router.push({ name: 'cardCollection' })

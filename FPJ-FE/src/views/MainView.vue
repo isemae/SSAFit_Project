@@ -1,10 +1,10 @@
 <template #content>
   <div class="card-stack-wrapper" @click.self="resetFocus">
     <FlipCard
-      v-for="data in exerciseStore.randomExerciseData.value"
-      :key="data.id"
+      v-for="(data, index) in exerciseStore.randomExerciseData.value"
+      :key="index"
       :data="data"
-      @click="handleClick(data.id)"
+      @click="handleClick(index)"
     />
   </div>
 </template>
@@ -22,11 +22,11 @@ const { userTier, userScore } = useUserStore()
 
 const focusedCard = ref(null)
 
-onMounted(async () => {
-  await exerciseService.fetchRandomExercise()
+onMounted(async () => {  
+  await exerciseService.fetchRandomExercise()  
 })
 
-const handleClick = (index) => {
+const handleClick = (index) => {  
   focusedCard.value = index
 }
 const resetFocus = () => (focusedCard.value = null)
