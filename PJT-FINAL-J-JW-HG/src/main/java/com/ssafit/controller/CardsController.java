@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafit.model.dto.Card;
+import com.ssafit.model.dto.CollectedCard;
 import com.ssafit.model.service.CardService;
 
 @RestController
@@ -104,7 +105,7 @@ public class CardsController {
 	@GetMapping("")
 	public ResponseEntity<?> getAllCards(@PathVariable int userId) {
 		try {
-			List<Card> cardList = cardService.getAllCards(userId);
+			List<CollectedCard> cardList = cardService.getAllCards(userId);
 			
 				// 조회에 실패했을 경우
 				if(cardList == null) {
@@ -113,7 +114,7 @@ public class CardsController {
 			
 			// 전체 카드를 조회할 때 user table의 ttoal_card_count와 같은 지 검증, 다르면 실제 카드 리스트 size로 수정
 			
-			return new ResponseEntity<List<Card>>(cardList, HttpStatus.OK);			
+			return new ResponseEntity<List<CollectedCard>>(cardList, HttpStatus.OK);			
 		}
 		catch(Exception e) {
 			System.out.println("===userController===");
