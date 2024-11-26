@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, reactive, computed } from 'vue'
+import { useUserInfoService } from '@/composables/data/useUserInfoService'
 import { useAuthStore } from './authStore'
 
 // 클라이언트 내에서 변경되는 유저 state를 저장하는 Store
@@ -21,9 +22,14 @@ import { useAuthStore } from './authStore'
 // 너무 잦은 변경이 일어나지 않도록 동기화 주기만 잘 설정하면 문제?없지않을까????
 
 export const useUserStore = defineStore('user', () => {
-  const userScore = ref(0)
+  const userService = useUserInfoService()
+  const authStore = useAuthStore()
+  const userId = authStore.loginUser.userId
+  const userScore = ref(userService.getUserScore(userId) || 0)
+  const userTier = ref(0)
 
   return {
     userScore,
+    userTier,
   }
 })

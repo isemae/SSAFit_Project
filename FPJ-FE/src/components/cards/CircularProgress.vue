@@ -18,6 +18,7 @@ import { ref, onMounted, onUnmounted } from 'vue'
 const props = defineProps({
   progress: Number, // 목표 진행률 (100)
   duration: Number, // 총 지속 시간 (초 단위)
+  callback: Function,
 })
 
 const progressValue = ref(0) // 현재 진행률
@@ -27,7 +28,7 @@ const startProgress = () => {
   if (timer) clearInterval(timer) // 기존 타이머 초기화
 
   const interval = 50 // 진행률 업데이트 주기 (밀리초)
-  const steps = Math.ceil((props.duration * 1000) / interval) // 총 업데이트 단계
+  const steps = Math.ceil((props.duration * 100) / interval) // 총 업데이트 단계
   let currentStep = 0
 
   timer = setInterval(() => {
@@ -37,6 +38,7 @@ const startProgress = () => {
     if (currentStep >= steps) {
       clearInterval(timer) // 타이머 종료
       progressValue.value = props.progress // 최종 진행률 설정
+      props.callback()
     }
   }, interval)
 }

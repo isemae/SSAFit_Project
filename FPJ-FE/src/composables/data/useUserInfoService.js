@@ -57,6 +57,7 @@ export const useUserInfoService = () => {
   // (user_id) => { score }
   const putUserScore = async () => {
     const score = userStore.userScore
+    console.log(score)
     const endpoint = API_ENDPOINTS.USER.GETSCORE({
       pathParams: { userId: user.value.userId },
     })

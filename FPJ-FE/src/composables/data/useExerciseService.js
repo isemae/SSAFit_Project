@@ -13,13 +13,20 @@ export const useExerciseService = () => {
   const exerciseStore = useExerciseStore()
   const userStore = useUserStore()
 
-  // 1. 운동 데이터 가져오기
+  // 1. 무작위 운동 데이터 가져오기
   const fetchRandomExercise = async () => {
     const endpoint = API_ENDPOINTS.EXERCISE.RANDOM()
     const res = await handleRequest(() => exerciseClient.get(endpoint.url))
     if (res.success) {
       exerciseStore.randomExerciseData.value = res.data
     }
+  }
+
+  // 2. 특정 운동 정보 가져오기
+  const fetchExerciseInfo = async (exerciseId) => {
+    const endpoint = API_ENDPOINTS.EXERCISE.ONE((pathParams = { exerciseId }))
+    const res = await handleRequest(() => exerciseClient.get(endpoint.url))
+    return res
   }
 
   // 2. 운동 정보 포스팅
@@ -48,5 +55,5 @@ export const useExerciseService = () => {
     }
   }
 
-  return { fetchRandomExercise, postExercise, updateExerciseState }
+  return { fetchExerciseInfo, fetchRandomExercise, postExercise, updateExerciseState }
 }

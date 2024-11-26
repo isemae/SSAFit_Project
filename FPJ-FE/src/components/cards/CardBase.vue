@@ -11,10 +11,7 @@
 
 <script setup>
 import { useAuthStore } from '@/stores/authStore'
-import { storeToRefs } from 'pinia'
-
 const authStore = useAuthStore()
-const { loginUser: user } = storeToRefs(authStore)
 
 const emit = defineEmits(['toggle'])
 defineProps({
@@ -26,7 +23,7 @@ const toggleFlip = () => {
 }
 const getCardColor = (tier) => {
   const colors = ['white', 'bronze', 'silver', 'gold', 'platinum', 'diamond', 'ruby', 'black']
-  return colors[(tier + 7) % colors.length]
+  return colors[tier % colors.length]
 }
 </script>
 
@@ -50,7 +47,12 @@ const getCardColor = (tier) => {
 }
 
 .card-face {
-  padding: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0.4rem;
   width: 100%;
   height: 100%;
   position: absolute;

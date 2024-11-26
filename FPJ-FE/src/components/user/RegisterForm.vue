@@ -19,8 +19,10 @@ import AuthBaseForm from './UserInfoBaseForm.vue'
 import { useAccountService } from '@/composables/auth/useAccountService'
 import { useAuthService } from '@/composables/auth/useAuthService'
 import { reactive } from 'vue'
+import { useRouter } from 'vue-router'
 const accountService = useAccountService()
 const authService = useAuthService()
+const router = useRouter()
 
 const registerFormData = reactive({
   loginId: '',
@@ -29,13 +31,16 @@ const registerFormData = reactive({
   userName: '',
 })
 const handleSubmit = async (formData) => {
-  try {
-    const res = accountService.register(formData)
+  const res = await accountService.register(formData)
+  console.log(res)
+
+  if (res.success) {
     console.log('회원가입 성공')
-  } catch (error) {
-    console.error('회원가입 또는 로그인 실패:', error)
-    alert('회원가입 또는 로그인에 실패했습니다.')
+  } else {
+    alert(res.error)
   }
+
+  router.push({ name: 'main' })
 }
 </script>
 
