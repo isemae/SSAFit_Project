@@ -31,13 +31,17 @@ const registerFormData = reactive({
   userName: '',
 })
 
+defineProps({
+    viewProp: String
+})
+
 const emit = defineEmits(['registered'])
 
 const handleSubmit = async (formData) => {
   const res = await accountService.register(formData)
   if (res.success) {
-    console.log('회원가입 성공')
-    emit('registered', registerFormData)
+    alert('회원가입 성공')
+    emit('registered')
   } else {
     alert(res.error)
   }
