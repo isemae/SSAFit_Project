@@ -8,6 +8,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.ssafit.model.dao.CardDao;
 import com.ssafit.model.dto.Card;
+import com.ssafit.model.dto.CollectedCard;
 
 @Service
 public class CardServiceImpl implements CardService {
@@ -64,9 +65,9 @@ public class CardServiceImpl implements CardService {
 	 * }] 
 	 */
 	@Override
-	public List<Card> getAllCards(int userId) {
+	public List<CollectedCard> getAllCards(int userId) {
 		try {
-			List<Card> cardList = cardDao.getAllCards(userId);
+			List<CollectedCard> cardList = cardDao.getAllCards(userId);
 			
 			// 데이터가 없거나 가져오는 데에 실패했다면
 			if(cardList == null | cardList.size() == 0) {

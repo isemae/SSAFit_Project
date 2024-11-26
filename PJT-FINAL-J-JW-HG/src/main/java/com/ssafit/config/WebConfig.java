@@ -27,7 +27,7 @@ public class WebConfig implements WebMvcConfigurer {
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(jwtInterceptor)
-				.addPathPatterns("/cards/**", "exercises/**" , "/user/**")
+				.addPathPatterns("exercises/**" , "/users/**")
 				.excludePathPatterns("/auth/**"); // accounts는 토큰 갖고 있을 필요 없으니 제외
 
 	}
@@ -35,7 +35,7 @@ public class WebConfig implements WebMvcConfigurer {
 	@Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:5173", "http://localhost:5174")
+                .allowedOrigins("http://localhost:5173", "http://localhost:5174", "chrome-extension://gpfgojickoblaenaniikbijdkppdogon")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true);
