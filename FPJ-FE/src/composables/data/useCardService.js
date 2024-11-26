@@ -38,8 +38,8 @@ export const useCardService = () => {
     if (!loginUser.value) throw new Error('User is not logged in')
 
     const card = {
-      exerciseId,
-      score,
+      exerciseId: exerciseId,
+      score: score,
       tier: loginUser.value.tier,
     }
 

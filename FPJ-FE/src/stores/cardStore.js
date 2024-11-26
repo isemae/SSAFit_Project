@@ -7,7 +7,9 @@ export const useCardStore = defineStore('card', () => {
   const authStore = useAuthStore()
   const cardService = useCardService()
   const userCollectedCards = ref([])
-  const userRecentlyCollectedCards = ref([])
+  const userRecentlyCollectedCards = ref(
+    cardService.fetchRecentCards(authStore.loginUser?.userId, 3) || [],
+  )
   const messageNoCard = '수집한 카드가 없어요. 운동을 시작해 볼까요?'
 
   return {

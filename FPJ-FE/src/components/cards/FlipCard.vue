@@ -21,15 +21,25 @@
           v-if="!exerciseStore.isExerciseDone"
           :progress="100"
           :duration="data.time"
-          :callback="doneExercise"
+          @progressDone="doneExercise(cardData)"
         />
         <p>
           {{ data.info }}
         </p>
       </div>
       <div v-if="exerciseStore.isExerciseDone" class="button-wrapper">
-        <CustomButton @click="doExercise(data)">운동하기</CustomButton>
-        <CustomButton @click="toggleFlip">취소</CustomButton>
+        <CustomButton
+          :payload="{ action: 'doExercise', data }"
+          id="start-exercise"
+          @buttonClick="handleButtonClick"
+          >운동하기</CustomButton
+        >
+        <CustomButton
+          id="cancel"
+          :payload="{ action: 'cancel', data }"
+          @buttonClick="handleButtonClick"
+          >취소</CustomButton
+        >
       </div>
     </template>
   </CardBase>
@@ -40,11 +50,9 @@ import { useExerciseStore } from '@/stores/exerciseStore'
 import CircularProgress from './CircularProgress.vue'
 import CardBase from './CardBase.vue'
 import CustomButton from '../common/CustomButton.vue'
-import { ref } from 'vue'
+import { computed, reactive, ref, watch } from 'vue'
 import { useAuthStore } from '@/stores/authStore'
-import { useUserInfoService } from '@/composables/data/useUserInfoService'
 import { useExerciseService } from '@/composables/data/useExerciseService'
-import { useUserStore } from '@/stores/userStore'
 import { useRouter } from 'vue-router'
 
 const props = defineProps({
@@ -54,31 +62,44 @@ const props = defineProps({
 const authStore = useAuthStore()
 const exerciseStore = useExerciseStore()
 const exerciseService = useExerciseService()
-const circularProgress = ref(null)
-
 const router = useRouter()
 
-const exerciseId = ref(0)
+const cardData = reactive({
+  id: 0,
+  part: props.data.part,
+  name: props.data.name,
+  info: props.data.info,
+  time: props.data.time,
+})
+
 const flipped = ref(false)
 const toggleFlip = () => {
   flipped.value = !flipped.value
 }
 
 const doExercise = async () => {
-  // 운동시작했다
   exerciseStore.isExerciseDone = false
-  // DB에 운동 정보 등록
   const exercise = await exerciseService.postExercise(props.data)
-  exerciseId.value = exercise.exerciseId
+  exerciseStore.exerciseId = exercise.exerciseId
 }
 
 // 운동끝났다
-const doneExercise = async () => {
-  await exerciseService.updateExerciseState(props.data, exerciseId.value)
-  setTimeout(() => {
-    router.push({ name: 'cardCollection' })
+const doneExercise = async (data) => {
+  if (!exerciseStore.isExerciseDone) {
+    console.log(exerciseStore.exerciseId)
+    await exerciseService.updateExerciseState(data, exerciseStore.exerciseId)
+
     exerciseStore.isExerciseDone = true
-  }, 300)
+  }
+  router.push({ name: 'cardCollection' })
+}
+
+const handleButtonClick = ({ action, data }) => {
+  if (action === 'doExercise') {
+    doExercise(data)
+  } else if (action === 'cancel') {
+    toggleFlip()
+  }
 }
 </script>
 

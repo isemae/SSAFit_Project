@@ -15,10 +15,6 @@ const props = defineProps({
   data: Object,
 })
 
-onMounted(() => {
-  console.log(props.data)
-})
-
 import { onMounted } from 'vue'
 import CardBase from './CardBase.vue'
 import exerciseIcon from '@/assets/test-stretch-icon.png'

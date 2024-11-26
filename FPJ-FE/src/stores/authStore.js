@@ -66,6 +66,7 @@ export const useAuthStore = defineStore('auth', () => {
   // 동기화
   watch(accessToken, (newToken) => {
     if (newToken) {
+      localStorage.removeItem('accessToken')
       localStorage.setItem('accessToken', newToken)
       try {
         // chrome.storage.sync.set({ accessToken: newToken })

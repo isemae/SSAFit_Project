@@ -1,6 +1,12 @@
 <template>
   <div class="card-wrapper">
-    <div class="card-face back" :class="getCardColor(tier)" v-if="$slots.back" @click="toggleFlip">
+    <div
+      class="card-face back"
+      :key="key"
+      :class="[`${getCardColor(tier)}`, `${key}`]"
+      v-if="$slots.back"
+      @click.prevent="toggleFlip()"
+    >
       <slot name="back" />
     </div>
     <div class="card-face front" :class="getCardColor(tier)">
@@ -13,14 +19,11 @@
 import { useAuthStore } from '@/stores/authStore'
 const authStore = useAuthStore()
 
-const emit = defineEmits(['toggle'])
 defineProps({
   tier: Number,
+  key: Number,
 })
 
-const toggleFlip = () => {
-  emit('toggle')
-}
 const getCardColor = (tier) => {
   const colors = ['white', 'bronze', 'silver', 'gold', 'platinum', 'diamond', 'ruby', 'black']
   return colors[tier % colors.length]

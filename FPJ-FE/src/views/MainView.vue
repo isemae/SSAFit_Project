@@ -1,10 +1,11 @@
 <template #content>
   <div class="card-stack-wrapper" @click.self="resetFocus">
     <FlipCard
-      v-for="data in exerciseStore.randomExerciseData.value"
-      :key="data.id"
+      v-for="(data, index) in exerciseStore.randomExerciseData.value"
+      :class="[`${index}`]"
+      :key="index"
       :data="data"
-      @click="handleClick(data.id)"
+      @click.prevent="handleClick(index)"
     />
   </div>
 </template>
