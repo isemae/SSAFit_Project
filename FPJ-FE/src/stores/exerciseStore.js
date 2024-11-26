@@ -3,15 +3,8 @@ import { reactive, ref } from 'vue'
 
 export const useExerciseStore = defineStore('exercise', () => {
   const randomExerciseData = ref([])
-  const isExerciseDone = ref(true)
+  const isExerciseStarted = ref(true)
+  const selectedExercise = ref({})
   const exerciseId = ref(0)
-  const currentExercise = reactive({
-    id: 0,
-    part: '',
-    name: '',
-    info: '',
-    time: '',
-  })
-
-  return { randomExerciseData, isExerciseDone, exerciseId }
+  return { randomExerciseData, isExerciseStarted, exerciseId, selectedExercise }
 })

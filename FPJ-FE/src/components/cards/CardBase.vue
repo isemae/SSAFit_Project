@@ -1,28 +1,44 @@
 <template>
-  <div class="card-wrapper">
-    <div
-      class="card-face back"
-      :key="key"
-      :class="[`${getCardColor(tier)}`, `${key}`]"
-      v-if="$slots.back"
-      @click.prevent="toggleFlip()"
-    >
-      <slot name="back" />
+  <div class="card-wrapper" :class="[{ flipped: isFlipped }]">
+    <div class="card-face back" :class="[getCardColor(tier)]" @click.prevent="handleBackClick">
+      <slot name="back-content" />
     </div>
-    <div class="card-face front" :class="getCardColor(tier)">
-      <slot name="front" />
+    <div class="card-face front" :class="[getCardColor(tier)]" @click.prevent="handleFrontClick">
+      <slot name="front-content" />
     </div>
   </div>
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import { useAuthStore } from '@/stores/authStore'
-const authStore = useAuthStore()
 
-defineProps({
+const isFlipped = ref(false)
+const props = defineProps({
+  data: Object,
   tier: Number,
-  key: Number,
+  // idx: Number,
+  bothFlippable: {
+    type: Boolean,
+    default: true,
+  },
 })
+
+const handleFrontClick = () => {
+  if (props.bothFlippable) {
+    toggleFlip()
+  }
+}
+
+const handleBackClick = () => {
+  if (props.bothFlippable) {
+    toggleFlip()
+  }
+}
+
+const toggleFlip = () => {
+  isFlipped.value = !isFlipped.value
+}
 
 const getCardColor = (tier) => {
   const colors = ['white', 'bronze', 'silver', 'gold', 'platinum', 'diamond', 'ruby', 'black']

@@ -14,7 +14,7 @@
 <script setup>
 import InfoCard from '../cards/InfoCard.vue'
 import { useCardStore } from '@/stores/cardStore'
-import { onBeforeMount } from 'vue'
+import { onBeforeMount, onMounted } from 'vue'
 import { useAuthStore } from '@/stores/authStore'
 import { storeToRefs } from 'pinia'
 import { useCardService } from '@/composables/data/useCardService'

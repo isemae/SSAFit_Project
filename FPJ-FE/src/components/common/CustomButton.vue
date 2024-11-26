@@ -1,22 +1,11 @@
 <template>
   <button :class="['custom-button']" @click="handleClick">
     <slot name="icon"></slot>
-    <slot>Button</slot>
+    <slot></slot>
   </button>
 </template>
 
-<script setup>
-const emit = defineEmits(['buttonClick'])
-
-const props = defineProps({
-  buttonType: String,
-  payload: Object,
-})
-
-const handleClick = (event) => {
-  emit('buttonClick', props.payload)
-}
-</script>
+<script setup></script>
 
 <style scoped>
 .custom-button {

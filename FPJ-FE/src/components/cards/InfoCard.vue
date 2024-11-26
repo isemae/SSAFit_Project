@@ -1,7 +1,7 @@
 <template>
   <CardBase :tier="props.data.tier">
-    <template #front> </template>
-    <template #back>
+    <template #front-content> </template>
+    <template #back-content>
       <div>{{ props.data.id }}</div>
       <img :src="exerciseIcon" alt="" />
       <div>{{ props.data.name }}</div>
@@ -15,7 +15,6 @@ const props = defineProps({
   data: Object,
 })
 
-import { onMounted } from 'vue'
 import CardBase from './CardBase.vue'
 import exerciseIcon from '@/assets/test-stretch-icon.png'
 </script>

@@ -1,6 +1,5 @@
 <template #SidepanelNav>
   <div class="sidepanel-nav">
-    <h1>{{ currentPage }}</h1>
     <nav v-if="authStore.loginUser" class="navigations-container">
       <div class="navigation">
         <RouterLink :to="{ name: 'preference' }">

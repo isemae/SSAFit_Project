@@ -2,18 +2,14 @@
   <section class="collection-view">
     <div class="collections-container">
       <div class="card-collections">
-        <InfoCard
-          v-for="item in cardStore.userCollectedCards.value"
-          :key="item.id"
-          :data="item"
-        ></InfoCard>
+        <InfoCard v-for="item in reversedCards" :key="item.id" :data="item"></InfoCard>
       </div>
     </div>
   </section>
 </template>
 
 <script setup>
-import { onBeforeMount } from 'vue'
+import { computed, onBeforeMount } from 'vue'
 import { useAuthStore } from '@/stores/authStore'
 import { useCardStore } from '@/stores/cardStore'
 import { storeToRefs } from 'pinia'
@@ -36,6 +32,10 @@ onBeforeMount(async () => {
   } catch (error) {
     console.error('Failed to load cards:', error)
   }
+})
+
+const reversedCards = computed(() => {
+  return cardStore.userCollectedCards.value.slice().reverse()
 })
 </script>
 
