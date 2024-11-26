@@ -29,18 +29,18 @@ export const useAuthStore = defineStore('auth', () => {
   const setAccessToken = (token) => {
     accessToken.value = token
     localStorage.setItem('accessToken', token)
-    try {
-      // chrome.storage.sync.set({ accessToken: token })
-    } catch {}
+    // try {
+    // chrome.storage.sync.set({ accessToken: token })
+    // } catch {}
   }
 
   // AccessToken 제거
   const clearAccessToken = () => {
     accessToken.value = ''
     localStorage.removeItem('accessToken')
-    try {
-      // chrome.storage.sync.remove({ accessToken })
-    } catch {}
+    // try {
+    // chrome.storage.sync.remove({ accessToken })
+    // } catch {}
   }
 
   // JWT 디코딩

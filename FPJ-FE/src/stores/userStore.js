@@ -24,8 +24,7 @@ import { useAuthStore } from './authStore'
 export const useUserStore = defineStore('user', () => {
   const userService = useUserInfoService()
   const authStore = useAuthStore()
-  const userId = authStore.loginUser.userId
-  const userScore = ref(userService.getUserScore(userId) || 0)
+  const userScore = ref(userService.getUserScore(authStore.loginUser?.userId) || 0)
   const userTier = ref(0)
 
   return {
