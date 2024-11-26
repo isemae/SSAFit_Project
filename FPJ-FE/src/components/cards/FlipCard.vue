@@ -1,60 +1,59 @@
 <template>
-  <CardBase :class="[{ flipped: flipped }]" @toggle="toggleFlip" :tier="3">
-    <template #back>
-      <div></div>
-    </template>
-    <template #front>
-      <div class="exercise-info">
-        <div class="info-summary">
-          <h2 class="title">
-            {{ data.name }}
-          </h2>
-          <div class="additional-info">
-            <span>
-              {{ data.part }}
-            </span>
-            <span> {{ data.time }}초 </span>
-          </div>
-        </div>
-        <p>
-          {{ data.info }}
-        </p>
-      </div>
-      <div class="button-wrapper">
-        <CustomButton @click="cardService.handleExercise(data.id, data.time)"
-          >운동하기</CustomButton
-        >
-        <CustomButton @click="toggleFlip">취소</CustomButton>
-      </div>
-    </template>
+  <CardBase :class="[{ flipped: flipped }]">
+    <!-- <template #back> -->
+    <!--   <div /> -->
+    <!-- </template> -->
+    <!---->
+    <!-- <template #front> -->
+    <!---->
+    <!--   <div class="exercise-info"> -->
+    <!---->
+    <!--     <div class="info-summary"> -->
+    <!--       <h2> -->
+    <!--         {{ data.name }} -->
+    <!--       </h2> -->
+    <!--     </div> -->
+    <!---->
+    <!--     <div class="additional-info"> -->
+    <!--       <span> -->
+    <!--         {{ data.part }} -->
+    <!--       </span> -->
+    <!--       <span> {{ data.time }}초</span> -->
+    <!--     </div> -->
+    <!---->
+    <!--     <CircularProgress -->
+    <!--       v-if="!exerciseStore.isExerciseDone" -->
+    <!--       :progress="100" -->
+    <!--       :duration="data.time" -->
+    <!--       @progressDone="doneExercise(cardData)" -->
+    <!--     /> -->
+    <!---->
+    <!--     <p> -->
+    <!--       {{ data.info }} -->
+    <!--     </p> -->
+    <!--   </div> -->
+    <!---->
+    <!--   <div v-if="exerciseStore.isExerciseDone" class="button-wrapper"> -->
+    <!--     <CustomButton -->
+    <!--       :payload="{ action: 'doExercise', data }" -->
+    <!--       id="start-exercise" -->
+    <!--       @buttonClick="startExercise" -->
+    <!--       >운동하기</CustomButton -->
+    <!--     > -->
+    <!--     <CustomButton -->
+    <!--       id="cancel" -->
+    <!--       :payload="{ action: 'cancel', data }" -->
+    <!--       @buttonClick="" -->
+    <!--       >취소</CustomButton -->
+    <!--     > -->
+    <!--   </div> -->
+    <!-- </template> -->
   </CardBase>
 </template>
 
-<script setup>
-import { useCardService } from '@/composables/data/useCardService'
-import CardBase from './CardBase.vue'
-import CustomButton from '../common/CustomButton.vue'
-import { ref } from 'vue'
-
-defineProps({
-  data: Object,
-  // user: Object,
-})
-
-const flipped = ref(false)
-const toggleFlip = () => {
-  flipped.value = !flipped.value
-}
-const cardService = useCardService()
-</script>
+<script setup></script>
 
 <style scoped>
-.card-face {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
 .exercise-info {
   display: flex;
   flex-direction: column;

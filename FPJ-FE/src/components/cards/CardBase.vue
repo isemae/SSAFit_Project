@@ -1,32 +1,48 @@
 <template>
-  <div class="card-wrapper">
-    <div class="card-face back" :class="getCardColor(tier)" v-if="$slots.back" @click="toggleFlip">
-      <slot name="back" />
+  <div class="card-wrapper" :class="[{ flipped: isFlipped }]">
+    <div class="card-face back" :class="[getCardColor(tier)]" @click.prevent="handleBackClick">
+      <slot name="back-content" />
     </div>
-    <div class="card-face front" :class="getCardColor(tier)">
-      <slot name="front" />
+    <div class="card-face front" :class="[getCardColor(tier)]" @click.prevent="handleFrontClick">
+      <slot name="front-content" />
     </div>
   </div>
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import { useAuthStore } from '@/stores/authStore'
-import { storeToRefs } from 'pinia'
 
-const authStore = useAuthStore()
-const { loginUser: user } = storeToRefs(authStore)
-
-const emit = defineEmits(['toggle'])
-defineProps({
+const isFlipped = ref(false)
+const props = defineProps({
+  data: Object,
   tier: Number,
+  // idx: Number,
+  bothFlippable: {
+    type: Boolean,
+    default: true,
+  },
 })
 
-const toggleFlip = () => {
-  emit('toggle')
+const handleFrontClick = () => {
+  if (props.bothFlippable) {
+    toggleFlip()
+  }
 }
+
+const handleBackClick = () => {
+  if (props.bothFlippable) {
+    toggleFlip()
+  }
+}
+
+const toggleFlip = () => {
+  isFlipped.value = !isFlipped.value
+}
+
 const getCardColor = (tier) => {
   const colors = ['white', 'bronze', 'silver', 'gold', 'platinum', 'diamond', 'ruby', 'black']
-  return colors[(tier + 7) % colors.length]
+  return colors[tier % colors.length]
 }
 </script>
 
@@ -50,7 +66,12 @@ const getCardColor = (tier) => {
 }
 
 .card-face {
-  padding: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0.4rem;
   width: 100%;
   height: 100%;
   position: absolute;

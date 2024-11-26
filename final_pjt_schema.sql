@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`exercise` (
   `id` INT NOT NULL AUTO_INCREMENT COMMENT '운동을 UNIQUE하게 관리할 정수형 식별 번호',
   `part` VARCHAR(10) NOT NULL COMMENT '운동 부위, ENUM 쓸지 말지?',
   `name` VARCHAR(20) NOT NULL COMMENT '운동명 - [손목 스트레칭]',
-  `info` VARCHAR(45) NOT NULL COMMENT '운동 내용 및 정보 - [한 쪽 손바닥을 천장을 보게 한 후 다른 쪽 손으로 손가락을 움켜쥐고 아래로 끌여당겨 스트레칭]',
+  `info` VARCHAR(150) NOT NULL COMMENT '운동 내용 및 정보 - [한 쪽 손바닥을 천장을 보게 한 후 다른 쪽 손으로 손가락을 움켜쥐고 아래로 끌여당겨 스트레칭]',
   `time` INT NOT NULL DEFAULT 0 COMMENT '운동 시간 - [30]: 각 손마다 30초씩 시행',
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;

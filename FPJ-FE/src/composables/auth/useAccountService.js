@@ -28,7 +28,9 @@ export const useAccountService = () => {
     const res = await handleRequest(() =>
       accountClient.post('/register', { loginId, password, userName }),
     )
+    console.log(res)
     return res
   }
+
   return { register }
 }

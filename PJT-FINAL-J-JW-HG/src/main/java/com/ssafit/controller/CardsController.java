@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafit.model.dto.Card;
+import com.ssafit.model.dto.CollectedCard;
 import com.ssafit.model.service.CardService;
 
 @RestController
@@ -104,7 +105,7 @@ public class CardsController {
 	@GetMapping("")
 	public ResponseEntity<?> getAllCards(@PathVariable int userId) {
 		try {
-			List<Card> cardList = cardService.getAllCards(userId);
+			List<CollectedCard> cardList = cardService.getAllCards(userId);
 			
 				// 조회에 실패했을 경우
 				if(cardList == null) {
@@ -113,7 +114,7 @@ public class CardsController {
 			
 			// 전체 카드를 조회할 때 user table의 ttoal_card_count와 같은 지 검증, 다르면 실제 카드 리스트 size로 수정
 			
-			return new ResponseEntity<List<Card>>(cardList, HttpStatus.OK);			
+			return new ResponseEntity<List<CollectedCard>>(cardList, HttpStatus.OK);			
 		}
 		catch(Exception e) {
 			System.out.println("===userController===");
@@ -122,6 +123,9 @@ public class CardsController {
 			
 			if(e.getMessage().contains("다른 사람")) {
 				return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+			}
+			else if(e.getMessage().contains("저장된 카드가 없습니다!")) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 			}
 			
 			// 다른 모든 예외에 대해
@@ -144,8 +148,8 @@ public class CardsController {
 	 * (String) collected_date 
 	 * }]
 	 */
-	@GetMapping("/recent?limit={cardNumber}")
-	public ResponseEntity<?> getRecentCards(@PathVariable int userId, @RequestParam int cardNumber) {
+	@GetMapping("/recent")
+	public ResponseEntity<?> getRecentCards(@PathVariable int userId, @RequestParam(value="limit", defaultValue="3") int cardNumber) {
 		try {
 			List<Card> cardList = cardService.getRecentCards(userId, cardNumber);
 			
@@ -169,7 +173,9 @@ public class CardsController {
 			else if(e.getMessage().contains("1개 이상")) {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 			}
-			
+			else if(e.getMessage().contains("저장된 카드가 없습니다!")) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+			}
 			// 다른 모든 예외에 대해
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("비정상적인 접근입니다.");
 		}

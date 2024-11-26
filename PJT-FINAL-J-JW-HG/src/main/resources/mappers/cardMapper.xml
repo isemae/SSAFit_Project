@@ -12,8 +12,11 @@
 	</insert>
 	
 	<!-- 2. get all cards 한 유저가 수집한 전체 카드 조회 -->
-	<select id="getAllCards" parameterType="int" resultType="Card">
-		SELECT * FROM card
+	<select id="getAllCards" parameterType="int" resultType="CollectedCard">
+		SELECT c.id, c.user_id, c.score, c.tier, c.collected_date, e.name 
+		FROM card AS c
+		LEFT OUTER JOIN exercise AS e
+		ON c.exercise_id = e.id  
 		WHERE user_id = #{userId} 		
 	</select>
 	

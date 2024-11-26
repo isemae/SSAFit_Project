@@ -3,6 +3,7 @@ package com.ssafit.model.service;
 import java.util.List;
 
 import com.ssafit.model.dto.Card;
+import com.ssafit.model.dto.CollectedCard;
 
 public interface CardService {
 	//-----------------------------------------------------------//
@@ -26,7 +27,7 @@ public interface CardService {
 	 * (String) collectedDate
 	 * }] 
 	 */
-	List<Card> getAllCards(int userId);
+	List<CollectedCard> getAllCards(int userId);
 	
 	/** 3. 한 유저가 수집한 최근 카드 n개 조회
 	 * @param userId

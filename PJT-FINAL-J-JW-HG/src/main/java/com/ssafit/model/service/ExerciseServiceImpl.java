@@ -92,10 +92,36 @@ public class ExerciseServiceImpl implements ExerciseService {
 //			System.out.println(resObj);
 			
 			// Plan A. ChatGPT-4o API
-			String response = openAiChatModel.call(prompt);			
-			System.out.println(response);
+//			String response = openAiChatModel.call(prompt);			
+//			System.out.println(response);
+			
+			String test = 
+					"""
+					[{
+					        "id": 0,
+					        "part": "어깨",
+					        "name": "어깨 스트레칭",
+					        "info": "의자에 앉아 등을 곧게 펴고, 오른쪽 팔을 왼쪽 어깨 앞으로 가져옵니다.",
+					        "time": 15
+					    },
+					    {
+					        "id": 0,
+					        "part": "허리",
+					        "name": "앉아서 허리 비틀기",
+					        "info": "의자에 앉아 오른쪽 다리를 왼쪽 다리 위로 올리고",
+					        "time": 20
+					    },
+					    {
+					        "id": 0,
+					        "part": "종아리",
+					        "name": "서서 종아리 들어올리기",
+					        "info": "똑바로 서서 발을 어깨너비로 벌리고 발끝으로 천천히 올라갑니다.", 
+					        "time": 30
+					    }]
+					""";
+			
 
-			List<Exercise> responseList = stringParseUtil.parseExerciseCards(response);			
+			List<Exercise> responseList = stringParseUtil.parseExerciseCards(test);			
 			
 			return responseList;
 		}

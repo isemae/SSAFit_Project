@@ -1,6 +1,8 @@
 package com.ssafit.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -68,8 +70,7 @@ public class ExercisesController {
 	
 	/** 1. 유저가 선택한 운동 등록
 	 * @param exercise
-	 * @return Boolean
-	 * true/false
+	 * @return (int) exerciseId 
 	 */
 	@PostMapping("")
 	public ResponseEntity<?> postExercise(@RequestBody Exercise exercise) {
@@ -79,13 +80,19 @@ public class ExercisesController {
 				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "운동 정보가 제대로 들어오지 않았습니다. 요청을 확인해주세요.");
 			}
 			
+			//TODO 운동 중복 등록 방지(완전히 같은 거)
+			
 			int isExercisePosted = exerciseService.postExercise(exercise);
 			
 			if(isExercisePosted == 0) {
 				throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "운동 정보 등록에 실패했습니다.");
 			}
 			
-			return new ResponseEntity<Boolean>(true, HttpStatus.CREATED);		
+			Map<String, Integer> exerciseMap = new HashMap<>(); 
+			int exerciseId = exercise.getId();
+			exerciseMap.put("exerciseId", exerciseId);
+			
+			return new ResponseEntity<Map<String, Integer>>(exerciseMap, HttpStatus.CREATED);		
 		}
 		catch(Exception e) {
 			System.out.println("===userController===");

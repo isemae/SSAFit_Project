@@ -1,17 +1,26 @@
 <template>
-  <aside v-if="user" id="info-panel">
-    <span class="user-score">{{ user.score }}</span>
+  <aside id="info-panel">
+    <span class="user-score">{{ userStore.userScore }}</span>
     <span>당신의 건강력</span>
-    <RecentCards />
   </aside>
 </template>
 
 <script setup>
-import RecentCards from './RecentCards.vue'
-import { useAuthStore } from '@/stores/authStore'
-import { storeToRefs } from 'pinia'
-const store = useAuthStore()
-const { loginUser: user } = storeToRefs(store)
+import { useUserStore } from '@/stores/userStore'
+import { onMounted } from 'vue'
+import { useUserInfoService } from '@/composables/data/useUserInfoService'
+const userStore = useUserStore()
+const userService = useUserInfoService()
+
+onMounted(async () => {
+  if (userStore.userScore <= 0) {
+    const res = await userService.getUserScore()
+
+    if (res.success) {
+      userStore.userScore = res.data
+    }
+  }
+})
 </script>
 
 <style scoped>

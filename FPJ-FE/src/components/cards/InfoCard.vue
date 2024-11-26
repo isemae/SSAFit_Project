@@ -1,17 +1,17 @@
 <template>
-  <CardBase :tier="data.tier">
-    <template #front> </template>
-    <template #back>
-      <div>{{ data.id }}</div>
+  <CardBase :tier="props.data.tier">
+    <template #front-content> </template>
+    <template #back-content>
+      <div>{{ props.data.id }}</div>
       <img :src="exerciseIcon" alt="" />
-      <div>{{ data.collectedDate }}</div>
-      <div>{{ data.score }}</div>
+      <div>{{ props.data.name }}</div>
+      <div>{{ props.data.score }}</div>
     </template>
   </CardBase>
 </template>
 
 <script setup>
-defineProps({
+const props = defineProps({
   data: Object,
 })
 
